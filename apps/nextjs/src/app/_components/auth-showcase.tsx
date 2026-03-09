@@ -2,12 +2,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { Button } from "@acme/ui/button";
-import {
-  Field,
-  FieldContent,
-  FieldGroup,
-  FieldLabel,
-} from "@acme/ui/field";
+import { Field, FieldContent, FieldGroup, FieldLabel } from "@acme/ui/field";
 import { Input } from "@acme/ui/input";
 
 import { auth, getSession } from "~/auth/server";
@@ -87,7 +82,12 @@ function SignInForm() {
         <Field>
           <FieldContent>
             <FieldLabel htmlFor="signin-password">Password</FieldLabel>
-            <Input id="signin-password" name="password" type="password" required />
+            <Input
+              id="signin-password"
+              name="password"
+              type="password"
+              required
+            />
           </FieldContent>
         </Field>
       </FieldGroup>
