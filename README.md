@@ -148,3 +148,94 @@ The auth proxy comes as a better-auth plugin. This is required for the Next.js a
 The stack originates from [create-t3-app](https://github.com/t3-oss/create-t3-app).
 
 A [blog post](https://jumr.dev/blog/t3-turbo) where I wrote how to migrate a T3 app into this.
+
+
+# Project Context
+
+## What is FormAgent?
+
+FormAgent is a full-stack web application that automatically fills out web forms using a user-provided personal context (free-form text or résumé) and an LLM-powered browser agent. The agent navigates to a given form URL, reasons about how to map the user's profile to each form field, fills the form, and surfaces uncertain fields for human review before submitting.
+
+## Goals
+
+- Parse unstructured personal context into a structured identity profile
+- Navigate and understand arbitrary web forms, including dynamic and multi-page ones
+- Map profile data to form fields using LLM reasoning
+- Self-verify filled fields with a confidence score before submission
+- Let the user review and correct low-confidence fields before the agent submits
+- Evaluate performance across a diverse set of forms with clear metrics
+
+## Tech Stack
+
+- **Frontend**: Next.js (App Router) — handles all UI: context input, form URL entry, live action log, and the confirmation/review screen
+- **API layer**: tRPC — type-safe communication between frontend and backend, all TypeScript
+- **Browser agent**: Stagehand (`@browserbasehq/stagehand`) — TypeScript-native LLM browser automation built on Playwright; provides `extract()` to read form structure, `act()` to fill fields, and `observe()` for verification
+- **LLM**: OpenAI GPT-4o / GPT-5 via the OpenAI Node.js SDK — used at three distinct points: context parsing, field mapping during the agent loop, and self-verification
+- **PDF parsing**: `pdf-parse` or `pdfjs-dist` — extracts raw text from uploaded résumé files before the LLM ingestion step
+- **Session auth**: Playwright `storageState` — user exports cookies from their own browser; backend injects them into the Playwright context so the agent starts already authenticated
+- **Styling**: Tailwind CSS
+
+## System Components
+
+### 1. Context Ingestion
+
+The user provides personal context either as free-form text (a short bio, bullet points, etc.) or by uploading a résumé PDF. The backend extracts raw text from the PDF if needed, then makes an LLM call to parse it into a structured identity profile — name, email, phone, education history, work experience, skills, links, and a summary. The LLM also flags any commonly-needed fields that appear to be missing from the provided context.
+
+### 2. Browser Agent (Stagehand)
+
+Once the profile is ready and a form URL is provided, the agent launches a Playwright browser context with any provided session cookies injected. It then:
+
+- Navigates to the form URL
+- Uses `extract()` to read and understand all form fields — their labels, types (text, dropdown, checkbox, file, date, etc.), and whether they are required
+- For each field, uses LLM reasoning to determine the best value from the user's profile — handling ambiguous labels, unusual phrasing, and fields that require inference rather than direct lookup
+- Uses `act()` to fill each field
+- Handles multi-page navigation, conditional fields that appear based on prior answers, and JS-rendered elements that don't exist in the static HTML
+- Uses raw Playwright for file upload fields, pointing to pre-staged files on the server
+
+### 3. Self-Verification
+
+After filling, the agent runs a separate LLM pass using `extract()` to read back all the current field values. The LLM evaluates each filled field and assigns a confidence score: **high**, **medium**, or **low**, along with a brief reason for any low-confidence fields. This output is returned to the frontend.
+
+### 4. Human-in-the-Loop Confirmation
+
+Before submission, the frontend shows the user a summary of all filled fields. Low-confidence fields are visually flagged with the agent's stated reason for uncertainty. The user can correct any values inline, then approve. Only after approval does the agent submit the form.
+
+### 5. Authentication for Login-Gated Forms
+
+The agent never handles raw credentials. The intended flow is: the user logs into the target site in their own browser, exports their session cookies as a JSON file (via browser DevTools or a cookie-export browser extension), and uploads that file in the FormAgent UI. The backend injects the cookies via Playwright `storageState` before the agent starts, so the agent inherits a fully authenticated session.
+
+## Evaluation Plan
+
+FormAgent is evaluated against a custom suite of 20 forms using a fixed fictional test persona ("Alex Chen") with known ground-truth answers for every field.
+
+**Form categories:**
+
+- Simple (7 forms): static HTML, standard field labels, no JavaScript dependency
+- Medium (7 forms): Google Forms / Typeform, dropdowns, optional fields
+- Complex (6 forms): multi-page, conditional logic, JS-rendered fields
+
+**Metrics:**
+
+- *Field accuracy*: percentage of fields filled with the correct value vs. ground truth
+- *Task completion rate*: full success / partial completion / failure per form
+- *Confidence calibration*: whether low-confidence scores actually correlate with incorrectly filled fields
+
+**Baseline:** A static HTML baseline passes the form's raw HTML and user profile to an LLM in a single prompt with no browser interaction. This isolates the contribution of the agent loop — the static baseline will succeed on simple forms but fail on anything dynamic, conditional, or multi-page.
+
+**Ablations:**
+
+- Agent with vs. without the self-verification step
+- GPT-4o vs. GPT-4o-mini on field mapping accuracy
+
+## Known Limitations
+
+- CAPTCHAs are out of scope — the eval suite avoids forms with anti-bot measures
+- Authentication is a precondition; the agent does not handle logging in
+- File uploads require files to be pre-staged on the server; the agent selects the appropriate file based on context
+- The solution is intentionally scoped to form-filling and does not attempt general web task completion
+
+## Related Work
+
+- **Mind2Web** (Deng et al., 2023) — LLM web agent benchmark across 137 real websites; focuses on general navigation, not profile-driven form completion
+- **WebArena** (Zhou et al., 2023) — sandboxed web environments for autonomous agent evaluation
+- **Stagehand** (Browserbase) — the TypeScript browser automation framework used in this project
