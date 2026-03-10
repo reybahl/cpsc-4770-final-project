@@ -136,7 +136,7 @@ Skills: TypeScript, React, Python...`}
 
         <div className="flex flex-col gap-2">
           <p className="text-muted-foreground text-sm font-medium">
-            Or upload a PDF résumé (we’ll send it to the AI to extract context)
+            Or upload a PDF résumé (we'll send it to the AI to extract context)
           </p>
           <label
             htmlFor="resume-upload"
@@ -168,9 +168,15 @@ Skills: TypeScript, React, Python...`}
             </span>
           </label>
           {resumeUrl && (
-            <p className="text-muted-foreground truncate text-xs">
-              PDF stored: {resumeUrl}
-            </p>
+            <div className="flex flex-col gap-2">
+              <p className="text-muted-foreground truncate text-xs">
+                PDF stored: {resumeUrl}
+              </p>
+              <ResumeExtractButton
+                pdfUrl={resumeUrl}
+                onExtracted={(text) => setContext(text)}
+              />
+            </div>
           )}
         </div>
 
@@ -181,5 +187,43 @@ Skills: TypeScript, React, Python...`}
         </div>
       </form>
     </div>
+  );
+}
+
+function ResumeExtractButton({
+  pdfUrl,
+  onExtracted,
+}: {
+  pdfUrl: string;
+  onExtracted: (text: string) => void;
+}) {
+  const trpc = useTRPC();
+  const extractMutation = useMutation(
+    trpc.context.extractResume.mutationOptions(),
+  );
+
+  return (
+    <Button
+      type="button"
+      variant="outline"
+      size="sm"
+      disabled={extractMutation.isPending}
+      onClick={() => {
+        extractMutation.mutate(
+          { pdfUrl },
+          {
+            onSuccess: (data) => {
+              onExtracted(data.text);
+              toast.success("Context extracted from PDF");
+            },
+            onError: (err) => {
+              toast.error(err.message ?? "Extraction failed");
+            },
+          },
+        );
+      }}
+    >
+      {extractMutation.isPending ? "Extracting…" : "Extract context with AI"}
+    </Button>
   );
 }
