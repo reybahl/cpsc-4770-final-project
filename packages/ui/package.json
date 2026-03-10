@@ -8,6 +8,7 @@
     "./dropdown-menu": "./src/dropdown-menu.tsx",
     "./field": "./src/field.tsx",
     "./input": "./src/input.tsx",
+    "./textarea": "./src/textarea.tsx",
     "./label": "./src/label.tsx",
     "./separator": "./src/separator.tsx",
     "./theme": "./src/theme.tsx",
