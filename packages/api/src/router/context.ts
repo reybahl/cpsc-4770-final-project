@@ -5,31 +5,29 @@ import { context, CreateContextSchema } from "@acme/db/schema";
 
 import { protectedProcedure } from "../trpc";
 
+/** Only return id + context; no timestamps so nothing triggers date serialization. */
 export const contextRouter = {
-  get: protectedProcedure.query(({ ctx }) => {
-    return ctx.db.query.context.findFirst({
+  get: protectedProcedure.query(async ({ ctx }) => {
+    const row = await ctx.db.query.context.findFirst({
       where: eq(context.userId, ctx.session.user.id),
+      columns: { id: true, context: true },
     });
+    return row ?? null;
   }),
 
   save: protectedProcedure
     .input(CreateContextSchema)
     .mutation(async ({ ctx, input }) => {
-      const userId = ctx.session.user.id;
-      const existing = await ctx.db.query.context.findFirst({
-        where: eq(context.userId, userId),
-      });
-
-      if (existing) {
-        return ctx.db
-          .update(context)
-          .set({ context: input.context })
-          .where(eq(context.userId, userId));
-      }
-
-      return ctx.db.insert(context).values({
-        userId,
-        context: input.context,
-      });
+      await ctx.db
+        .insert(context)
+        .values({
+          userId: ctx.session.user.id,
+          context: input.context,
+        })
+        .onConflictDoUpdate({
+          target: context.userId,
+          set: { context: input.context },
+        });
+      return { success: true };
     }),
 } satisfies TRPCRouterRecord;

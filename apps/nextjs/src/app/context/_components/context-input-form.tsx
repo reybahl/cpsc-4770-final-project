@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { cn } from "@acme/ui";
 import { Button } from "@acme/ui/button";
@@ -12,19 +13,53 @@ import {
   FieldLabel,
 } from "@acme/ui/field";
 import { Textarea } from "@acme/ui/textarea";
+import { toast } from "@acme/ui/toast";
+
+import { useTRPC } from "~/trpc/react";
 
 export function ContextInputForm() {
-  const [context, setContext] = useState("");
+  const trpc = useTRPC();
+  const { data: savedContext } = useQuery(trpc.context.get.queryOptions());
+
+  return (
+    <ContextFormFields
+      key={savedContext?.id ?? "loading"}
+      initialContext={savedContext?.context ?? ""}
+    />
+  );
+}
+
+function ContextFormFields({ initialContext }: { initialContext: string }) {
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+  const [context, setContext] = useState(initialContext);
+
+  const saveMutation = useMutation(trpc.context.save.mutationOptions());
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!context.trim()) return;
+    saveMutation.mutate(
+      { context: context.trim() },
+      {
+        onSuccess: () => {
+          void queryClient.invalidateQueries({
+            queryKey: trpc.context.get.queryOptions().queryKey,
+          });
+          toast.success("Context saved successfully");
+        },
+        onError: (err) => {
+          toast.error(err.message || "Failed to save context");
+        },
+      },
+    );
+  };
+
+  const isDisabled = !context.trim() || saveMutation.isPending;
 
   return (
     <div className="mx-auto w-full max-w-2xl">
-      <form
-        className="flex flex-col gap-8"
-        onSubmit={(e) => {
-          e.preventDefault();
-          // Placeholder: backend integration coming next
-        }}
-      >
+      <form className="flex flex-col gap-8" onSubmit={handleSubmit}>
         <FieldGroup>
           <Field>
             <FieldContent>
@@ -64,8 +99,8 @@ Skills: TypeScript, React, Python...`}
         </div>
 
         <div className="flex justify-end">
-          <Button type="submit" size="lg" disabled={!context.trim()}>
-            Continue
+          <Button type="submit" size="lg" disabled={isDisabled}>
+            {saveMutation.isPending ? "Saving…" : "Continue"}
           </Button>
         </div>
       </form>

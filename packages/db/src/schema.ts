@@ -13,9 +13,9 @@ export const context = pgTable("context", (t) => ({
     .unique()
     .references(() => user.id, { onDelete: "cascade" }),
   context: t.text().notNull(),
-  createdAt: t.timestamp().defaultNow().notNull(),
+  createdAt: t.timestamp({ mode: "string" }).defaultNow().notNull(),
   updatedAt: t
-    .timestamp({ mode: "date", withTimezone: true })
+    .timestamp({ mode: "string", withTimezone: true })
     .$onUpdateFn(() => sql`now()`),
 }));
 
