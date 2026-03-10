@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 const protectedPaths = ["/context"];
 
-export async function middleware(request: NextRequest) {
+export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const isProtected = protectedPaths.some(
