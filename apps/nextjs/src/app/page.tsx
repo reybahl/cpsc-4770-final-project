@@ -1,19 +1,11 @@
-import { Suspense } from "react";
 import Link from "next/link";
 
 import { Button } from "@acme/ui/button";
 
-import { HydrateClient, prefetch, trpc } from "~/trpc/server";
+import { HydrateClient } from "~/trpc/server";
 import { AuthShowcase } from "./_components/auth-showcase";
-import {
-  CreatePostForm,
-  PostCardSkeleton,
-  PostList,
-} from "./_components/posts";
 
 export default function HomePage() {
-  prefetch(trpc.post.all.queryOptions());
-
   return (
     <HydrateClient>
       <main className="container h-screen py-16">
@@ -27,21 +19,6 @@ export default function HomePage() {
             </Button>
           </div>
           <AuthShowcase />
-
-          <CreatePostForm />
-          <div className="w-full max-w-2xl overflow-y-scroll">
-            <Suspense
-              fallback={
-                <div className="flex w-full flex-col gap-4">
-                  <PostCardSkeleton />
-                  <PostCardSkeleton />
-                  <PostCardSkeleton />
-                </div>
-              }
-            >
-              <PostList />
-            </Suspense>
-          </div>
         </div>
       </main>
     </HydrateClient>
