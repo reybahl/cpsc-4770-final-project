@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { cn } from "@acme/ui";
@@ -33,8 +33,58 @@ function ContextFormFields({ initialContext }: { initialContext: string }) {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
   const [context, setContext] = useState(initialContext);
+  const [resumeUrl, setResumeUrl] = useState<string | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
 
   const saveMutation = useMutation(trpc.context.save.mutationOptions());
+
+  const uploadFile = useCallback(async (file: File) => {
+    if (file.type !== "application/pdf") {
+      toast.error("Only PDF files are allowed");
+      return;
+    }
+    setIsUploading(true);
+    try {
+      const formData = new FormData();
+      formData.set("file", file);
+      const res = await fetch("/api/upload-resume", {
+        method: "POST",
+        body: formData,
+      });
+      const data = (await res.json()) as { url?: string; error?: string };
+      if (!res.ok) {
+        throw new Error(data.error ?? "Upload failed");
+      }
+      if (data.url) {
+        setResumeUrl(data.url);
+        toast.success("PDF uploaded — ready for AI extraction");
+      }
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to upload PDF");
+    } finally {
+      setIsUploading(false);
+    }
+  }, []);
+
+  const handleDrop = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      setIsDragging(false);
+      const file = e.dataTransfer.files[0];
+      if (file) uploadFile(file);
+    },
+    [uploadFile],
+  );
+
+  const handleFileInput = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (file) uploadFile(file);
+      e.target.value = "";
+    },
+    [uploadFile],
+  );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -84,18 +134,44 @@ Skills: TypeScript, React, Python...`}
           </Field>
         </FieldGroup>
 
-        <div
-          className={cn(
-            "border-border bg-muted/30 flex flex-col items-center justify-center rounded-lg border-2 border-dashed p-8 transition-colors",
-            "hover:bg-muted/50",
-          )}
-        >
+        <div className="flex flex-col gap-2">
           <p className="text-muted-foreground text-sm font-medium">
-            PDF résumé upload — coming soon
+            Or upload a PDF résumé (we’ll send it to the AI to extract context)
           </p>
-          <p className="text-muted-foreground/80 mt-1 text-xs">
-            You’ll be able to upload a .pdf and we’ll extract the text for you
-          </p>
+          <label
+            htmlFor="resume-upload"
+            className={cn(
+              "border-border bg-muted/30 flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed p-8 transition-colors",
+              "hover:bg-muted/50",
+              isDragging && "border-primary bg-primary/5",
+              isUploading && "pointer-events-none opacity-70",
+            )}
+            onDragOver={(e) => {
+              e.preventDefault();
+              setIsDragging(true);
+            }}
+            onDragLeave={() => setIsDragging(false)}
+            onDrop={handleDrop}
+          >
+            <input
+              type="file"
+              accept=".pdf,application/pdf"
+              className="hidden"
+              id="resume-upload"
+              disabled={isUploading}
+              onChange={handleFileInput}
+            />
+            <span className="text-muted-foreground text-sm">
+              {isUploading
+                ? "Uploading…"
+                : "Choose a file or drag and drop a PDF here"}
+            </span>
+          </label>
+          {resumeUrl && (
+            <p className="text-muted-foreground truncate text-xs">
+              PDF stored: {resumeUrl}
+            </p>
+          )}
         </div>
 
         <div className="flex justify-end">
