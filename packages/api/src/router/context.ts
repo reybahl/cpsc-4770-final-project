@@ -20,7 +20,7 @@ export const contextRouter = {
   get: protectedProcedure.query(async ({ ctx }) => {
     const row = await ctx.db.query.context.findFirst({
       where: eq(context.userId, ctx.session.user.id),
-      columns: { id: true, context: true },
+      columns: { id: true, context: true, resumeUrl: true },
     });
     return row ?? null;
   }),
@@ -41,10 +41,52 @@ export const contextRouter = {
       return { success: true };
     }),
 
+  saveResume: protectedProcedure
+    .input(z.object({ pdfUrl: z.string().url() }))
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db
+        .insert(context)
+        .values({
+          userId: ctx.session.user.id,
+          context: "",
+          resumeUrl: input.pdfUrl,
+        })
+        .onConflictDoUpdate({
+          target: context.userId,
+          set: { resumeUrl: input.pdfUrl },
+        });
+      return { success: true };
+    }),
+
+  getResumeViewUrl: protectedProcedure
+    .input(z.object({ pdfUrl: z.string().url() }))
+    .query(async ({ input }) => {
+      const pathMatch = /\/resumes\/(.+)$/.exec(input.pdfUrl);
+      const path = pathMatch?.[1];
+      if (!path) {
+        throw new Error("Invalid PDF URL: could not extract storage path");
+      }
+      const { data, error } = await supabaseAdmin.storage
+        .from(BUCKET)
+        .createSignedUrl(path, 3600); // 1 hour
+      if (error) {
+        throw new Error(`Failed to create view URL: ${error.message}`);
+      }
+      return { url: data.signedUrl };
+    }),
+
+  clearResume: protectedProcedure.mutation(async ({ ctx }) => {
+    await ctx.db
+      .update(context)
+      .set({ resumeUrl: null })
+      .where(eq(context.userId, ctx.session.user.id));
+    return { success: true };
+  }),
+
   extractResume: protectedProcedure
     .input(z.object({ pdfUrl: z.string().url() }))
     .mutation(async ({ input }) => {
-      const pathMatch = input.pdfUrl.match(/\/resumes\/(.+)$/);
+      const pathMatch = /\/resumes\/(.+)$/.exec(input.pdfUrl);
       const path = pathMatch?.[1];
       if (!path) {
         throw new Error("Invalid PDF URL: could not extract storage path");
