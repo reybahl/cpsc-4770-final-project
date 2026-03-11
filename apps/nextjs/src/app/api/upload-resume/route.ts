@@ -47,7 +47,7 @@ export async function POST(req: Request) {
   if (error) {
     console.error("Supabase upload error:", error);
     return NextResponse.json(
-      { error: error.message ?? "Upload failed" },
+      { error: error.message || "Upload failed" },
       { status: 500 },
     );
   }

@@ -72,7 +72,7 @@ function ContextFormFields({ initialContext }: { initialContext: string }) {
       e.preventDefault();
       setIsDragging(false);
       const file = e.dataTransfer.files[0];
-      if (file) uploadFile(file);
+      if (file) void uploadFile(file);
     },
     [uploadFile],
   );
@@ -80,7 +80,7 @@ function ContextFormFields({ initialContext }: { initialContext: string }) {
   const handleFileInput = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
-      if (file) uploadFile(file);
+      if (file) void uploadFile(file);
       e.target.value = "";
     },
     [uploadFile],
