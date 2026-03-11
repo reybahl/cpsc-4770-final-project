@@ -13,6 +13,7 @@ export const context = pgTable("context", (t) => ({
     .unique()
     .references(() => user.id, { onDelete: "cascade" }),
   context: t.text().notNull(),
+  resumeUrl: t.text(),
   createdAt: t.timestamp({ mode: "string" }).defaultNow().notNull(),
   updatedAt: t
     .timestamp({ mode: "string", withTimezone: true })
