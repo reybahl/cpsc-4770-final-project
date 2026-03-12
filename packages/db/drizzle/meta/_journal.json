@@ -15,6 +15,13 @@
       "when": 1773195724652,
       "tag": "0001_tearful_justice",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1773282872177,
+      "tag": "0002_yielding_alex_power",
+      "breakpoints": true
     }
   ]
 }

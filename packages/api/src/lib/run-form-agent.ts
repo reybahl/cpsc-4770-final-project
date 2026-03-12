@@ -6,7 +6,12 @@ const useBrowserbase =
 export type FormAgentEvent =
   | { liveViewUrl: string }
   | { liveViewAvailable: false }
-  | { success: boolean; submitted: boolean; finalUrl: string };
+  | {
+      success: boolean;
+      submitted: boolean;
+      finalUrl: string;
+      browserbaseSessionId?: string;
+    };
 
 /**
  * Runs the form-filling agent. Yields liveViewUrl (Browserbase only) before
@@ -47,10 +52,11 @@ export async function* runFormAgent(
       throw err;
     }
 
+    let browserbaseSessionId: string | undefined;
     if (!useBrowserbase) {
       yield { liveViewAvailable: false };
     } else {
-      const sessionId =
+      browserbaseSessionId =
         stagehand.browserbaseSessionID ??
         (stagehand as { sessionId?: string }).sessionId;
 
@@ -59,7 +65,7 @@ export async function* runFormAgent(
         .browserbaseDebugURL;
       if (typeof debugUrl === "string" && debugUrl.startsWith("https://")) {
         yield { liveViewUrl: debugUrl };
-      } else if (sessionId) {
+      } else if (browserbaseSessionId) {
         const { default: Browserbase } = await import("@browserbasehq/sdk");
         const bb = new Browserbase({
           apiKey: process.env.BROWSERBASE_API_KEY,
@@ -68,7 +74,7 @@ export async function* runFormAgent(
         for (let attempt = 0; attempt < 3; attempt++) {
           try {
             const debug = (await bb.sessions.debug(
-              sessionId,
+              browserbaseSessionId,
             )) as unknown as Record<string, unknown>;
             const pages = debug.pages as
               | { debuggerFullscreenUrl?: string; debuggerUrl?: string }[]
@@ -123,6 +129,7 @@ export async function* runFormAgent(
       success: result.success,
       submitted: result.success,
       finalUrl: page.url(),
+      ...(browserbaseSessionId && { browserbaseSessionId }),
     };
   } finally {
     await stagehand.close();

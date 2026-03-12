@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { runFormAgent } from "@acme/api";
 import { eq } from "@acme/db";
 import { db } from "@acme/db/client";
-import { context } from "@acme/db/schema";
+import { context, sessions } from "@acme/db/schema";
 
 import { getSession } from "~/auth/server";
 
@@ -60,6 +60,17 @@ export async function POST(req: Request) {
       try {
         for await (const event of runFormAgent(formUrl, userContext)) {
           send(event);
+          if (
+            "success" in event &&
+            "browserbaseSessionId" in event &&
+            event.browserbaseSessionId
+          ) {
+            await db.insert(sessions).values({
+              userId: session.user.id,
+              browserbaseSessionId: event.browserbaseSessionId,
+              formUrl,
+            });
+          }
         }
       } catch (err) {
         send({

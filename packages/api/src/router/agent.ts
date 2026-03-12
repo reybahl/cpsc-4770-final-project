@@ -1,8 +1,8 @@
 import type { TRPCRouterRecord } from "@trpc/server";
 import { z } from "zod/v4";
 
-import { eq } from "@acme/db";
-import { context } from "@acme/db/schema";
+import { desc, eq } from "@acme/db";
+import { context, sessions } from "@acme/db/schema";
 
 import { runFormAgent } from "../lib/run-form-agent";
 import { protectedProcedure } from "../trpc";
@@ -18,6 +18,19 @@ import { protectedProcedure } from "../trpc";
  * For live view in the app, use the SSE endpoint /api/agent/fill-form-stream.
  */
 export const agentRouter = {
+  listSessions: protectedProcedure.query(async ({ ctx }) => {
+    return ctx.db.query.sessions.findMany({
+      where: eq(sessions.userId, ctx.session.user.id),
+      columns: {
+        id: true,
+        formUrl: true,
+        browserbaseSessionId: true,
+        createdAt: true,
+      },
+      orderBy: [desc(sessions.createdAt)],
+    });
+  }),
+
   fillForm: protectedProcedure
     .input(z.object({ formUrl: z.string().trim().url() }))
     .mutation(async ({ ctx, input }) => {
