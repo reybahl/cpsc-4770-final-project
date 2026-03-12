@@ -1,4 +1,5 @@
 import { ContextInputForm } from "./_components/context-input-form";
+import { FormFillSection } from "./_components/form-fill-section";
 
 export default function ContextPage() {
   return (
@@ -14,6 +15,7 @@ export default function ContextPage() {
       </header>
 
       <ContextInputForm />
+      <FormFillSection />
     </main>
   );
 }
