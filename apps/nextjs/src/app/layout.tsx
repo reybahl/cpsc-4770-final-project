@@ -2,9 +2,15 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
 import { cn } from "@acme/ui";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@acme/ui/sidebar";
 import { ThemeProvider, ThemeToggle } from "@acme/ui/theme";
 import { Toaster } from "@acme/ui/toast";
 
+import { AppSidebar } from "~/app/_components/app-sidebar";
 import { env } from "~/env";
 import { TRPCReactProvider } from "~/trpc/react";
 
@@ -58,7 +64,17 @@ export default function RootLayout(props: { children: React.ReactNode }) {
         )}
       >
         <ThemeProvider>
-          <TRPCReactProvider>{props.children}</TRPCReactProvider>
+          <TRPCReactProvider>
+            <SidebarProvider>
+              <AppSidebar />
+              <SidebarInset>
+                <header className="flex h-14 shrink-0 items-center gap-2 border-b px-4">
+                  <SidebarTrigger />
+                </header>
+                {props.children}
+              </SidebarInset>
+            </SidebarProvider>
+          </TRPCReactProvider>
           <div className="absolute right-4 bottom-4">
             <ThemeToggle />
           </div>
