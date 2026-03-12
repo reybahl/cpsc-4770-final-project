@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { Loader2 } from "lucide-react";
 
+import { cn } from "@acme/ui";
 import { Button } from "@acme/ui/button";
 import {
   Field,
@@ -124,59 +126,88 @@ export function FormFillSection() {
 
   const showLiveSession = liveViewUrl ?? (isPending && !liveViewUnavailable);
 
-  return (
-    <section className="mx-auto mt-12 w-full max-w-2xl space-y-6">
-      {showLiveSession && (
-        <div className="bg-muted/50 rounded-lg border p-4">
-          <h3 className="text-foreground mb-3 text-sm font-medium">
-            Live session {liveViewUrl ? "" : "(connecting…)"}
-          </h3>
-          {liveViewUrl ? (
-            <div className="overflow-hidden rounded-md border">
-              <iframe
-                src={liveViewUrl}
-                className="h-[480px] w-full"
-                sandbox="allow-same-origin allow-scripts"
-                allow="clipboard-read; clipboard-write"
-                title="Browserbase session"
+  const formContent = (
+    <div className="space-y-6">
+      <h2 className="text-foreground text-xl font-medium">Fill a form</h2>
+      <form onSubmit={handleFill} className="flex flex-col gap-4">
+        <FieldGroup>
+          <Field>
+            <FieldContent>
+              <FieldLabel htmlFor="form-url">Form URL</FieldLabel>
+              <FieldDescription>
+                Enter the URL of a form. The agent will navigate to it and fill
+                it using your saved context.
+              </FieldDescription>
+              <Input
+                id="form-url"
+                type="url"
+                placeholder="https://example.com/form"
+                value={formUrl}
+                onChange={(e) => setFormUrl(e.target.value)}
+                disabled={isPending}
               />
+            </FieldContent>
+          </Field>
+        </FieldGroup>
+        <Button type="submit" disabled={!formUrl.trim() || isPending}>
+          {isPending ? "Filling…" : "Fill form"}
+        </Button>
+      </form>
+    </div>
+  );
+
+  return (
+    <section
+      className={cn(
+        "mt-12 w-full transition-all duration-300 ease-in-out",
+        !showLiveSession && "mx-auto max-w-2xl",
+        showLiveSession && "-mx-4 sm:-mx-6 lg:-mx-8",
+      )}
+    >
+      <div
+        className={cn(
+          "flex flex-col transition-all duration-300 ease-in-out",
+          showLiveSession &&
+            "min-h-[calc(100vh-14rem)] flex-col gap-6 lg:flex-row",
+        )}
+      >
+        <div
+          className={cn(
+            "min-w-0 flex-1 transition-all duration-300",
+            showLiveSession && "lg:min-w-0 lg:flex-[0_0_50%]",
+            showLiveSession && "pl-4 sm:pl-6 lg:pl-8",
+          )}
+        >
+          {formContent}
+        </div>
+
+        <div
+          className={cn(
+            "overflow-hidden transition-all duration-300 ease-in-out",
+            showLiveSession
+              ? "flex min-h-[50vh] min-w-0 flex-1 flex-col items-stretch lg:fixed lg:top-14 lg:right-0 lg:bottom-0 lg:z-10 lg:min-h-0 lg:w-1/2"
+              : "min-w-0 flex-[0_0_0]",
+          )}
+        >
+          {showLiveSession && (
+            <div className="relative inset-0 flex h-full min-h-0 w-full flex-1 flex-col">
+              {liveViewUrl ? (
+                <iframe
+                  src={liveViewUrl}
+                  className="absolute inset-0 h-full w-full border-0"
+                  sandbox="allow-same-origin allow-scripts"
+                  allow="clipboard-read; clipboard-write"
+                  title="Browserbase session"
+                />
+              ) : (
+                <div className="text-muted-foreground absolute inset-0 flex flex-col items-center justify-center gap-3">
+                  <Loader2 className="h-8 w-8 animate-spin" />
+                  <p className="text-sm">Starting browser session…</p>
+                </div>
+              )}
             </div>
-          ) : (
-            <p className="text-muted-foreground text-sm">
-              Starting browser session… Live view will appear here.
-            </p>
           )}
         </div>
-      )}
-
-      <div>
-        <h2 className="text-foreground mb-4 text-xl font-medium">
-          Fill a form
-        </h2>
-        <form onSubmit={handleFill} className="flex flex-col gap-4">
-          <FieldGroup>
-            <Field>
-              <FieldContent>
-                <FieldLabel htmlFor="form-url">Form URL</FieldLabel>
-                <FieldDescription>
-                  Enter the URL of a form. The agent will navigate to it and
-                  fill it using your saved context.
-                </FieldDescription>
-                <Input
-                  id="form-url"
-                  type="url"
-                  placeholder="https://example.com/form"
-                  value={formUrl}
-                  onChange={(e) => setFormUrl(e.target.value)}
-                  disabled={isPending}
-                />
-              </FieldContent>
-            </Field>
-          </FieldGroup>
-          <Button type="submit" disabled={!formUrl.trim() || isPending}>
-            {isPending ? "Filling…" : "Fill form"}
-          </Button>
-        </form>
       </div>
     </section>
   );
