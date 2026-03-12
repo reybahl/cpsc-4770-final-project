@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ExternalLink, Loader2 } from "lucide-react";
 
+import type { FilledField } from "@acme/api";
 import { cn } from "@acme/ui";
 import { Button } from "@acme/ui/button";
 import {
@@ -17,16 +18,121 @@ import { Input } from "@acme/ui/input";
 import { toast } from "@acme/ui/toast";
 
 import { useTRPC } from "~/trpc/react";
+import { ReviewSheet } from "./review-sheet";
+
+type FillResult =
+  | { success: boolean; submitted: boolean; finalUrl: string }
+  | {
+      awaitingReview: true;
+      filledFields: FilledField[];
+      confidenceSummary: { high: number; medium: number; low: number };
+      formUrl: string;
+    };
 
 async function runFillFormStream(
   formUrl: string,
-  onLiveViewUrl: (url: string) => void,
-  onLiveViewAvailable?: (available: boolean) => void,
-): Promise<{ success: boolean; submitted: boolean; finalUrl: string }> {
+  callbacks: {
+    onLiveViewUrl: (url: string) => void;
+    onLiveViewAvailable?: (available: boolean) => void;
+    onPhase?: (phase: string) => void;
+  },
+): Promise<FillResult> {
   const res = await fetch("/api/agent/fill-form-stream", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ formUrl }),
+    credentials: "include",
+  });
+  if (!res.ok) {
+    const err = await (res.json() as Promise<{ error?: string }>).catch(
+      (): { error?: string } => ({}),
+    );
+    throw new Error(err.error ?? `Request failed: ${res.status}`);
+  }
+  const reader = res.body?.getReader();
+  if (!reader) throw new Error("No response body");
+
+  const decoder = new TextDecoder();
+  let buffer = "";
+  let result: FillResult | null = null;
+
+  const dataRegex = /^data:\s*(.+)$/m;
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buffer += decoder.decode(value, { stream: true });
+    const lines = buffer.split("\n\n");
+    buffer = lines.pop() ?? "";
+    for (const chunk of lines) {
+      const match = dataRegex.exec(chunk);
+      const jsonStr = match?.[1];
+      if (!jsonStr) continue;
+      try {
+        const data = JSON.parse(jsonStr) as {
+          liveViewUrl?: string;
+          liveViewAvailable?: boolean;
+          phase?: string;
+          filledFields?: FilledField[];
+          confidenceSummary?: { high: number; medium: number; low: number };
+          awaitingReview?: boolean;
+          formUrl?: string;
+          success?: boolean;
+          submitted?: boolean;
+          finalUrl?: string;
+          error?: string;
+        };
+        if (data.error) throw new Error(data.error);
+        if (data.liveViewAvailable === false)
+          callbacks.onLiveViewAvailable?.(false);
+        const url = data.liveViewUrl;
+        if (typeof url === "string") callbacks.onLiveViewUrl(url);
+        if (typeof data.phase === "string") callbacks.onPhase?.(data.phase);
+        if (
+          data.awaitingReview === true &&
+          Array.isArray(data.filledFields) &&
+          data.confidenceSummary &&
+          typeof data.formUrl === "string"
+        ) {
+          result = {
+            awaitingReview: true,
+            filledFields: data.filledFields,
+            confidenceSummary: data.confidenceSummary,
+            formUrl: data.formUrl,
+          };
+        } else if (
+          typeof data.success === "boolean" &&
+          typeof data.submitted === "boolean" &&
+          typeof data.finalUrl === "string"
+        ) {
+          result = {
+            success: data.success,
+            submitted: data.submitted,
+            finalUrl: data.finalUrl,
+          };
+        }
+      } catch (e) {
+        if (e instanceof SyntaxError) continue;
+        if (e instanceof Error) throw e;
+      }
+    }
+  }
+
+  if (!result) throw new Error("No result from agent");
+  return result;
+}
+
+async function runSubmitFormStream(
+  formUrl: string,
+  prefilledData: FilledField[],
+  callbacks: {
+    onLiveViewUrl: (url: string) => void;
+    onLiveViewAvailable?: (available: boolean) => void;
+  },
+): Promise<{ success: boolean; submitted: boolean; finalUrl: string }> {
+  const res = await fetch("/api/agent/submit-form-stream", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ formUrl, prefilledData }),
     credentials: "include",
   });
   if (!res.ok) {
@@ -67,9 +173,10 @@ async function runFillFormStream(
           error?: string;
         };
         if (data.error) throw new Error(data.error);
-        if (data.liveViewAvailable === false) onLiveViewAvailable?.(false);
-        const url = data.liveViewUrl;
-        if (typeof url === "string") onLiveViewUrl(url);
+        if (data.liveViewAvailable === false)
+          callbacks.onLiveViewAvailable?.(false);
+        if (typeof data.liveViewUrl === "string")
+          callbacks.onLiveViewUrl(data.liveViewUrl);
         if (
           typeof data.success === "boolean" &&
           typeof data.submitted === "boolean" &&
@@ -88,7 +195,7 @@ async function runFillFormStream(
     }
   }
 
-  if (!result) throw new Error("No result from agent");
+  if (!result) throw new Error("No result from submit");
   return result;
 }
 
@@ -102,8 +209,16 @@ export function FormFillSection() {
   );
   const [formUrl, setFormUrl] = useState("");
   const [isPending, setIsPending] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [liveViewUrl, setLiveViewUrl] = useState<string | null>(null);
   const [liveViewUnavailable, setLiveViewUnavailable] = useState(false);
+
+  const [reviewState, setReviewState] = useState<{
+    filledFields: FilledField[];
+    confidenceSummary: { high: number; medium: number; low: number };
+    formUrl: string;
+  } | null>(null);
+  const reviewOpen = reviewState !== null;
 
   const handleFill = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -112,26 +227,35 @@ export function FormFillSection() {
     setIsPending(true);
     setLiveViewUrl(null);
     setLiveViewUnavailable(false);
+    setReviewState(null);
     try {
-      const data = await runFillFormStream(
-        url,
-        (u) => setLiveViewUrl(u),
-        (available) => {
+      const data = await runFillFormStream(url, {
+        onLiveViewUrl: (u) => setLiveViewUrl(u),
+        onLiveViewAvailable: (available) => {
           if (!available) setLiveViewUnavailable(true);
         },
-      );
-      toast.success(
-        data.submitted
-          ? "Form filled and submitted"
-          : "Form filled (submit may have failed)",
-      );
-      if (data.success) {
-        setFormUrl("");
-        void queryClient.invalidateQueries({
-          queryKey: trpc.agent.listSessions.queryOptions().queryKey,
+      });
+      if ("awaitingReview" in data) {
+        setReviewState({
+          filledFields: data.filledFields,
+          confidenceSummary: data.confidenceSummary,
+          formUrl: data.formUrl,
         });
+        toast.success("Form filled. Review and approve before submitting.");
+      } else {
+        toast.success(
+          data.submitted
+            ? "Form filled and submitted"
+            : "Form filled (submit may have failed)",
+        );
+        if (data.success) {
+          setFormUrl("");
+          void queryClient.invalidateQueries({
+            queryKey: trpc.agent.listSessions.queryOptions().queryKey,
+          });
+        }
+        setLiveViewUrl(null);
       }
-      setLiveViewUrl(null);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Failed to fill form");
     } finally {
@@ -139,7 +263,46 @@ export function FormFillSection() {
     }
   };
 
-  const showLiveSession = liveViewUrl ?? (isPending && !liveViewUnavailable);
+  const handleApprove = async (editedFields: FilledField[]) => {
+    if (!reviewState || isSubmitting) return;
+    const formUrlToSubmit = reviewState.formUrl;
+    const fieldsToSubmit = editedFields;
+    setReviewState(null); // close sheet immediately, show browser only
+    setIsSubmitting(true);
+    setLiveViewUrl(null);
+    setLiveViewUnavailable(false);
+    try {
+      const data = await runSubmitFormStream(formUrlToSubmit, fieldsToSubmit, {
+        onLiveViewUrl: (u) => setLiveViewUrl(u),
+        onLiveViewAvailable: (av) => {
+          if (!av) setLiveViewUnavailable(true);
+        },
+      });
+      toast.success(
+        data.submitted ? "Form submitted successfully" : "Submit completed",
+      );
+      if (data.success) {
+        setFormUrl("");
+        setReviewState(null);
+        void queryClient.invalidateQueries({
+          queryKey: trpc.agent.listSessions.queryOptions().queryKey,
+        });
+      }
+      setLiveViewUrl(null);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to submit form");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleCancelReview = () => {
+    setReviewState(null);
+  };
+
+  const showLiveSession =
+    liveViewUrl != null ||
+    ((isPending || isSubmitting) && !liveViewUnavailable);
 
   const formContent = (
     <div className="space-y-6">
@@ -150,8 +313,8 @@ export function FormFillSection() {
             <FieldContent>
               <FieldLabel htmlFor="form-url">Form URL</FieldLabel>
               <FieldDescription>
-                Enter the URL of a form. The agent will navigate to it and fill
-                it using your saved context.
+                Enter the URL of a form. The agent will fill it using your saved
+                context, then let you review before submitting.
               </FieldDescription>
               <Input
                 id="form-url"
@@ -159,13 +322,16 @@ export function FormFillSection() {
                 placeholder="https://example.com/form"
                 value={formUrl}
                 onChange={(e) => setFormUrl(e.target.value)}
-                disabled={isPending}
+                disabled={isPending || isSubmitting}
               />
             </FieldContent>
           </Field>
         </FieldGroup>
-        <Button type="submit" disabled={!formUrl.trim() || isPending}>
-          {isPending ? "Filling…" : "Fill form"}
+        <Button
+          type="submit"
+          disabled={!formUrl.trim() || isPending || isSubmitting}
+        >
+          {isPending ? "Filling…" : isSubmitting ? "Submitting…" : "Fill form"}
         </Button>
       </form>
 
@@ -210,58 +376,78 @@ export function FormFillSection() {
   );
 
   return (
-    <section
-      className={cn(
-        "mt-12 w-full transition-all duration-300 ease-in-out",
-        !showLiveSession && "mx-auto max-w-2xl",
-        showLiveSession && "-mx-4 sm:-mx-6 lg:-mx-8",
-      )}
-    >
-      <div
+    <>
+      <section
         className={cn(
-          "flex flex-col transition-all duration-300 ease-in-out",
-          showLiveSession &&
-            "min-h-[calc(100vh-14rem)] flex-col gap-6 lg:flex-row",
+          "mt-12 w-full transition-all duration-300 ease-in-out",
+          !showLiveSession && "mx-auto max-w-2xl",
+          showLiveSession && "-mx-4 sm:-mx-6 lg:-mx-8",
         )}
       >
         <div
           className={cn(
-            "min-w-0 flex-1 transition-all duration-300",
-            showLiveSession && "lg:min-w-0 lg:flex-[0_0_50%]",
-            showLiveSession && "pl-4 sm:pl-6 lg:pl-8",
+            "flex flex-col transition-all duration-300 ease-in-out",
+            showLiveSession &&
+              "min-h-[calc(100vh-14rem)] flex-col gap-6 lg:flex-row",
           )}
         >
-          {formContent}
-        </div>
+          <div
+            className={cn(
+              "min-w-0 flex-1 transition-all duration-300",
+              showLiveSession && "lg:min-w-0 lg:flex-[0_0_50%]",
+              showLiveSession && "pl-4 sm:pl-6 lg:pl-8",
+            )}
+          >
+            {formContent}
+          </div>
 
-        <div
-          className={cn(
-            "overflow-hidden transition-all duration-300 ease-in-out",
-            showLiveSession
-              ? "flex min-h-[50vh] min-w-0 flex-1 flex-col items-stretch lg:fixed lg:top-14 lg:right-0 lg:bottom-0 lg:z-10 lg:min-h-0 lg:w-1/2"
-              : "min-w-0 flex-[0_0_0]",
-          )}
-        >
-          {showLiveSession && (
-            <div className="relative inset-0 flex h-full min-h-0 w-full flex-1 flex-col">
-              {liveViewUrl ? (
-                <iframe
-                  src={liveViewUrl}
-                  className="absolute inset-0 h-full w-full border-0"
-                  sandbox="allow-same-origin allow-scripts"
-                  allow="clipboard-read; clipboard-write"
-                  title="Browserbase session"
-                />
-              ) : (
-                <div className="text-muted-foreground absolute inset-0 flex flex-col items-center justify-center gap-3">
-                  <Loader2 className="h-8 w-8 animate-spin" />
-                  <p className="text-sm">Starting browser session…</p>
-                </div>
-              )}
-            </div>
-          )}
+          <div
+            className={cn(
+              "overflow-hidden transition-all duration-300 ease-in-out",
+              showLiveSession
+                ? "flex min-h-[50vh] min-w-0 flex-1 flex-col items-stretch lg:fixed lg:top-14 lg:right-0 lg:bottom-0 lg:z-10 lg:min-h-0 lg:w-1/2"
+                : "min-w-0 flex-[0_0_0]",
+            )}
+          >
+            {showLiveSession && (
+              <div className="relative inset-0 flex h-full min-h-0 w-full flex-1 flex-col">
+                {liveViewUrl ? (
+                  <iframe
+                    src={liveViewUrl}
+                    className="absolute inset-0 h-full w-full border-0"
+                    sandbox="allow-same-origin allow-scripts"
+                    allow="clipboard-read; clipboard-write"
+                    title="Browserbase session"
+                  />
+                ) : (
+                  <div className="text-muted-foreground absolute inset-0 flex flex-col items-center justify-center gap-3">
+                    <Loader2 className="h-8 w-8 animate-spin" />
+                    <p className="text-sm">
+                      {isSubmitting
+                        ? "Submitting…"
+                        : "Starting browser session…"}
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      {reviewState && (
+        <ReviewSheet
+          open={reviewOpen}
+          onOpenChange={(open) => {
+            if (!open) handleCancelReview();
+          }}
+          filledFields={reviewState.filledFields}
+          confidenceSummary={reviewState.confidenceSummary}
+          onApprove={handleApprove}
+          onCancel={handleCancelReview}
+          isSubmitting={isSubmitting}
+        />
+      )}
+    </>
   );
 }

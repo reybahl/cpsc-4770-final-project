@@ -1,3 +1,10 @@
+import type { FilledField } from "./form-agent-types";
+import { extractFormFields } from "./extract-form-fields";
+import {
+  computeConfidenceSummary,
+  verifyFilledFields,
+} from "./verify-filled-fields";
+
 const useBrowserbase =
   typeof process !== "undefined" &&
   !!process.env.BROWSERBASE_API_KEY?.trim() &&
@@ -6,21 +13,59 @@ const useBrowserbase =
 export type FormAgentEvent =
   | { liveViewUrl: string }
   | { liveViewAvailable: false }
+  | { phase: "extracting" }
+  | { phase: "filling" }
+  | { phase: "verifying" }
+  | {
+      phase: "filled";
+      filledFields: FilledField[];
+      confidenceSummary: { high: number; medium: number; low: number };
+      awaitingReview: true;
+      formUrl: string;
+    }
   | {
       success: boolean;
       submitted: boolean;
       finalUrl: string;
       browserbaseSessionId?: string;
-    };
+    }
+  | { error: string };
+
+export type FormAgentMode = "fill-and-verify" | "submit";
+
+export interface FormAgentOptions {
+  mode?: FormAgentMode;
+  prefilledData?: FilledField[];
+}
+
+const FILL_ONLY_INSTRUCTION = `Fill every visible form field with the appropriate value from the user's information.
+IMPORTANT: Do NOT click Submit, Submit button, or any final submission button. Stop as soon as all fields are filled.
+Leave the form ready for a human to review.`;
+
+const SUBMIT_INSTRUCTION = (fields: FilledField[]) => {
+  const mapping = fields
+    .map((f) => `- ${f.label} (name="${f.name}"): "${f.value}"`)
+    .join("\n");
+  return `Fill the form with these EXACT values for each field. Do not change or interpret them.
+
+Fields and values:
+${mapping}
+
+Fill each field with the exact value shown. When all are filled, click the Submit button (or equivalent) to submit the form.`;
+};
 
 /**
- * Runs the form-filling agent. Yields liveViewUrl (Browserbase only) before
- * the agent runs, then yields the result when done.
+ * Runs the form-filling agent. Supports two modes:
+ * - fill-and-verify: Fills form (no submit), extracts values, verifies with LLM, yields filledFields for HITL review
+ * - submit: Navigates to form, fills with prefilledData (from approval), submits
  */
 export async function* runFormAgent(
   formUrl: string,
   userContext: string,
+  options: FormAgentOptions = {},
 ): AsyncGenerator<FormAgentEvent, void, unknown> {
+  const { mode = "fill-and-verify", prefilledData = [] } = options;
+
   const { Stagehand } = await import("@browserbasehq/stagehand");
 
   const stagehand = useBrowserbase
@@ -60,7 +105,6 @@ export async function* runFormAgent(
         stagehand.browserbaseSessionID ??
         (stagehand as { sessionId?: string }).sessionId;
 
-      // Try browserbaseDebugURL first (Stagehand may expose embeddable URL directly)
       const debugUrl = (stagehand as { browserbaseDebugURL?: string })
         .browserbaseDebugURL;
       if (typeof debugUrl === "string" && debugUrl.startsWith("https://")) {
@@ -115,21 +159,59 @@ export async function* runFormAgent(
     });
     await page.waitForTimeout(2000);
 
+    if (mode === "submit") {
+      if (prefilledData.length === 0) {
+        yield { error: "No prefilled data provided for submit mode" };
+        return;
+      }
+      const agent = stagehand.agent({
+        systemPrompt:
+          "You are a form-filling assistant. Fill each field with the EXACT value provided. Do not modify or infer. Then click Submit.",
+      });
+      await agent.execute({
+        instruction: SUBMIT_INSTRUCTION(prefilledData),
+        maxSteps: 50,
+      });
+      yield {
+        success: true,
+        submitted: true,
+        finalUrl: page.url(),
+        ...(browserbaseSessionId && { browserbaseSessionId }),
+      };
+      return;
+    }
+
+    // fill-and-verify mode
+    yield { phase: "filling" };
+
     const agent = stagehand.agent({
       systemPrompt:
-        "You are a form-filling assistant. Fill each form field with the appropriate value from the user's information. When all fields are filled, click the Submit button.",
+        "You are a form-filling assistant. Fill each form field with the appropriate value from the user's information. Do NOT click Submit or any submit button—stop when all fields are filled.",
     });
 
-    const result = await agent.execute({
-      instruction: `Fill out this form completely and submit it. Use the following information for each field:\n\n${userContext}\n\nWhen done, click Submit.`,
-      maxSteps: 30,
+    await agent.execute({
+      instruction: `${FILL_ONLY_INSTRUCTION}\n\nUser information:\n\n${userContext}`,
+      maxSteps: 40,
     });
+
+    await page.waitForTimeout(1000);
+
+    yield { phase: "verifying" };
+
+    const rawFields = await extractFormFields(page);
+    const filledFields = await verifyFilledFields(rawFields, userContext);
+    const confidenceSummary = computeConfidenceSummary(filledFields);
 
     yield {
-      success: result.success,
-      submitted: result.success,
-      finalUrl: page.url(),
-      ...(browserbaseSessionId && { browserbaseSessionId }),
+      phase: "filled",
+      filledFields,
+      confidenceSummary,
+      awaitingReview: true,
+      formUrl,
+    };
+  } catch (err) {
+    yield {
+      error: err instanceof Error ? err.message : "Unknown error",
     };
   } finally {
     await stagehand.close();
