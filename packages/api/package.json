@@ -22,6 +22,7 @@
     "@acme/db": "workspace:*",
     "@acme/validators": "workspace:*",
     "@ai-sdk/openai": "^3.0.41",
+    "@browserbasehq/stagehand": "^3.1.0",
     "@supabase/supabase-js": "^2.99.0",
     "@trpc/server": "catalog:",
     "ai": "^6.0.116",

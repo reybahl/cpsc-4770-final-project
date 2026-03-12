@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 
 import { Button } from "@acme/ui/button";
 import {
@@ -13,40 +14,33 @@ import {
 import { Input } from "@acme/ui/input";
 import { toast } from "@acme/ui/toast";
 
-export function FormFillSection() {
-  const [formUrl, setFormUrl] = useState("");
-  const [isPending, setIsPending] = useState(false);
+import { useTRPC } from "~/trpc/react";
 
-  const handleFill = async (e: React.FormEvent) => {
+export function FormFillSection() {
+  const trpc = useTRPC();
+  const [formUrl, setFormUrl] = useState("");
+  const fillFormMutation = useMutation(trpc.agent.fillForm.mutationOptions());
+
+  const handleFill = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formUrl.trim() || isPending) return;
-    setIsPending(true);
-    try {
-      const res = await fetch("/api/agent/fill-form", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ formUrl: formUrl.trim() }),
-        credentials: "include",
-      });
-      const data = (await res.json()) as {
-        success?: boolean;
-        submitted?: boolean;
-        error?: string;
-      };
-      if (!res.ok) {
-        throw new Error(data.error ?? "Failed to fill form");
-      }
-      toast.success(
-        data.submitted
-          ? "Form filled and submitted"
-          : "Form filled (submit may have failed)",
-      );
-      if (data.success) setFormUrl("");
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to fill form");
-    } finally {
-      setIsPending(false);
-    }
+    const url = formUrl.trim();
+    if (!url || fillFormMutation.isPending) return;
+    fillFormMutation.mutate(
+      { formUrl: url },
+      {
+        onSuccess: (data) => {
+          toast.success(
+            data.submitted
+              ? "Form filled and submitted"
+              : "Form filled (submit may have failed)",
+          );
+          if (data.success) setFormUrl("");
+        },
+        onError: (err) => {
+          toast.error(err.message);
+        },
+      },
+    );
   };
 
   return (
@@ -67,13 +61,16 @@ export function FormFillSection() {
                 placeholder="https://example.com/form"
                 value={formUrl}
                 onChange={(e) => setFormUrl(e.target.value)}
-                disabled={isPending}
+                disabled={fillFormMutation.isPending}
               />
             </FieldContent>
           </Field>
         </FieldGroup>
-        <Button type="submit" disabled={!formUrl.trim() || isPending}>
-          {isPending ? "Filling…" : "Fill form"}
+        <Button
+          type="submit"
+          disabled={!formUrl.trim() || fillFormMutation.isPending}
+        >
+          {fillFormMutation.isPending ? "Filling…" : "Fill form"}
         </Button>
       </form>
     </section>

@@ -225,6 +225,9 @@ importers:
       '@ai-sdk/openai':
         specifier: ^3.0.41
         version: 3.0.41(zod@4.1.12)
+      '@browserbasehq/stagehand':
+        specifier: ^3.1.0
+        version: 3.1.0(@cfworker/json-schema@4.1.1)(@opentelemetry/api@1.9.0)(deepmerge@4.3.1)(utf-8-validate@6.0.4)(zod@4.1.12)
       '@supabase/supabase-js':
         specifier: ^2.99.0
         version: 2.99.0(bufferutil@4.1.0)(utf-8-validate@6.0.4)
@@ -3494,10 +3497,6 @@ packages:
 
   buffer@5.7.1:
     resolution: {integrity: sha512-EHcyIPBQ4BSGlvjB16k5KgAJ27CIsHY/2JBmCRReo48y9rQ3MaUzWX3KVlBa4U7MyX02HdVj0K7C3WaB3ju7FQ==}
-
-  bufferutil@4.0.8:
-    resolution: {integrity: sha512-4T53u4PdgsXqKaIctwF8ifXlRTTmEPJ8iEPWFdGZvcf7sbwYo6FKFEX9eNNAnzFZ7EzJAQ3CJeOtCRA4rDp7Pw==}
-    engines: {node: '>=6.14.2'}
 
   bufferutil@4.1.0:
     resolution: {integrity: sha512-ZMANVnAixE6AWWnPzlW2KpUrxhm9woycYvPOo67jWHyFowASTEd9s+QN1EIMsSDtwhIxN4sWE1jotpuDUIgyIw==}
@@ -9928,8 +9927,8 @@ snapshots:
   '@vercel/postgres@0.10.0(utf-8-validate@6.0.4)':
     dependencies:
       '@neondatabase/serverless': 0.9.5
-      bufferutil: 4.0.8
-      ws: 8.18.3(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      bufferutil: 4.1.0
+      ws: 8.18.3(bufferutil@4.1.0)(utf-8-validate@6.0.4)
     transitivePeerDependencies:
       - utf-8-validate
     optional: true
@@ -10360,11 +10359,6 @@ snapshots:
     dependencies:
       base64-js: 1.5.1
       ieee754: 1.2.1
-
-  bufferutil@4.0.8:
-    dependencies:
-      node-gyp-build: 4.8.4
-    optional: true
 
   bufferutil@4.1.0:
     dependencies:
@@ -14220,12 +14214,6 @@ snapshots:
       strip-ansi: 7.2.0
 
   wrappy@1.0.2: {}
-
-  ws@8.18.3(bufferutil@4.0.8)(utf-8-validate@6.0.4):
-    optionalDependencies:
-      bufferutil: 4.0.8
-      utf-8-validate: 6.0.4
-    optional: true
 
   ws@8.18.3(bufferutil@4.1.0)(utf-8-validate@6.0.4):
     optionalDependencies:
