@@ -13,6 +13,7 @@
     "./separator": "./src/separator.tsx",
     "./theme": "./src/theme.tsx",
     "./toast": "./src/toast.tsx",
+    "./sheet": "./src/sheet.tsx",
     "./sidebar": "./src/sidebar.tsx"
   },
   "license": "MIT",
