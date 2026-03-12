@@ -6,7 +6,6 @@ import { db } from "@acme/db/client";
 import { context } from "@acme/db/schema";
 
 import { getSession } from "~/auth/server";
-import { env } from "~/env";
 
 /**
  * Agent-based form filling using Stagehand. The LLM drives the entire
@@ -35,7 +34,7 @@ export async function POST(req: Request) {
     where: eq(context.userId, session.user.id),
     columns: { context: true },
   });
-  const userContext = row?.context?.trim();
+  const userContext = row?.context.trim();
   if (!userContext) {
     return NextResponse.json(
       { error: "No personal context saved. Add context first." },
@@ -74,8 +73,8 @@ export async function POST(req: Request) {
     const finalUrl = page.url();
 
     return NextResponse.json({
-      success: result?.success ?? true,
-      submitted: result?.success ?? true,
+      success: result.success,
+      submitted: result.success,
       finalUrl,
     });
   } finally {
