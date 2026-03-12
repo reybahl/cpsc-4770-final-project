@@ -29,4 +29,18 @@ export const CreateContextSchema = createInsertSchema(context, {
   updatedAt: true,
 });
 
+export const sessions = pgTable("sessions", (t) => ({
+  id: t.uuid().notNull().primaryKey().defaultRandom(),
+  userId: t
+    .text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  browserbaseSessionId: t.text("browserbase_session_id").notNull(),
+  formUrl: t.text("form_url").notNull(),
+  createdAt: t
+    .timestamp({ mode: "string", withTimezone: true })
+    .defaultNow()
+    .notNull(),
+}));
+
 export * from "./auth-schema";

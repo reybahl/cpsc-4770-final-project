@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Loader2 } from "lucide-react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { ExternalLink, Loader2 } from "lucide-react";
 
 import { cn } from "@acme/ui";
 import { Button } from "@acme/ui/button";
@@ -14,6 +15,8 @@ import {
 } from "@acme/ui/field";
 import { Input } from "@acme/ui/input";
 import { toast } from "@acme/ui/toast";
+
+import { useTRPC } from "~/trpc/react";
 
 async function runFillFormStream(
   formUrl: string,
@@ -89,7 +92,14 @@ async function runFillFormStream(
   return result;
 }
 
+const REPLAY_BASE = "https://browserbase.com/sessions";
+
 export function FormFillSection() {
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+  const { data: pastSessions } = useQuery(
+    trpc.agent.listSessions.queryOptions(),
+  );
   const [formUrl, setFormUrl] = useState("");
   const [isPending, setIsPending] = useState(false);
   const [liveViewUrl, setLiveViewUrl] = useState<string | null>(null);
@@ -115,7 +125,12 @@ export function FormFillSection() {
           ? "Form filled and submitted"
           : "Form filled (submit may have failed)",
       );
-      if (data.success) setFormUrl("");
+      if (data.success) {
+        setFormUrl("");
+        void queryClient.invalidateQueries({
+          queryKey: trpc.agent.listSessions.queryOptions().queryKey,
+        });
+      }
       setLiveViewUrl(null);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Failed to fill form");
@@ -153,6 +168,44 @@ export function FormFillSection() {
           {isPending ? "Filling…" : "Fill form"}
         </Button>
       </form>
+
+      {pastSessions && pastSessions.length > 0 && (
+        <div className="space-y-3">
+          <h3 className="text-foreground text-sm font-medium">Past sessions</h3>
+          <ul className="divide-border divide-y rounded-md border">
+            {pastSessions.map((s) => (
+              <li
+                key={s.id}
+                className="flex items-center justify-between gap-3 px-3 py-2"
+              >
+                <div className="min-w-0 flex-1">
+                  <a
+                    href={s.formUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-muted-foreground hover:text-foreground truncate text-sm underline-offset-4 hover:underline"
+                  >
+                    {s.formUrl}
+                  </a>
+                  <p className="text-muted-foreground mt-0.5 text-xs">
+                    {s.createdAt
+                      ? new Date(s.createdAt).toLocaleDateString()
+                      : "—"}
+                  </p>
+                </div>
+                <a
+                  href={`${REPLAY_BASE}/${s.browserbaseSessionId}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground hover:text-foreground shrink-0 text-sm underline-offset-4 hover:underline"
+                >
+                  Replay <ExternalLink className="ml-0.5 inline h-3 w-3" />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 
