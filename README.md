@@ -169,7 +169,7 @@ FormAgent is a full-stack web application that automatically fills out web forms
 
 - **Frontend**: Next.js (App Router) — handles all UI: context input, form URL entry, live action log, and the confirmation/review screen
 - **API layer**: tRPC — type-safe communication between frontend and backend, all TypeScript
-- **Browser agent**: Stagehand (`@browserbasehq/stagehand`) — TypeScript-native LLM browser automation built on Playwright; provides `extract()` to read form structure, `act()` to fill fields, and `observe()` for verification
+- **Browser agent**: Stagehand (`@browserbasehq/stagehand`) — TypeScript-native LLM browser automation built on Playwright; provides `extract()` to read form structure, `act()` to fill fields, and `observe()` for verification. Uses **Browserbase** (cloud) when `BROWSERBASE_API_KEY` and `BROWSERBASE_PROJECT_ID` are set; otherwise falls back to **local Chromium**
 - **LLM**: OpenAI GPT-4o / GPT-5 via the OpenAI Node.js SDK — used at three distinct points: context parsing, field mapping during the agent loop, and self-verification
 - **PDF parsing**: `pdf-parse` or `pdfjs-dist` — extracts raw text from uploaded résumé files before the LLM ingestion step
 - **Session auth**: Playwright `storageState` — user exports cookies from their own browser; backend injects them into the Playwright context so the agent starts already authenticated

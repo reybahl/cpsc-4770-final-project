@@ -19,6 +19,8 @@ export const env = createEnv({
     POSTGRES_URL: z.url(),
     SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
     OPENAI_API_KEY: z.string().min(1),
+    BROWSERBASE_API_KEY: z.string().optional(),
+    BROWSERBASE_PROJECT_ID: z.string().optional(),
   },
 
   /**

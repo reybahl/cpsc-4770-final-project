@@ -18,4 +18,5 @@ type RouterOutputs = inferRouterOutputs<AppRouter>;
 
 export { type AppRouter, appRouter } from "./root";
 export { createTRPCContext } from "./trpc";
+export { runFormAgent, type FormAgentEvent } from "./lib/run-form-agent";
 export type { RouterInputs, RouterOutputs };

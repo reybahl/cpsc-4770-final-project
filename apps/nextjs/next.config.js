@@ -7,6 +7,15 @@ await jiti.import("./src/env");
 
 /** @type {import("next").NextConfig} */
 const config = {
+  /** Don't bundle Playwright/Stagehand and their deps; they spawn workers that need correct module paths */
+  serverExternalPackages: [
+    "playwright",
+    "playwright-core",
+    "@browserbasehq/stagehand",
+    "pino",
+    "thread-stream",
+  ],
+
   /** Enables hot reloading for local packages without a build step */
   transpilePackages: [
     "@acme/api",
