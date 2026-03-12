@@ -71,7 +71,7 @@ export async function* runFormAgent(
               sessionId,
             )) as unknown as Record<string, unknown>;
             const pages = debug.pages as
-              | Array<{ debuggerFullscreenUrl?: string; debuggerUrl?: string }>
+              | { debuggerFullscreenUrl?: string; debuggerUrl?: string }[]
               | undefined;
             url =
               (debug.debuggerFullscreenUrl as string | undefined) ??
