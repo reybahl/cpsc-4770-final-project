@@ -25,10 +25,10 @@ async function runFillFormStream(
     credentials: "include",
   });
   if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(
-      (err as { error?: string }).error ?? `Request failed: ${res.status}`,
+    const err = await (res.json() as Promise<{ error?: string }>).catch(
+      (): { error?: string } => ({}),
     );
+    throw new Error(err.error ?? `Request failed: ${res.status}`);
   }
   const reader = res.body?.getReader();
   if (!reader) throw new Error("No response body");
@@ -41,6 +41,7 @@ async function runFillFormStream(
     finalUrl: string;
   } | null = null;
 
+  const dataRegex = /^data:\s*(.+)$/m;
   while (true) {
     const { done, value } = await reader.read();
     if (done) break;
@@ -48,7 +49,7 @@ async function runFillFormStream(
     const lines = buffer.split("\n\n");
     buffer = lines.pop() ?? "";
     for (const chunk of lines) {
-      const match = chunk.match(/^data:\s*(.+)$/m);
+      const match = dataRegex.exec(chunk);
       const jsonStr = match?.[1];
       if (!jsonStr) continue;
       try {
@@ -121,7 +122,7 @@ export function FormFillSection() {
     }
   };
 
-  const showLiveSession = liveViewUrl || (isPending && !liveViewUnavailable);
+  const showLiveSession = liveViewUrl ?? (isPending && !liveViewUnavailable);
 
   return (
     <section className="mx-auto mt-12 w-full max-w-2xl space-y-6">
