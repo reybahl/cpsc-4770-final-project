@@ -178,14 +178,21 @@ export function FormFillSection() {
                 key={s.id}
                 className="flex items-center justify-between gap-3 px-3 py-2"
               >
-                <a
-                  href={s.formUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-foreground truncate text-sm underline-offset-4 hover:underline"
-                >
-                  {s.formUrl}
-                </a>
+                <div className="min-w-0 flex-1">
+                  <a
+                    href={s.formUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-muted-foreground hover:text-foreground truncate text-sm underline-offset-4 hover:underline"
+                  >
+                    {s.formUrl}
+                  </a>
+                  <p className="text-muted-foreground mt-0.5 text-xs">
+                    {s.createdAt
+                      ? new Date(s.createdAt).toLocaleDateString()
+                      : "—"}
+                  </p>
+                </div>
                 <a
                   href={`${REPLAY_BASE}/${s.browserbaseSessionId}`}
                   target="_blank"
