@@ -10,18 +10,21 @@ import { getSession } from "~/auth/server";
 
 export const dynamic = "force-dynamic";
 
+function isFilledField(f: unknown): f is FilledField {
+  return (
+    !!f &&
+    typeof f === "object" &&
+    typeof (f as FilledField).id === "string" &&
+    typeof (f as FilledField).label === "string" &&
+    typeof (f as FilledField).name === "string" &&
+    typeof (f as FilledField).value === "string"
+  );
+}
+
 /** Validates FilledField shape. */
 function parsePrefilledData(val: unknown): FilledField[] {
   if (!Array.isArray(val)) return [];
-  return val.filter(
-    (f): f is FilledField =>
-      f &&
-      typeof f === "object" &&
-      typeof (f as FilledField).id === "string" &&
-      typeof (f as FilledField).label === "string" &&
-      typeof (f as FilledField).name === "string" &&
-      typeof (f as FilledField).value === "string",
-  );
+  return val.filter(isFilledField);
 }
 
 /**
@@ -67,7 +70,7 @@ export async function POST(req: Request) {
     where: eq(context.userId, session.user.id),
     columns: { context: true },
   });
-  const userContext = row?.context?.trim() ?? "";
+  const userContext = (row?.context ?? "").trim();
 
   const encoder = new TextEncoder();
 

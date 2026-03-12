@@ -52,11 +52,11 @@ Return the assessment for each field by id.`;
 
   return rawFields.map((raw): FilledField => {
     const v = byId.get(raw.id);
-    const reason = v?.reason?.trim();
+    const reason = v ? v.reason.trim() || undefined : undefined;
     return {
       ...raw,
-      confidence: (v?.confidence ?? "medium") as FilledField["confidence"],
-      reason: reason ? reason : undefined,
+      confidence: v?.confidence ?? "medium",
+      reason,
     };
   });
 }

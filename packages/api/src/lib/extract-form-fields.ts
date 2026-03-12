@@ -1,9 +1,9 @@
 import type { RawFormField } from "./form-agent-types";
 
 /** Playwright/Stagehand page-like interface for evaluation. */
-type PageLike = {
+interface PageLike {
   evaluate<T>(pageFunction: () => T): Promise<T>;
-};
+}
 
 /**
  * Extracts all visible form field values from the current page using DOM inspection.
@@ -13,14 +13,14 @@ export async function extractFormFields(
   page: PageLike,
 ): Promise<RawFormField[]> {
   const raw = await page.evaluate(() => {
-    const fields: Array<{
+    const fields: {
       id: string;
       label: string;
       name: string;
       type: string;
       value: string;
       selector?: string;
-    }> = [];
+    }[] = [];
     const seen = new Set<string>();
     let idx = 0;
 
@@ -48,14 +48,14 @@ export async function extractFormFields(
         if (el.type === "checkbox" || el.type === "radio") {
           return el.checked ? el.value || "true" : "";
         }
-        return el.value ?? "";
+        return el.value;
       }
       if (el instanceof HTMLSelectElement) {
         const opt = el.options[el.selectedIndex];
-        return opt?.value ?? opt?.text ?? "";
+        return opt ? opt.value || opt.text : "";
       }
       if (el instanceof HTMLTextAreaElement) {
-        return el.value ?? "";
+        return el.value;
       }
       return "";
     };
@@ -84,7 +84,6 @@ export async function extractFormFields(
       const label = getLabel(el);
       const name = (el as HTMLInputElement).name || `field_${idx}`;
       const type = getType(el);
-      const selector = el.id ? `#${el.id}` : `[name="${name}"]`;
       const key = `${name}:${label}:${value}`;
       if (seen.has(key)) continue;
       seen.add(key);

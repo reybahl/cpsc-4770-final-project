@@ -33,10 +33,10 @@ export type FormAgentEvent =
 
 export type FormAgentMode = "fill-and-verify" | "submit";
 
-export type FormAgentOptions = {
+export interface FormAgentOptions {
   mode?: FormAgentMode;
   prefilledData?: FilledField[];
-};
+}
 
 const FILL_ONLY_INSTRUCTION = `Fill every visible form field with the appropriate value from the user's information.
 IMPORTANT: Do NOT click Submit, Submit button, or any final submission button. Stop as soon as all fields are filled.

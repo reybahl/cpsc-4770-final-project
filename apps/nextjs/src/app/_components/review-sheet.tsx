@@ -16,7 +16,7 @@ import {
   SheetTitle,
 } from "@acme/ui/sheet";
 
-export type ReviewSheetProps = {
+export interface ReviewSheetProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   filledFields: FilledField[];
@@ -24,7 +24,7 @@ export type ReviewSheetProps = {
   onApprove: (editedFields: FilledField[]) => void;
   onCancel: () => void;
   isSubmitting?: boolean;
-};
+}
 
 export function ReviewSheet({
   open,

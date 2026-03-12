@@ -272,16 +272,12 @@ export function FormFillSection() {
     setLiveViewUrl(null);
     setLiveViewUnavailable(false);
     try {
-      const data = await runSubmitFormStream(
-        reviewState.formUrl,
-        editedFields,
-        {
-          onLiveViewUrl: (u) => setLiveViewUrl(u),
-          onLiveViewAvailable: (av) => {
-            if (!av) setLiveViewUnavailable(true);
-          },
+      const data = await runSubmitFormStream(formUrlToSubmit, fieldsToSubmit, {
+        onLiveViewUrl: (u) => setLiveViewUrl(u),
+        onLiveViewAvailable: (av) => {
+          if (!av) setLiveViewUnavailable(true);
         },
-      );
+      });
       toast.success(
         data.submitted ? "Form submitted successfully" : "Submit completed",
       );
@@ -305,9 +301,8 @@ export function FormFillSection() {
   };
 
   const showLiveSession =
-    liveViewUrl ??
-    (isPending && !liveViewUnavailable) ??
-    (isSubmitting && !liveViewUnavailable);
+    liveViewUrl != null ||
+    ((isPending || isSubmitting) && !liveViewUnavailable);
 
   const formContent = (
     <div className="space-y-6">
