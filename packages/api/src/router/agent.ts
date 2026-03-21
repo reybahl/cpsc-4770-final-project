@@ -4,6 +4,11 @@ import { z } from "zod/v4";
 import { desc, eq } from "@acme/db";
 import { context, sessions } from "@acme/db/schema";
 
+import {
+  composeUserContextForAgent,
+  hasUsableUserContext,
+} from "../lib/compose-user-context";
+import { parseIdentityProfileFromDb } from "../lib/identity-profile-schema";
 import { runFormAgent } from "../lib/run-form-agent";
 import { protectedProcedure } from "../trpc";
 
@@ -36,11 +41,22 @@ export const agentRouter = {
     .mutation(async ({ ctx, input }) => {
       const row = await ctx.db.query.context.findFirst({
         where: eq(context.userId, ctx.session.user.id),
-        columns: { context: true },
+        columns: { context: true, identityProfile: true },
       });
-      const userContext = row?.context.trim();
-      if (!userContext) {
-        throw new Error("No personal context saved. Add context first.");
+      const identityProfile = parseIdentityProfileFromDb(row?.identityProfile);
+      const userContext = composeUserContextForAgent({
+        contextText: row?.context ?? "",
+        identityProfile,
+      });
+      if (
+        !hasUsableUserContext({
+          contextText: row?.context ?? "",
+          identityProfile,
+        })
+      ) {
+        throw new Error(
+          "No profile saved. Add notes about yourself or generate a structured profile in settings.",
+        );
       }
 
       let lastResult: {

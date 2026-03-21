@@ -5,7 +5,7 @@ const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 if (!url || !key) {
   throw new Error(
-    "Missing Supabase env: NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are required for extractResume",
+    "Missing Supabase env: NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are required for resume storage",
   );
 }
 

@@ -21,4 +21,10 @@ export { createTRPCContext } from "./trpc";
 export { runFormAgent, type FormAgentEvent } from "./lib/run-form-agent";
 export type { FilledField } from "./lib/form-agent-types";
 export type { FormAgentOptions } from "./lib/run-form-agent";
+export type { IdentityProfile } from "./lib/identity-profile-schema";
+export { parseIdentityProfileFromDb } from "./lib/identity-profile-schema";
+export {
+  composeUserContextForAgent,
+  hasUsableUserContext,
+} from "./lib/compose-user-context";
 export type { RouterInputs, RouterOutputs };

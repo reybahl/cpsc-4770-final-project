@@ -1,0 +1,1 @@
+ALTER TABLE "context" ADD COLUMN "identity_profile" jsonb;

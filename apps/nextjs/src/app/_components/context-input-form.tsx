@@ -3,6 +3,7 @@
 import { useCallback, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
+import type { IdentityProfile } from "@acme/api";
 import { cn } from "@acme/ui";
 import { Button } from "@acme/ui/button";
 import {
@@ -15,6 +16,7 @@ import {
 import { Textarea } from "@acme/ui/textarea";
 import { toast } from "@acme/ui/toast";
 
+import { IdentityProfileTable } from "~/app/_components/identity-profile-table";
 import { useTRPC } from "~/trpc/react";
 
 export function ContextInputForm() {
@@ -26,6 +28,7 @@ export function ContextInputForm() {
       key={savedContext?.id ?? "loading"}
       initialContext={savedContext?.context ?? ""}
       initialResumeUrl={savedContext?.resumeUrl ?? null}
+      identityProfile={savedContext?.identityProfile ?? null}
     />
   );
 }
@@ -33,9 +36,11 @@ export function ContextInputForm() {
 function ContextFormFields({
   initialContext,
   initialResumeUrl,
+  identityProfile,
 }: {
   initialContext: string;
   initialResumeUrl: string | null;
+  identityProfile: IdentityProfile | null;
 }) {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
@@ -51,12 +56,18 @@ function ContextFormFields({
   const clearResumeMutation = useMutation(
     trpc.context.clearResume.mutationOptions(),
   );
+  const rebuildProfileMutation = useMutation(
+    trpc.context.rebuildIdentityProfile.mutationOptions(),
+  );
 
   const invalidateContext = useCallback(() => {
     void queryClient.invalidateQueries({
       queryKey: trpc.context.get.queryOptions().queryKey,
     });
   }, [queryClient, trpc.context.get]);
+
+  const canRebuildProfile =
+    context.trim().length > 0 || (resumeUrl != null && resumeUrl.length > 0);
 
   const uploadFile = useCallback(
     async (file: File) => {
@@ -82,8 +93,20 @@ function ContextFormFields({
             { pdfUrl: data.url },
             {
               onSuccess: () => {
-                invalidateContext();
-                toast.success("PDF uploaded — ready for AI extraction");
+                void (async () => {
+                  invalidateContext();
+                  try {
+                    await rebuildProfileMutation.mutateAsync();
+                    invalidateContext();
+                    toast.success(
+                      "PDF uploaded and structured profile updated",
+                    );
+                  } catch {
+                    toast.error(
+                      "PDF uploaded, but structured profile couldn't be refreshed",
+                    );
+                  }
+                })();
               },
             },
           );
@@ -96,7 +119,7 @@ function ContextFormFields({
         setIsUploading(false);
       }
     },
-    [saveResumeMutation, invalidateContext],
+    [saveResumeMutation, invalidateContext, rebuildProfileMutation],
   );
 
   const handleDrop = useCallback(
@@ -121,36 +144,58 @@ function ContextFormFields({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!context.trim()) return;
-    saveMutation.mutate(
-      { context: context.trim() },
-      {
-        onSuccess: () => {
-          void queryClient.invalidateQueries({
-            queryKey: trpc.context.get.queryOptions().queryKey,
-          });
-          toast.success("Context saved successfully");
-        },
-        onError: (err) => {
-          toast.error(err.message || "Failed to save context");
-        },
-      },
-    );
+    void (async () => {
+      try {
+        await saveMutation.mutateAsync({ context: context.trim() });
+        await queryClient.invalidateQueries({
+          queryKey: trpc.context.get.queryOptions().queryKey,
+        });
+        if (canRebuildProfile) {
+          try {
+            await rebuildProfileMutation.mutateAsync();
+          } catch (rebuildErr) {
+            toast.error(
+              rebuildErr instanceof Error
+                ? `Notes saved, but profile refresh failed: ${rebuildErr.message}`
+                : "Notes saved, but structured profile couldn't be refreshed",
+            );
+            await queryClient.invalidateQueries({
+              queryKey: trpc.context.get.queryOptions().queryKey,
+            });
+            return;
+          }
+        }
+        await queryClient.invalidateQueries({
+          queryKey: trpc.context.get.queryOptions().queryKey,
+        });
+        toast.success("Profile saved and structured profile updated");
+      } catch (err) {
+        toast.error(
+          err instanceof Error ? err.message : "Failed to save notes",
+        );
+      }
+    })();
   };
 
-  const isDisabled = !context.trim() || saveMutation.isPending;
+  const isProfileUpdating =
+    saveMutation.isPending || rebuildProfileMutation.isPending;
+
+  const isDisabled =
+    !context.trim() ||
+    saveMutation.isPending ||
+    rebuildProfileMutation.isPending;
 
   return (
-    <div className="mx-auto w-full max-w-2xl">
+    <div className="mx-auto flex w-full max-w-2xl flex-col gap-12">
       <form className="flex flex-col gap-8" onSubmit={handleSubmit}>
         <FieldGroup>
           <Field>
             <FieldContent>
-              <FieldLabel htmlFor="context">Your personal context</FieldLabel>
+              <FieldLabel htmlFor="context">About you</FieldLabel>
               <FieldDescription>
-                Paste a short bio, bullet points, or text from your résumé.
-                Include name, contact info, education, work experience, and
-                skills. The more detail you provide, the better the agent can
-                fill forms.
+                Manual notes only—nothing here is filled from your résumé. The
+                structured profile below is built from these notes plus your PDF
+                (if any) for the form agent.
               </FieldDescription>
               <Textarea
                 id="context"
@@ -166,9 +211,19 @@ Skills: TypeScript, React, Python...`}
           </Field>
         </FieldGroup>
 
+        <div className="flex flex-wrap justify-end gap-3">
+          <Button type="submit" size="lg" disabled={isDisabled}>
+            {saveMutation.isPending ? "Saving…" : "Save notes"}
+          </Button>
+        </div>
+
         <div className="flex flex-col gap-2">
           <p className="text-muted-foreground text-sm font-medium">
-            Or upload a PDF résumé (we'll send it to the AI to extract context)
+            Résumé (optional PDF)
+          </p>
+          <p className="text-muted-foreground text-sm">
+            The PDF is combined with your notes whenever the structured profile
+            is generated.
           </p>
           <label
             htmlFor="resume-upload"
@@ -202,7 +257,6 @@ Skills: TypeScript, React, Python...`}
           {resumeUrl ? (
             <ResumeCard
               pdfUrl={resumeUrl}
-              onExtracted={(text) => setContext(text)}
               onDelete={() => {
                 setResumeUrl(null);
                 clearResumeMutation.mutate(undefined, {
@@ -213,25 +267,59 @@ Skills: TypeScript, React, Python...`}
             />
           ) : null}
         </div>
+      </form>
 
-        <div className="flex justify-end">
-          <Button type="submit" size="lg" disabled={isDisabled}>
-            {saveMutation.isPending ? "Saving…" : "Continue"}
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <h2 className="text-foreground text-lg font-medium">
+              Structured profile
+            </h2>
+            <p className="text-muted-foreground mt-1 text-sm">
+              Built from your manual notes plus the uploaded PDF (if any) each
+              time you save notes, upload/replace a résumé, or click Regenerate.
+            </p>
+          </div>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="shrink-0"
+            disabled={
+              !canRebuildProfile ||
+              rebuildProfileMutation.isPending ||
+              saveMutation.isPending
+            }
+            onClick={() => {
+              rebuildProfileMutation.mutate(undefined, {
+                onSuccess: () => {
+                  invalidateContext();
+                  toast.success("Structured profile updated");
+                },
+                onError: (err) => {
+                  toast.error(err.message || "Could not build profile");
+                },
+              });
+            }}
+          >
+            {rebuildProfileMutation.isPending ? "Updating…" : "Regenerate"}
           </Button>
         </div>
-      </form>
+        <IdentityProfileTable
+          profile={identityProfile}
+          isUpdating={isProfileUpdating}
+        />
+      </div>
     </div>
   );
 }
 
 function ResumeCard({
   pdfUrl,
-  onExtracted,
   onDelete,
   isDeleting,
 }: {
   pdfUrl: string;
-  onExtracted: (text: string) => void;
   onDelete: () => void;
   isDeleting: boolean;
 }) {
@@ -261,7 +349,6 @@ function ResumeCard({
               Could not load preview
             </span>
           ) : null}
-          <ResumeExtractButton pdfUrl={pdfUrl} onExtracted={onExtracted} />
         </div>
         <Button
           type="button"
@@ -306,43 +393,5 @@ function ResumeCard({
         </div>
       ) : null}
     </div>
-  );
-}
-
-function ResumeExtractButton({
-  pdfUrl,
-  onExtracted,
-}: {
-  pdfUrl: string;
-  onExtracted: (text: string) => void;
-}) {
-  const trpc = useTRPC();
-  const extractMutation = useMutation(
-    trpc.context.extractResume.mutationOptions(),
-  );
-
-  return (
-    <Button
-      type="button"
-      variant="outline"
-      size="sm"
-      disabled={extractMutation.isPending}
-      onClick={() => {
-        extractMutation.mutate(
-          { pdfUrl },
-          {
-            onSuccess: (data) => {
-              onExtracted(data.text);
-              toast.success("Context extracted from PDF");
-            },
-            onError: (err) => {
-              toast.error(err.message || "Extraction failed");
-            },
-          },
-        );
-      }}
-    >
-      {extractMutation.isPending ? "Extracting…" : "Extract context with AI"}
-    </Button>
   );
 }

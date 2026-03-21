@@ -13,6 +13,8 @@ export const context = pgTable("context", (t) => ({
     .unique()
     .references(() => user.id, { onDelete: "cascade" }),
   context: t.text().notNull(),
+  /** LLM-extracted structured profile (JSON), built from about text + optional PDF */
+  identityProfile: t.jsonb("identity_profile"),
   resumeUrl: t.text(),
   createdAt: t.timestamp({ mode: "string" }).defaultNow().notNull(),
   updatedAt: t

@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server";
 
-import { runFormAgent } from "@acme/api";
+import {
+  composeUserContextForAgent,
+  hasUsableUserContext,
+  parseIdentityProfileFromDb,
+  runFormAgent,
+} from "@acme/api";
 import { eq } from "@acme/db";
 import { db } from "@acme/db/client";
 import { context, sessions } from "@acme/db/schema";
@@ -39,12 +44,21 @@ export async function POST(req: Request) {
 
   const row = await db.query.context.findFirst({
     where: eq(context.userId, session.user.id),
-    columns: { context: true },
+    columns: { context: true, identityProfile: true },
   });
-  const userContext = row?.context.trim();
-  if (!userContext) {
+  const identityProfile = parseIdentityProfileFromDb(row?.identityProfile);
+  const userContext = composeUserContextForAgent({
+    contextText: row?.context ?? "",
+    identityProfile,
+  });
+  if (
+    !hasUsableUserContext({ contextText: row?.context ?? "", identityProfile })
+  ) {
     return NextResponse.json(
-      { error: "No personal context saved. Add context first." },
+      {
+        error:
+          "No profile saved. Add notes about yourself or generate a structured profile in settings.",
+      },
       { status: 400 },
     );
   }

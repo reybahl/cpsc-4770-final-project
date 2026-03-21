@@ -1,28 +1,33 @@
 import type { TRPCRouterRecord } from "@trpc/server";
-import { openai } from "@ai-sdk/openai";
-import { generateText } from "ai";
 import { z } from "zod/v4";
 
 import { eq } from "@acme/db";
 import { context, CreateContextSchema } from "@acme/db/schema";
 
+import { parseIdentityProfileFromDb } from "../lib/identity-profile-schema";
+import { rebuildIdentityProfileFromSources } from "../lib/rebuild-identity-profile";
 import { supabaseAdmin } from "../lib/supabase";
 import { protectedProcedure } from "../trpc";
 
 const BUCKET = "resumes";
-
-const EXTRACT_PROMPT = `Extract the personal context from this résumé PDF. 
-Summarize: name, contact info (email, phone), education, work experience, skills, and any other relevant details for filling out forms. 
-Output as plain text suitable for auto-filling web forms.`;
 
 /** Only return id + context; no timestamps so nothing triggers date serialization. */
 export const contextRouter = {
   get: protectedProcedure.query(async ({ ctx }) => {
     const row = await ctx.db.query.context.findFirst({
       where: eq(context.userId, ctx.session.user.id),
-      columns: { id: true, context: true, resumeUrl: true },
+      columns: {
+        id: true,
+        context: true,
+        resumeUrl: true,
+        identityProfile: true,
+      },
     });
-    return row ?? null;
+    if (!row) return null;
+    return {
+      ...row,
+      identityProfile: parseIdentityProfileFromDb(row.identityProfile),
+    };
   }),
 
   save: protectedProcedure
@@ -40,6 +45,47 @@ export const contextRouter = {
         });
       return { success: true };
     }),
+
+  rebuildIdentityProfile: protectedProcedure.mutation(async ({ ctx }) => {
+    const row = await ctx.db.query.context.findFirst({
+      where: eq(context.userId, ctx.session.user.id),
+      columns: { context: true, resumeUrl: true },
+    });
+    const aboutText = row?.context.trim() ?? "";
+    let resumePdfBuffer: Buffer | null = null;
+
+    if (row?.resumeUrl) {
+      const pathMatch = /\/resumes\/(.+)$/.exec(row.resumeUrl);
+      const path = pathMatch?.[1];
+      if (path) {
+        const { data, error } = await supabaseAdmin.storage
+          .from(BUCKET)
+          .download(path);
+        if (!error) {
+          resumePdfBuffer = Buffer.from(await data.arrayBuffer());
+        }
+      }
+    }
+
+    const profile = await rebuildIdentityProfileFromSources({
+      aboutText,
+      resumePdfBuffer,
+    });
+
+    await ctx.db
+      .insert(context)
+      .values({
+        userId: ctx.session.user.id,
+        context: row?.context ?? "",
+        identityProfile: profile,
+      })
+      .onConflictDoUpdate({
+        target: context.userId,
+        set: { identityProfile: profile },
+      });
+
+    return { profile };
+  }),
 
   saveResume: protectedProcedure
     .input(z.object({ pdfUrl: z.string().url() }))
@@ -82,41 +128,4 @@ export const contextRouter = {
       .where(eq(context.userId, ctx.session.user.id));
     return { success: true };
   }),
-
-  extractResume: protectedProcedure
-    .input(z.object({ pdfUrl: z.string().url() }))
-    .mutation(async ({ input }) => {
-      const pathMatch = /\/resumes\/(.+)$/.exec(input.pdfUrl);
-      const path = pathMatch?.[1];
-      if (!path) {
-        throw new Error("Invalid PDF URL: could not extract storage path");
-      }
-
-      const { data, error } = await supabaseAdmin.storage
-        .from(BUCKET)
-        .download(path);
-      if (error) {
-        throw new Error(`Failed to download PDF: ${error.message}`);
-      }
-      const buffer = Buffer.from(await data.arrayBuffer());
-
-      const { text } = await generateText({
-        model: openai("gpt-4o"),
-        messages: [
-          {
-            role: "user",
-            content: [
-              { type: "text", text: EXTRACT_PROMPT },
-              {
-                type: "file",
-                data: buffer,
-                mediaType: "application/pdf",
-              },
-            ],
-          },
-        ],
-      });
-      console.log("[context.extractResume] Extracted:\n", text);
-      return { text };
-    }),
 } satisfies TRPCRouterRecord;

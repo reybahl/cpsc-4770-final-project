@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FileText, Home } from "lucide-react";
+import { Home, UserRound } from "lucide-react";
 
 import {
   Sidebar,
@@ -18,7 +18,7 @@ import {
 
 const navItems = [
   { title: "Home", href: "/", icon: Home },
-  { title: "Context", href: "/context", icon: FileText },
+  { title: "Profile", href: "/settings", icon: UserRound },
 ] as const;
 
 export function AppSidebar() {
