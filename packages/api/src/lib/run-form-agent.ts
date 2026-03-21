@@ -5,6 +5,30 @@ import {
   verifyFilledFields,
 } from "./verify-filled-fields";
 
+/** After initial fill, re-verify and run targeted `act()` fixes for low-confidence fields (multi-step agent loop). */
+const MAX_CORRECTION_ROUNDS = 2;
+
+function buildCorrectionInstruction(
+  lowFields: FilledField[],
+  userContext: string,
+): string {
+  const lines = lowFields
+    .map(
+      (f) =>
+        `- "${f.label}" (name="${f.name}") — current: "${f.value}". Set to the value that matches the user profile.`,
+    )
+    .join("\n");
+  return `The following fields likely don't match the user's profile. Update ONLY these fields. Do NOT click Submit or any submit button.
+
+${lines}
+
+User profile:
+"""
+${userContext}
+"""
+`;
+}
+
 const useBrowserbase =
   typeof process !== "undefined" &&
   !!process.env.BROWSERBASE_API_KEY?.trim() &&
@@ -15,7 +39,12 @@ export type FormAgentEvent =
   | { liveViewAvailable: false }
   | { phase: "extracting" }
   | { phase: "filling" }
-  | { phase: "verifying" }
+  | { phase: "verifying"; round: number }
+  | {
+      phase: "correcting";
+      round: number;
+      fieldsTargeted: number;
+    }
   | {
       phase: "filled";
       filledFields: FilledField[];
@@ -196,10 +225,32 @@ export async function* runFormAgent(
 
     await page.waitForTimeout(1000);
 
-    yield { phase: "verifying" };
+    let filledFields: FilledField[] = [];
 
-    const rawFields = await extractFormFields(page);
-    const filledFields = await verifyFilledFields(rawFields, userContext);
+    for (
+      let correctionIndex = 0;
+      correctionIndex <= MAX_CORRECTION_ROUNDS;
+      correctionIndex++
+    ) {
+      yield { phase: "verifying", round: correctionIndex };
+
+      const rawFields = await extractFormFields(page);
+      filledFields = await verifyFilledFields(rawFields, userContext);
+
+      const lowFields = filledFields.filter((f) => f.confidence === "low");
+      if (lowFields.length === 0) break;
+      if (correctionIndex === MAX_CORRECTION_ROUNDS) break;
+
+      yield {
+        phase: "correcting",
+        round: correctionIndex + 1,
+        fieldsTargeted: lowFields.length,
+      };
+
+      await stagehand.act(buildCorrectionInstruction(lowFields, userContext));
+      await page.waitForTimeout(1000);
+    }
+
     const confidenceSummary = computeConfidenceSummary(filledFields);
 
     yield {
