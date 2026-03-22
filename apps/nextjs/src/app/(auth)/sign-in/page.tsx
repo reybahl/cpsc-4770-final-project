@@ -13,7 +13,7 @@ export default async function SignInPage(props: {
 }) {
   const session = await getSession();
   if (session) {
-    redirect((await props.searchParams).callbackURL ?? "/context");
+    redirect((await props.searchParams).callbackURL ?? "/");
   }
 
   const searchParams = await props.searchParams;
@@ -32,8 +32,7 @@ export default async function SignInPage(props: {
           "use server";
           const email = formData.get("email") as string;
           const password = formData.get("password") as string;
-          const callbackURL =
-            (formData.get("callbackURL") as string) || "/context";
+          const callbackURL = (formData.get("callbackURL") as string) || "/";
 
           try {
             const res = await auth.api.signInEmail({
@@ -52,7 +51,7 @@ export default async function SignInPage(props: {
         <input
           type="hidden"
           name="callbackURL"
-          value={searchParams.callbackURL ?? "/context"}
+          value={searchParams.callbackURL ?? "/"}
         />
         <FieldGroup>
           <Field>

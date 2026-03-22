@@ -1,7 +1,8 @@
 "use client";
 
+import { useEffect } from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { ChevronUp, Home, LogOut, Settings, UserRound } from "lucide-react";
 
 import {
@@ -34,8 +35,13 @@ const navItems = [
 
 export function AppSidebar() {
   const pathname = usePathname();
-  const router = useRouter();
-  const { data: session, isPending } = authClient.useSession();
+  const { data: session, isPending, refetch } = authClient.useSession();
+
+  // Server sign-in uses a redirect; the sidebar stays mounted so client session
+  // cache can be stale until we refetch after navigation.
+  useEffect(() => {
+    void refetch();
+  }, [pathname, refetch]);
 
   return (
     <Sidebar>
@@ -97,8 +103,7 @@ export function AppSidebar() {
                     className="gap-2"
                     onClick={async () => {
                       await authClient.signOut();
-                      router.push("/");
-                      router.refresh();
+                      window.location.assign("/");
                     }}
                   >
                     <LogOut className="size-4" />

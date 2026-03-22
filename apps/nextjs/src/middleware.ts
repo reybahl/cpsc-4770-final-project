@@ -1,26 +1,28 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { getSessionCookie } from "better-auth/cookies";
 
-const protectedPaths = ["/context"];
+const publicPaths = ["/sign-in", "/sign-up"] as const;
+
+function isPublicPath(pathname: string): boolean {
+  return publicPaths.some(
+    (p) => pathname === p || pathname.startsWith(`${p}/`),
+  );
+}
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  const isProtected = protectedPaths.some(
-    (path) => pathname === path || pathname.startsWith(`${path}/`),
-  );
-  if (!isProtected) {
+  if (isPublicPath(pathname)) {
     return NextResponse.next();
   }
 
-  // Check for session cookie - Better Auth uses bearer token or cookie
-  const sessionToken =
-    request.cookies.get("better-auth.session_token")?.value ??
-    request.cookies.get("__Secure-better-auth.session_token")?.value;
-
-  if (!sessionToken) {
+  if (!getSessionCookie(request)) {
     const signInUrl = new URL("/sign-in", request.url);
-    signInUrl.searchParams.set("callbackURL", pathname);
+    signInUrl.searchParams.set(
+      "callbackURL",
+      `${pathname}${request.nextUrl.search}`,
+    );
     return NextResponse.redirect(signInUrl);
   }
 
@@ -28,5 +30,15 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/context/:path*"],
+  matcher: [
+    /*
+     * Match all pathnames except for
+     * - api (route handlers)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico and other files with extensions
+     */
+    "/((?!api|_next/static|_next/image|favicon.ico|.*\\..*).*)",
+    "/",
+  ],
 };
