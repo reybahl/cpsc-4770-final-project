@@ -6,7 +6,7 @@ import { cva } from "class-variance-authority";
 import { PanelLeftIcon } from "lucide-react";
 import { Slot } from "radix-ui";
 
-import { cn } from "@acme/ui";
+import { cn } from "@formagent/ui";
 
 import { Button } from "./button";
 import { useIsMobile } from "./hooks/use-mobile";

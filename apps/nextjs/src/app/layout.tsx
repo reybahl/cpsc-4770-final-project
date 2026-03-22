@@ -1,14 +1,14 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
-import { cn } from "@acme/ui";
+import { cn } from "@formagent/ui";
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-} from "@acme/ui/sidebar";
-import { ThemeProvider, ThemeToggle } from "@acme/ui/theme";
-import { Toaster } from "@acme/ui/toast";
+} from "@formagent/ui/sidebar";
+import { ThemeProvider, ThemeToggle } from "@formagent/ui/theme";
+import { Toaster } from "@formagent/ui/toast";
 
 import { AppSidebar } from "~/app/_components/app-sidebar";
 import { env } from "~/env";
@@ -22,19 +22,8 @@ export const metadata: Metadata = {
       ? "https://turbo.t3.gg"
       : "http://localhost:3000",
   ),
-  title: "Create T3 Turbo",
-  description: "Simple monorepo with shared backend for web & mobile apps",
-  openGraph: {
-    title: "Create T3 Turbo",
-    description: "Simple monorepo with shared backend for web & mobile apps",
-    url: "https://create-t3-turbo.vercel.app",
-    siteName: "Create T3 Turbo",
-  },
-  twitter: {
-    card: "summary_large_image",
-    site: "@jullerino",
-    creator: "@jullerino",
-  },
+  title: "FormAgent",
+  description: "Never fill out a form again.",
 };
 
 export const viewport: Viewport = {

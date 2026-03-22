@@ -3,18 +3,18 @@
 import { useCallback, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import type { IdentityProfile } from "@acme/api";
-import { cn } from "@acme/ui";
-import { Button } from "@acme/ui/button";
+import type { IdentityProfile } from "@formagent/api";
+import { cn } from "@formagent/ui";
+import { Button } from "@formagent/ui/button";
 import {
   Field,
   FieldContent,
   FieldDescription,
   FieldGroup,
   FieldLabel,
-} from "@acme/ui/field";
-import { Textarea } from "@acme/ui/textarea";
-import { toast } from "@acme/ui/toast";
+} from "@formagent/ui/field";
+import { Textarea } from "@formagent/ui/textarea";
+import { toast } from "@formagent/ui/toast";
 
 import { IdentityProfileTable } from "~/app/_components/identity-profile-table";
 import { useTRPC } from "~/trpc/react";
