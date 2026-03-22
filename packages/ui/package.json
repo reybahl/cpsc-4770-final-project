@@ -14,7 +14,8 @@
     "./theme": "./src/theme.tsx",
     "./toast": "./src/toast.tsx",
     "./sheet": "./src/sheet.tsx",
-    "./sidebar": "./src/sidebar.tsx"
+    "./sidebar": "./src/sidebar.tsx",
+    "./switch": "./src/switch.tsx"
   },
   "license": "MIT",
   "scripts": {
@@ -26,6 +27,7 @@
   },
   "dependencies": {
     "@radix-ui/react-icons": "^1.3.2",
+    "@radix-ui/react-switch": "^1.2.6",
     "class-variance-authority": "^0.7.1",
     "lucide-react": "^0.577.0",
     "radix-ui": "^1.4.3",

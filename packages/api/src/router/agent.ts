@@ -2,7 +2,7 @@ import type { TRPCRouterRecord } from "@trpc/server";
 import { z } from "zod/v4";
 
 import { desc, eq } from "@acme/db";
-import { context, sessions } from "@acme/db/schema";
+import { context, sessions, userSettings } from "@acme/db/schema";
 
 import {
   composeUserContextForAgent,
@@ -39,10 +39,18 @@ export const agentRouter = {
   fillForm: protectedProcedure
     .input(z.object({ formUrl: z.string().trim().url() }))
     .mutation(async ({ ctx, input }) => {
-      const row = await ctx.db.query.context.findFirst({
-        where: eq(context.userId, ctx.session.user.id),
-        columns: { context: true, identityProfile: true },
-      });
+      const [row, settingsRow] = await Promise.all([
+        ctx.db.query.context.findFirst({
+          where: eq(context.userId, ctx.session.user.id),
+          columns: { context: true, identityProfile: true },
+        }),
+        ctx.db.query.userSettings.findFirst({
+          where: eq(userSettings.userId, ctx.session.user.id),
+          columns: { verificationLoopEnabled: true },
+        }),
+      ]);
+      const verificationLoopEnabled =
+        settingsRow?.verificationLoopEnabled ?? true;
       const identityProfile = parseIdentityProfileFromDb(row?.identityProfile);
       const userContext = composeUserContextForAgent({
         contextText: row?.context ?? "",
@@ -55,7 +63,7 @@ export const agentRouter = {
         })
       ) {
         throw new Error(
-          "No profile saved. Add notes about yourself or generate a structured profile in settings.",
+          "No profile saved. Add notes about yourself or generate a structured profile on your profile page.",
         );
       }
 
@@ -64,7 +72,9 @@ export const agentRouter = {
         submitted: boolean;
         finalUrl: string;
       } = { success: false, submitted: false, finalUrl: "" };
-      for await (const event of runFormAgent(input.formUrl, userContext)) {
+      for await (const event of runFormAgent(input.formUrl, userContext, {
+        skipHumanReview: !verificationLoopEnabled,
+      })) {
         if ("success" in event) {
           lastResult = event;
         }

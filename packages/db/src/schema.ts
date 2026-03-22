@@ -45,4 +45,24 @@ export const sessions = pgTable("sessions", (t) => ({
     .notNull(),
 }));
 
+/** One row per user; keyed by user id. */
+export const userSettings = pgTable("user_settings", (t) => ({
+  userId: t
+    .text("user_id")
+    .notNull()
+    .primaryKey()
+    .references(() => user.id, { onDelete: "cascade" }),
+  /**
+   * When true (default): after the agent verify/correct loop, show the review sheet before submit.
+   * When false: same verify/correct loop, then submit immediately (no human review step).
+   */
+  verificationLoopEnabled: t
+    .boolean("verification_loop_enabled")
+    .notNull()
+    .default(true),
+  updatedAt: t
+    .timestamp("updated_at", { mode: "string", withTimezone: true })
+    .$onUpdateFn(() => sql`now()`),
+}));
+
 export * from "./auth-schema";

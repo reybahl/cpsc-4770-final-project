@@ -45,6 +45,7 @@ export type FormAgentEvent =
       round: number;
       fieldsTargeted: number;
     }
+  | { phase: "submitting" }
   | {
       phase: "filled";
       filledFields: FilledField[];
@@ -65,6 +66,11 @@ export type FormAgentMode = "fill-and-verify" | "submit";
 export interface FormAgentOptions {
   mode?: FormAgentMode;
   prefilledData?: FilledField[];
+  /**
+   * When true, after the same fill + LLM verify/correct loop, submit immediately
+   * instead of yielding fields for human review (no review sheet / second request).
+   */
+  skipHumanReview?: boolean;
 }
 
 const FILL_ONLY_INSTRUCTION = `Fill every visible form field with the appropriate value from the user's information.
@@ -85,7 +91,8 @@ Fill each field with the exact value shown. When all are filled, click the Submi
 
 /**
  * Runs the form-filling agent. Supports two modes:
- * - fill-and-verify: Fills form (no submit), extracts values, verifies with LLM, yields filledFields for HITL review
+ * - fill-and-verify: Fills form (no submit), extracts values, verifies with LLM, optional correction rounds.
+ *   Then either yields filledFields for HITL review, or (if skipHumanReview) submits with those values.
  * - submit: Navigates to form, fills with prefilledData (from approval), submits
  */
 export async function* runFormAgent(
@@ -93,7 +100,11 @@ export async function* runFormAgent(
   userContext: string,
   options: FormAgentOptions = {},
 ): AsyncGenerator<FormAgentEvent, void, unknown> {
-  const { mode = "fill-and-verify", prefilledData = [] } = options;
+  const {
+    mode = "fill-and-verify",
+    prefilledData = [],
+    skipHumanReview = false,
+  } = options;
 
   const { Stagehand } = await import("@browserbasehq/stagehand");
 
@@ -252,6 +263,29 @@ export async function* runFormAgent(
     }
 
     const confidenceSummary = computeConfidenceSummary(filledFields);
+
+    if (skipHumanReview) {
+      if (filledFields.length === 0) {
+        yield { error: "No form fields found to submit" };
+        return;
+      }
+      yield { phase: "submitting" };
+      const submitAgent = stagehand.agent({
+        systemPrompt:
+          "You are a form-filling assistant. Fill each field with the EXACT value provided. Do not modify or infer. Then click Submit.",
+      });
+      await submitAgent.execute({
+        instruction: SUBMIT_INSTRUCTION(filledFields),
+        maxSteps: 50,
+      });
+      yield {
+        success: true,
+        submitted: true,
+        finalUrl: page.url(),
+        ...(browserbaseSessionId && { browserbaseSessionId }),
+      };
+      return;
+    }
 
     yield {
       phase: "filled",

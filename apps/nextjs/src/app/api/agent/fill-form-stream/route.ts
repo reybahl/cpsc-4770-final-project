@@ -8,7 +8,7 @@ import {
 } from "@acme/api";
 import { eq } from "@acme/db";
 import { db } from "@acme/db/client";
-import { context, sessions } from "@acme/db/schema";
+import { context, sessions, userSettings } from "@acme/db/schema";
 
 import { getSession } from "~/auth/server";
 
@@ -42,10 +42,17 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Invalid URL" }, { status: 400 });
   }
 
-  const row = await db.query.context.findFirst({
-    where: eq(context.userId, session.user.id),
-    columns: { context: true, identityProfile: true },
-  });
+  const [row, settingsRow] = await Promise.all([
+    db.query.context.findFirst({
+      where: eq(context.userId, session.user.id),
+      columns: { context: true, identityProfile: true },
+    }),
+    db.query.userSettings.findFirst({
+      where: eq(userSettings.userId, session.user.id),
+      columns: { verificationLoopEnabled: true },
+    }),
+  ]);
+  const verificationLoopEnabled = settingsRow?.verificationLoopEnabled ?? true;
   const identityProfile = parseIdentityProfileFromDb(row?.identityProfile);
   const userContext = composeUserContextForAgent({
     contextText: row?.context ?? "",
@@ -57,7 +64,7 @@ export async function POST(req: Request) {
     return NextResponse.json(
       {
         error:
-          "No profile saved. Add notes about yourself or generate a structured profile in settings.",
+          "No profile saved. Add notes about yourself or generate a structured profile on your profile page.",
       },
       { status: 400 },
     );
@@ -72,7 +79,9 @@ export async function POST(req: Request) {
       };
 
       try {
-        for await (const event of runFormAgent(formUrl, userContext)) {
+        for await (const event of runFormAgent(formUrl, userContext, {
+          skipHumanReview: !verificationLoopEnabled,
+        })) {
           send(event);
           if (
             "success" in event &&
