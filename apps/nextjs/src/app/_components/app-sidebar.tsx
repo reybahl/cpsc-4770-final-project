@@ -1,12 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Home, Settings, UserRound } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { ChevronUp, Home, LogOut, Settings, UserRound } from "lucide-react";
 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@acme/ui/dropdown-menu";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -14,7 +21,10 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSkeleton,
 } from "@acme/ui/sidebar";
+
+import { authClient } from "~/auth/client";
 
 const navItems = [
   { title: "Home", href: "/", icon: Home },
@@ -24,6 +34,8 @@ const navItems = [
 
 export function AppSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const { data: session, isPending } = authClient.useSession();
 
   return (
     <Sidebar>
@@ -47,6 +59,66 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter>
+        <SidebarMenu>
+          {isPending ? (
+            <SidebarMenuItem>
+              <SidebarMenuSkeleton showIcon />
+            </SidebarMenuItem>
+          ) : session?.user ? (
+            <SidebarMenuItem>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <SidebarMenuButton
+                    size="lg"
+                    className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                    tooltip={`${session.user.name} · ${session.user.email}`}
+                  >
+                    <UserRound className="size-4 shrink-0" />
+                    <div className="grid min-w-0 flex-1 text-left text-sm leading-tight">
+                      <span className="truncate font-medium">
+                        {session.user.name}
+                      </span>
+                      <span className="text-sidebar-foreground/70 truncate text-xs">
+                        {session.user.email}
+                      </span>
+                    </div>
+                    <ChevronUp className="ml-auto size-4 shrink-0 opacity-50" />
+                  </SidebarMenuButton>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  className="min-w-56 rounded-lg"
+                  side="top"
+                  align="start"
+                  sideOffset={4}
+                >
+                  <DropdownMenuItem
+                    variant="destructive"
+                    className="gap-2"
+                    onClick={async () => {
+                      await authClient.signOut();
+                      router.push("/");
+                      router.refresh();
+                    }}
+                  >
+                    <LogOut className="size-4" />
+                    Log out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </SidebarMenuItem>
+          ) : (
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild size="lg" tooltip="Sign in">
+                <Link href="/sign-in">
+                  <UserRound />
+                  <span>Sign in</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          )}
+        </SidebarMenu>
+      </SidebarFooter>
     </Sidebar>
   );
 }
