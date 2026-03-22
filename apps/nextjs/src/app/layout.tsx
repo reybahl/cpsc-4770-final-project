@@ -1,14 +1,14 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
-import { cn } from "@acme/ui";
+import { cn } from "@formagent/ui";
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-} from "@acme/ui/sidebar";
-import { ThemeProvider, ThemeToggle } from "@acme/ui/theme";
-import { Toaster } from "@acme/ui/toast";
+} from "@formagent/ui/sidebar";
+import { ThemeProvider, ThemeToggle } from "@formagent/ui/theme";
+import { Toaster } from "@formagent/ui/toast";
 
 import { AppSidebar } from "~/app/_components/app-sidebar";
 import { env } from "~/env";

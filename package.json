@@ -10,13 +10,13 @@
     "build": "turbo run build",
     "clean": "git clean -xdf node_modules",
     "clean:workspaces": "turbo run clean",
-    "auth:generate": "pnpm -F @acme/auth generate",
-    "db:generate": "pnpm -F @acme/db run generate",
-    "db:migrate": "pnpm -F @acme/db run migrate",
-    "db:push": "turbo -F @acme/db push",
-    "db:studio": "turbo -F @acme/db studio",
+    "auth:generate": "pnpm -F @formagent/auth generate",
+    "db:generate": "pnpm -F @formagent/db run generate",
+    "db:migrate": "pnpm -F @formagent/db run migrate",
+    "db:push": "turbo -F @formagent/db push",
+    "db:studio": "turbo -F @formagent/db studio",
     "dev": "turbo watch dev --continue",
-    "dev:next": "turbo watch dev -F @acme/nextjs...",
+    "dev:next": "turbo watch dev -F @formagent/nextjs...",
     "format": "turbo run format --continue -- --cache --cache-location .cache/.prettiercache",
     "format:fix": "turbo run format --continue -- --write --cache --cache-location .cache/.prettiercache",
     "lint": "turbo run lint --continue -- --cache --cache-location .cache/.eslintcache",
@@ -28,7 +28,7 @@
     "ui-add": "turbo run ui-add"
   },
   "devDependencies": {
-    "@acme/prettier-config": "workspace:*",
+    "@formagent/prettier-config": "workspace:*",
     "@turbo/gen": "^2.5.8",
     "dotenv-cli": "^10.0.0",
     "eslint": "catalog:",
@@ -38,5 +38,5 @@
     "turbo": "^2.5.8",
     "typescript": "catalog:"
   },
-  "prettier": "@acme/prettier-config"
+  "prettier": "@formagent/prettier-config"
 }

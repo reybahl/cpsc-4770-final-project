@@ -1,5 +1,5 @@
 {
-  "name": "@acme/db",
+  "name": "@formagent/db",
   "private": true,
   "type": "module",
   "exports": {
@@ -37,14 +37,14 @@
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@acme/eslint-config": "workspace:*",
-    "@acme/prettier-config": "workspace:*",
-    "@acme/tsconfig": "workspace:*",
+    "@formagent/eslint-config": "workspace:*",
+    "@formagent/prettier-config": "workspace:*",
+    "@formagent/tsconfig": "workspace:*",
     "@types/pg": "^8.11.10",
     "drizzle-kit": "^0.31.5",
     "eslint": "catalog:",
     "prettier": "catalog:",
     "typescript": "catalog:"
   },
-  "prettier": "@acme/prettier-config"
+  "prettier": "@formagent/prettier-config"
 }

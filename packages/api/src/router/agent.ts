@@ -1,8 +1,8 @@
 import type { TRPCRouterRecord } from "@trpc/server";
 import { z } from "zod/v4";
 
-import { desc, eq } from "@acme/db";
-import { context, sessions, userSettings } from "@acme/db/schema";
+import { desc, eq } from "@formagent/db";
+import { context, sessions, userSettings } from "@formagent/db/schema";
 
 import {
   composeUserContextForAgent,

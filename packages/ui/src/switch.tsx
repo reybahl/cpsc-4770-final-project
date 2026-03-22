@@ -1,7 +1,7 @@
 import type { ComponentProps } from "react";
 import * as SwitchPrimitive from "@radix-ui/react-switch";
 
-import { cn } from "@acme/ui";
+import { cn } from "@formagent/ui";
 
 export function Switch({
   className,

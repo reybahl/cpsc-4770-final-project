@@ -2,7 +2,7 @@
 
 import { Loader2 } from "lucide-react";
 
-import type { IdentityProfile } from "@acme/api";
+import type { IdentityProfile } from "@formagent/api";
 
 function flattenForTable(
   value: unknown,

@@ -1,8 +1,8 @@
 import type { TRPCRouterRecord } from "@trpc/server";
 import { z } from "zod/v4";
 
-import { eq } from "@acme/db";
-import { context, CreateContextSchema } from "@acme/db/schema";
+import { eq } from "@formagent/db";
+import { context, CreateContextSchema } from "@formagent/db/schema";
 
 import { parseIdentityProfileFromDb } from "../lib/identity-profile-schema";
 import { rebuildIdentityProfileFromSources } from "../lib/rebuild-identity-profile";

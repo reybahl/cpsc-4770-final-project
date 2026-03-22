@@ -1,4 +1,4 @@
-import { cn } from "@acme/ui";
+import { cn } from "@formagent/ui";
 
 function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
   return (

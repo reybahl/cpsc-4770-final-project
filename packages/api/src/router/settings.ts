@@ -1,8 +1,8 @@
 import type { TRPCRouterRecord } from "@trpc/server";
 import { z } from "zod/v4";
 
-import { eq } from "@acme/db";
-import { userSettings } from "@acme/db/schema";
+import { eq } from "@formagent/db";
+import { userSettings } from "@formagent/db/schema";
 
 import { protectedProcedure } from "../trpc";
 

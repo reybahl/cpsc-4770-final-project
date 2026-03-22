@@ -1,5 +1,5 @@
 {
-  "name": "@acme/api",
+  "name": "@formagent/api",
   "private": true,
   "type": "module",
   "exports": {
@@ -18,12 +18,12 @@
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "dependencies": {
-    "@acme/auth": "workspace:*",
-    "@acme/db": "workspace:*",
-    "@acme/validators": "workspace:*",
     "@ai-sdk/openai": "^3.0.41",
     "@browserbasehq/sdk": "^2.8.0",
     "@browserbasehq/stagehand": "^3.1.0",
+    "@formagent/auth": "workspace:*",
+    "@formagent/db": "workspace:*",
+    "@formagent/validators": "workspace:*",
     "@supabase/supabase-js": "^2.99.0",
     "@trpc/server": "catalog:",
     "ai": "^6.0.116",
@@ -31,13 +31,13 @@
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@acme/eslint-config": "workspace:*",
-    "@acme/prettier-config": "workspace:*",
-    "@acme/tsconfig": "workspace:*",
+    "@formagent/eslint-config": "workspace:*",
+    "@formagent/prettier-config": "workspace:*",
+    "@formagent/tsconfig": "workspace:*",
     "@types/pg": "^8.11.10",
     "eslint": "catalog:",
     "prettier": "catalog:",
     "typescript": "catalog:"
   },
-  "prettier": "@acme/prettier-config"
+  "prettier": "@formagent/prettier-config"
 }

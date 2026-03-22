@@ -2,10 +2,10 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { cn } from "@acme/ui";
-import { Label } from "@acme/ui/label";
-import { Switch } from "@acme/ui/switch";
-import { toast } from "@acme/ui/toast";
+import { cn } from "@formagent/ui";
+import { Label } from "@formagent/ui/label";
+import { Switch } from "@formagent/ui/switch";
+import { toast } from "@formagent/ui/toast";
 
 import { useTRPC } from "~/trpc/react";
 
