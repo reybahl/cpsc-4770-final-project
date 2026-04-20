@@ -71,6 +71,11 @@ export interface FormAgentOptions {
    * instead of yielding fields for human review (no review sheet / second request).
    */
   skipHumanReview?: boolean;
+  /**
+   * Force local Chromium even when Browserbase credentials are present.
+   * Use this when the form URL is on localhost (e.g., during eval).
+   */
+  forceLocalBrowser?: boolean;
 }
 
 const FILL_ONLY_INSTRUCTION = `Fill every visible form field with the appropriate value from the user's information.
@@ -104,22 +109,24 @@ export async function* runFormAgent(
     mode = "fill-and-verify",
     prefilledData = [],
     skipHumanReview = false,
+    forceLocalBrowser = false,
   } = options;
 
   const { Stagehand } = await import("@browserbasehq/stagehand");
 
-  const stagehand = useBrowserbase
-    ? new Stagehand({
-        env: "BROWSERBASE",
-        apiKey: process.env.BROWSERBASE_API_KEY,
-        projectId: process.env.BROWSERBASE_PROJECT_ID,
-      })
-    : new Stagehand({
-        env: "LOCAL",
-        localBrowserLaunchOptions: {
-          headless: false,
-        },
-      });
+  const stagehand =
+    useBrowserbase && !forceLocalBrowser
+      ? new Stagehand({
+          env: "BROWSERBASE",
+          apiKey: process.env.BROWSERBASE_API_KEY,
+          projectId: process.env.BROWSERBASE_PROJECT_ID,
+        })
+      : new Stagehand({
+          env: "LOCAL",
+          localBrowserLaunchOptions: {
+            headless: true,
+          },
+        });
 
   try {
     try {

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Scholarship Application</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 600px; margin: 40px auto; padding: 0 20px; color: #111; }
+    h1 { font-size: 1.5rem; margin-bottom: 6px; }
+    .subtitle { color: #555; font-size: 0.9rem; margin-bottom: 28px; }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .fg { margin-bottom: 16px; }
+    label { display: block; font-weight: 500; font-size: 0.9rem; margin-bottom: 4px; }
+    .hint { font-size: 0.78rem; color: #666; margin-top: 2px; }
+    input, select, textarea { width: 100%; padding: 8px 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 0.95rem; }
+    textarea { min-height: 160px; resize: vertical; }
+    button { background: #b45309; color: #fff; padding: 10px 28px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.95rem; }
+  </style>
+</head>
+<body>
+  <h1>Merit &amp; Need Scholarship Application</h1>
+  <p class="subtitle">Deadline: March 31, 2025 · Awards up to $10,000</p>
+  <form method="post" action="#">
+    <div class="fg">
+      <label for="fullName">Full Name</label>
+      <input type="text" id="fullName" name="fullName" required>
+    </div>
+    <div class="fg">
+      <label for="email">Email Address</label>
+      <input type="email" id="email" name="email" required>
+    </div>
+    <div class="row2">
+      <div class="fg">
+        <label for="institution">Current Institution</label>
+        <input type="text" id="institution" name="institution" required>
+      </div>
+      <div class="fg">
+        <label for="major">Field of Study / Major</label>
+        <input type="text" id="major" name="major" required>
+      </div>
+    </div>
+    <div class="row2">
+      <div class="fg">
+        <label for="cumulativeGPA">Cumulative GPA</label>
+        <input type="text" id="cumulativeGPA" name="cumulativeGPA" placeholder="e.g. 3.7" required>
+      </div>
+      <div class="fg">
+        <label for="financialNeed">Level of Financial Need</label>
+        <select id="financialNeed" name="financialNeed" required>
+          <option value="">Select…</option>
+          <option value="high">High – significant financial hardship</option>
+          <option value="medium">Medium – some financial constraints</option>
+          <option value="low">Low – minimal financial need</option>
+        </select>
+      </div>
+    </div>
+    <div class="fg">
+      <label for="essayResponse">Essay: Describe your academic and career goals</label>
+      <p class="hint">Minimum 250 words. Explain how this scholarship will help you achieve them.</p>
+      <textarea id="essayResponse" name="essayResponse" required></textarea>
+    </div>
+    <button type="submit">Submit Application</button>
+  </form>
+</body>
+</html>

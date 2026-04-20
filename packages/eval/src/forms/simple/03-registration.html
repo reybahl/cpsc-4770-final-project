@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Create Account</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 480px; margin: 40px auto; padding: 0 20px; color: #111; }
+    h1 { font-size: 1.5rem; margin-bottom: 24px; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .fg { margin-bottom: 16px; }
+    label { display: block; font-weight: 500; font-size: 0.9rem; margin-bottom: 4px; }
+    input { width: 100%; padding: 8px 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 0.95rem; }
+    button { width: 100%; background: #7c3aed; color: #fff; padding: 10px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.95rem; margin-top: 4px; }
+  </style>
+</head>
+<body>
+  <h1>Create Your Account</h1>
+  <form method="post" action="#">
+    <div class="row">
+      <div class="fg">
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" name="firstName" required>
+      </div>
+      <div class="fg">
+        <label for="lastName">Last Name</label>
+        <input type="text" id="lastName" name="lastName" required>
+      </div>
+    </div>
+    <div class="fg">
+      <label for="email">Email Address</label>
+      <input type="email" id="email" name="email" required>
+    </div>
+    <div class="fg">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" autocomplete="off" required>
+    </div>
+    <div class="fg">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" autocomplete="new-password" required>
+    </div>
+    <div class="fg">
+      <label for="confirmPassword">Confirm Password</label>
+      <input type="password" id="confirmPassword" name="confirmPassword" autocomplete="new-password" required>
+    </div>
+    <button type="submit">Create Account</button>
+  </form>
+</body>
+</html>

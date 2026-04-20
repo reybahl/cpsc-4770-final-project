@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Medical Intake Form</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 600px; margin: 40px auto; padding: 0 20px; color: #111; }
+    h1 { font-size: 1.5rem; margin-bottom: 6px; }
+    .subtitle { color: #555; font-size: 0.9rem; margin-bottom: 28px; }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .fg { margin-bottom: 16px; }
+    label { display: block; font-weight: 500; font-size: 0.9rem; margin-bottom: 4px; }
+    input, textarea { width: 100%; padding: 8px 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 0.95rem; }
+    textarea { min-height: 80px; resize: vertical; }
+    .note { font-size: 0.8rem; color: #666; margin-top: 2px; }
+    button { background: #059669; color: #fff; padding: 10px 28px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.95rem; }
+  </style>
+</head>
+<body>
+  <h1>Patient Intake Form</h1>
+  <p class="subtitle">Please complete before your appointment. All information is kept confidential.</p>
+  <form method="post" action="#">
+    <div class="row2">
+      <div class="fg">
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" name="firstName" required>
+      </div>
+      <div class="fg">
+        <label for="lastName">Last Name</label>
+        <input type="text" id="lastName" name="lastName" required>
+      </div>
+    </div>
+    <div class="fg">
+      <label for="dateOfBirth">Date of Birth</label>
+      <input type="date" id="dateOfBirth" name="dateOfBirth" required>
+    </div>
+    <div class="row2">
+      <div class="fg">
+        <label for="insuranceProvider">Insurance Provider</label>
+        <input type="text" id="insuranceProvider" name="insuranceProvider" placeholder="e.g. Blue Cross Blue Shield">
+      </div>
+      <div class="fg">
+        <label for="insuranceMemberId">Member ID / Policy Number</label>
+        <input type="text" id="insuranceMemberId" name="insuranceMemberId">
+      </div>
+    </div>
+    <div class="fg">
+      <label for="primaryPhysician">Primary Care Physician</label>
+      <input type="text" id="primaryPhysician" name="primaryPhysician" placeholder="Doctor's full name">
+    </div>
+    <div class="fg">
+      <label for="currentMedications">Current Medications</label>
+      <textarea id="currentMedications" name="currentMedications" placeholder="List medications, dosages, and frequency — or write 'None'"></textarea>
+    </div>
+    <div class="fg">
+      <label for="knownAllergies">Known Allergies</label>
+      <textarea id="knownAllergies" name="knownAllergies" placeholder="List allergies (medications, food, environmental) — or write 'None'"></textarea>
+    </div>
+    <div class="row2">
+      <div class="fg">
+        <label for="emergencyContactName">Emergency Contact Name</label>
+        <input type="text" id="emergencyContactName" name="emergencyContactName" required>
+      </div>
+      <div class="fg">
+        <label for="emergencyContactPhone">Emergency Contact Phone</label>
+        <input type="tel" id="emergencyContactPhone" name="emergencyContactPhone" required>
+      </div>
+    </div>
+    <button type="submit">Submit Intake Form</button>
+  </form>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Rental Application</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 600px; margin: 40px auto; padding: 0 20px; color: #111; }
+    h1 { font-size: 1.5rem; margin-bottom: 6px; }
+    .subtitle { color: #555; font-size: 0.9rem; margin-bottom: 28px; }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .row3 { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; }
+    .fg { margin-bottom: 16px; }
+    label { display: block; font-weight: 500; font-size: 0.9rem; margin-bottom: 4px; }
+    input { width: 100%; padding: 8px 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 0.95rem; }
+    button { background: #0070f3; color: #fff; padding: 10px 28px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.95rem; }
+  </style>
+</head>
+<body>
+  <h1>Rental Application</h1>
+  <p class="subtitle">Bayview Property Management — all information kept confidential</p>
+  <form method="post" action="#">
+    <div class="row2">
+      <div class="fg">
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" name="firstName" required>
+      </div>
+      <div class="fg">
+        <label for="lastName">Last Name</label>
+        <input type="text" id="lastName" name="lastName" required>
+      </div>
+    </div>
+    <div class="row2">
+      <div class="fg">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div class="fg">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" required>
+      </div>
+    </div>
+    <div class="fg">
+      <label for="currentAddress">Current Street Address</label>
+      <input type="text" id="currentAddress" name="currentAddress" required>
+    </div>
+    <div class="row3">
+      <div class="fg">
+        <label for="currentCity">City</label>
+        <input type="text" id="currentCity" name="currentCity" required>
+      </div>
+      <div class="fg">
+        <label for="currentState">State</label>
+        <input type="text" id="currentState" name="currentState" required>
+      </div>
+    </div>
+    <div class="row2">
+      <div class="fg">
+        <label for="currentEmployer">Current Employer</label>
+        <input type="text" id="currentEmployer" name="currentEmployer">
+      </div>
+      <div class="fg">
+        <label for="monthlyGrossIncome">Monthly Gross Income ($)</label>
+        <input type="text" id="monthlyGrossIncome" name="monthlyGrossIncome" placeholder="e.g. 9000">
+      </div>
+    </div>
+    <div class="fg">
+      <label for="desiredMoveIn">Desired Move-in Date</label>
+      <input type="date" id="desiredMoveIn" name="desiredMoveIn">
+    </div>
+    <button type="submit">Submit Application</button>
+  </form>
+</body>
+</html>

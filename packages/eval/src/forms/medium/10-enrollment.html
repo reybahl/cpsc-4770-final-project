@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Enrollment</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 600px; margin: 40px auto; padding: 0 20px; color: #111; }
+    h1 { font-size: 1.5rem; margin-bottom: 6px; }
+    .subtitle { color: #555; font-size: 0.9rem; margin-bottom: 28px; }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .fg { margin-bottom: 16px; }
+    label { display: block; font-weight: 500; font-size: 0.9rem; margin-bottom: 4px; }
+    input, select { width: 100%; padding: 8px 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 0.95rem; }
+    .radio-group { display: flex; gap: 24px; margin-top: 4px; }
+    .radio-group label { font-weight: normal; display: flex; align-items: center; gap: 6px; }
+    button { background: #0070f3; color: #fff; padding: 10px 28px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.95rem; }
+  </style>
+</head>
+<body>
+  <h1>Student Enrollment Application</h1>
+  <p class="subtitle">Greenfield University — Graduate &amp; Undergraduate Programs</p>
+  <form method="post" action="#">
+    <div class="row2">
+      <div class="fg">
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" name="firstName" required>
+      </div>
+      <div class="fg">
+        <label for="lastName">Last Name</label>
+        <input type="text" id="lastName" name="lastName" required>
+      </div>
+    </div>
+    <div class="row2">
+      <div class="fg">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div class="fg">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone">
+      </div>
+    </div>
+    <div class="fg">
+      <label for="intendedMajor">Intended Major / Program of Study</label>
+      <input type="text" id="intendedMajor" name="intendedMajor" placeholder="e.g. Computer Science" required>
+    </div>
+    <div class="row2">
+      <div class="fg">
+        <label for="degreeLevel">Degree Level</label>
+        <select id="degreeLevel" name="degreeLevel" required>
+          <option value="">Select…</option>
+          <option value="associate">Associate</option>
+          <option value="bachelor">Bachelor's</option>
+          <option value="master">Master's</option>
+          <option value="doctoral">Doctoral</option>
+          <option value="certificate">Certificate</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label for="startTerm">Desired Start Term</label>
+        <select id="startTerm" name="startTerm" required>
+          <option value="">Select…</option>
+          <option value="Fall 2025">Fall 2025</option>
+          <option value="Spring 2026">Spring 2026</option>
+          <option value="Fall 2026">Fall 2026</option>
+          <option value="Spring 2027">Spring 2027</option>
+        </select>
+      </div>
+    </div>
+    <div class="fg">
+      <label for="currentGPA">Current / Most Recent GPA (if applicable)</label>
+      <input type="text" id="currentGPA" name="currentGPA" placeholder="e.g. 3.7">
+    </div>
+    <div class="fg">
+      <label>Are you a transfer student?</label>
+      <div class="radio-group">
+        <label><input type="radio" name="transferStudent" value="yes"> Yes</label>
+        <label><input type="radio" name="transferStudent" value="no"> No</label>
+      </div>
+    </div>
+    <button type="submit">Submit Application</button>
+  </form>
+</body>
+</html>
