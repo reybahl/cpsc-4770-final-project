@@ -9,8 +9,8 @@
     "clean": "git clean -xdf .cache node_modules"
   },
   "dependencies": {
-    "@formagent/api": "workspace:*",
     "@ai-sdk/openai": "^3.0.41",
+    "@formagent/api": "workspace:*",
     "ai": "^6.0.116",
     "zod": "catalog:"
   },
