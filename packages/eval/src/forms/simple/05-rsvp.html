@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Event RSVP</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 480px; margin: 40px auto; padding: 0 20px; color: #111; }
+    h1 { font-size: 1.5rem; margin-bottom: 6px; }
+    .subtitle { color: #555; margin-bottom: 24px; font-size: 0.9rem; }
+    .fg { margin-bottom: 16px; }
+    label { display: block; font-weight: 500; font-size: 0.9rem; margin-bottom: 4px; }
+    input { width: 100%; padding: 8px 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 0.95rem; }
+    .radio-group { display: flex; gap: 24px; margin-top: 4px; }
+    .radio-group label { font-weight: normal; display: flex; align-items: center; gap: 6px; }
+    button { background: #ea580c; color: #fff; padding: 10px 24px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.95rem; }
+  </style>
+</head>
+<body>
+  <h1>Annual Tech Summit — RSVP</h1>
+  <p class="subtitle">Saturday, June 14, 2025 · San Francisco Convention Center</p>
+  <form method="post" action="#">
+    <div class="fg">
+      <label for="fullName">Your Name</label>
+      <input type="text" id="fullName" name="fullName" required>
+    </div>
+    <div class="fg">
+      <label for="email">Email Address</label>
+      <input type="email" id="email" name="email" required>
+    </div>
+    <div class="fg">
+      <label>Will you attend?</label>
+      <div class="radio-group">
+        <label><input type="radio" name="attending" value="yes"> Yes, I'll be there</label>
+        <label><input type="radio" name="attending" value="no"> No, I can't make it</label>
+      </div>
+    </div>
+    <div class="fg">
+      <label for="guestCount">Number of Guests (including yourself)</label>
+      <input type="number" id="guestCount" name="guestCount" min="1" max="5" value="">
+    </div>
+    <div class="fg">
+      <label for="dietaryRestrictions">Dietary Restrictions</label>
+      <input type="text" id="dietaryRestrictions" name="dietaryRestrictions" placeholder="e.g. Vegetarian, Gluten-free, None">
+    </div>
+    <button type="submit">Submit RSVP</button>
+  </form>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Research Grant Application</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 700px; margin: 40px auto; padding: 0 20px; color: #111; }
+    h1 { font-size: 1.5rem; margin-bottom: 6px; }
+    .subtitle { color: #555; font-size: 0.9rem; margin-bottom: 28px; }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .fg { margin-bottom: 16px; }
+    fieldset { border: 1px solid #ddd; border-radius: 6px; padding: 18px; margin-bottom: 24px; }
+    legend { font-weight: 700; font-size: 0.95rem; padding: 0 8px; color: #333; }
+    label { display: block; font-weight: 500; font-size: 0.9rem; margin-bottom: 4px; }
+    .hint { font-size: 0.78rem; color: #666; margin-top: 2px; }
+    input, select, textarea { width: 100%; padding: 8px 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 0.95rem; }
+    textarea { min-height: 110px; resize: vertical; }
+    button { background: #1d4ed8; color: #fff; padding: 10px 32px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.95rem; }
+  </style>
+</head>
+<body>
+  <h1>Research Grant Application</h1>
+  <p class="subtitle">Innovation Research Fund — Cycle 2025 · Deadline: June 30, 2025</p>
+  <form method="post" action="#">
+
+    <fieldset>
+      <legend>Principal Investigator</legend>
+      <div class="row2">
+        <div class="fg">
+          <label for="piFirstName">First Name</label>
+          <input type="text" id="piFirstName" name="piFirstName" required>
+        </div>
+        <div class="fg">
+          <label for="piLastName">Last Name</label>
+          <input type="text" id="piLastName" name="piLastName" required>
+        </div>
+      </div>
+      <div class="row2">
+        <div class="fg">
+          <label for="piEmail">Email Address</label>
+          <input type="email" id="piEmail" name="piEmail" required>
+        </div>
+        <div class="fg">
+          <label for="piTitle">Title / Position</label>
+          <input type="text" id="piTitle" name="piTitle" placeholder="e.g. Associate Professor, Research Scientist">
+        </div>
+      </div>
+      <div class="fg">
+        <label for="piInstitution">Institution / Organization</label>
+        <input type="text" id="piInstitution" name="piInstitution" required>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Project Overview</legend>
+      <div class="fg">
+        <label for="projectTitle">Project Title</label>
+        <input type="text" id="projectTitle" name="projectTitle" required>
+      </div>
+      <div class="fg">
+        <label for="projectAbstract">Project Abstract</label>
+        <p class="hint">200–300 words summarizing the project.</p>
+        <textarea id="projectAbstract" name="projectAbstract" required></textarea>
+      </div>
+      <div class="fg">
+        <label for="specificAims">Specific Aims / Objectives</label>
+        <textarea id="specificAims" name="specificAims" placeholder="List 2–4 specific aims…"></textarea>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Budget &amp; Timeline</legend>
+      <div class="row2">
+        <div class="fg">
+          <label for="projectDuration">Project Duration</label>
+          <select id="projectDuration" name="projectDuration" required>
+            <option value="">Select…</option>
+            <option value="6-months">6 months</option>
+            <option value="1-year">1 year</option>
+            <option value="2-years">2 years</option>
+            <option value="3-years">3 years</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label for="requestedFunding">Requested Funding Amount (USD)</label>
+          <input type="text" id="requestedFunding" name="requestedFunding" placeholder="e.g. 75000">
+        </div>
+      </div>
+      <div class="fg">
+        <label for="budgetJustification">Budget Justification</label>
+        <p class="hint">Explain how funds will be allocated (personnel, equipment, travel, etc.).</p>
+        <textarea id="budgetJustification" name="budgetJustification" required></textarea>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Expected Outcomes</legend>
+      <div class="fg">
+        <label for="expectedImpact">Expected Impact &amp; Deliverables</label>
+        <p class="hint">Describe anticipated publications, tools, datasets, or other outcomes.</p>
+        <textarea id="expectedImpact" name="expectedImpact" required></textarea>
+      </div>
+    </fieldset>
+
+    <button type="submit">Submit Grant Application</button>
+  </form>
+</body>
+</html>

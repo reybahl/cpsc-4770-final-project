@@ -6,6 +6,9 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./src/index.ts"
+    },
+    "./eval": {
+      "default": "./src/lib/eval-exports.ts"
     }
   },
   "license": "MIT",

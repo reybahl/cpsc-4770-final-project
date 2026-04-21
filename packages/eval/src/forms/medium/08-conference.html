@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Conference Registration</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 600px; margin: 40px auto; padding: 0 20px; color: #111; }
+    h1 { font-size: 1.5rem; margin-bottom: 6px; }
+    .subtitle { color: #555; font-size: 0.9rem; margin-bottom: 28px; }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .fg { margin-bottom: 16px; }
+    label { display: block; font-weight: 500; font-size: 0.9rem; margin-bottom: 4px; }
+    input, select { width: 100%; padding: 8px 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 0.95rem; }
+    button { background: #7c3aed; color: #fff; padding: 10px 28px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.95rem; }
+  </style>
+</head>
+<body>
+  <h1>DevConf 2025 — Registration</h1>
+  <p class="subtitle">July 22–24 · Moscone Center, San Francisco</p>
+  <form method="post" action="#">
+    <div class="fg">
+      <label for="fullName">Full Name</label>
+      <input type="text" id="fullName" name="fullName" required>
+    </div>
+    <div class="fg">
+      <label for="email">Email Address</label>
+      <input type="email" id="email" name="email" required>
+    </div>
+    <div class="row2">
+      <div class="fg">
+        <label for="organization">Organization / Employer</label>
+        <input type="text" id="organization" name="organization">
+      </div>
+      <div class="fg">
+        <label for="jobTitle">Job Title</label>
+        <input type="text" id="jobTitle" name="jobTitle">
+      </div>
+    </div>
+    <div class="row2">
+      <div class="fg">
+        <label for="dietaryPreference">Dietary Preference</label>
+        <select id="dietaryPreference" name="dietaryPreference">
+          <option value="">Select…</option>
+          <option value="none">No restrictions</option>
+          <option value="vegetarian">Vegetarian</option>
+          <option value="vegan">Vegan</option>
+          <option value="gluten-free">Gluten-free</option>
+          <option value="kosher">Kosher</option>
+          <option value="halal">Halal</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label for="tshirtSize">T-Shirt Size</label>
+        <select id="tshirtSize" name="tshirtSize">
+          <option value="">Select size…</option>
+          <option value="xs">XS</option>
+          <option value="s">S</option>
+          <option value="m">M</option>
+          <option value="l">L</option>
+          <option value="xl">XL</option>
+          <option value="xxl">XXL</option>
+        </select>
+      </div>
+    </div>
+    <div class="fg">
+      <label for="workshopChoice">Workshop Selection (optional)</label>
+      <select id="workshopChoice" name="workshopChoice">
+        <option value="none">No workshop</option>
+        <option value="workshop-a">Workshop A – AI in Production</option>
+        <option value="workshop-b">Workshop B – Platform Engineering</option>
+        <option value="workshop-c">Workshop C – Security Best Practices</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label for="badgeName">Name for Conference Badge</label>
+      <input type="text" id="badgeName" name="badgeName" placeholder="How you'd like to be addressed">
+    </div>
+    <button type="submit">Complete Registration</button>
+  </form>
+</body>
+</html>

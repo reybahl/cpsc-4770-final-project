@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Job Application</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 600px; margin: 40px auto; padding: 0 20px; color: #111; }
+    h1 { font-size: 1.5rem; margin-bottom: 6px; }
+    .subtitle { color: #555; font-size: 0.9rem; margin-bottom: 28px; }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .fg { margin-bottom: 16px; }
+    label { display: block; font-weight: 500; font-size: 0.9rem; margin-bottom: 4px; }
+    input, select { width: 100%; padding: 8px 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 0.95rem; }
+    button { background: #0070f3; color: #fff; padding: 10px 28px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.95rem; }
+  </style>
+</head>
+<body>
+  <h1>Job Application</h1>
+  <p class="subtitle">Complete all required fields and click Submit.</p>
+  <form method="post" action="#">
+    <div class="row2">
+      <div class="fg">
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" name="firstName" required>
+      </div>
+      <div class="fg">
+        <label for="lastName">Last Name</label>
+        <input type="text" id="lastName" name="lastName" required>
+      </div>
+    </div>
+    <div class="row2">
+      <div class="fg">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div class="fg">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" required>
+      </div>
+    </div>
+    <div class="fg">
+      <label for="positionApplied">Position Applied For</label>
+      <input type="text" id="positionApplied" name="positionApplied" placeholder="e.g. Software Engineer" required>
+    </div>
+    <div class="row2">
+      <div class="fg">
+        <label for="earliestStartDate">Earliest Available Start Date</label>
+        <input type="date" id="earliestStartDate" name="earliestStartDate">
+      </div>
+      <div class="fg">
+        <label for="expectedSalary">Expected Annual Salary (USD)</label>
+        <input type="text" id="expectedSalary" name="expectedSalary" placeholder="e.g. 120000">
+      </div>
+    </div>
+    <div class="fg">
+      <label for="workAuthorization">Are you legally authorized to work in the US?</label>
+      <select id="workAuthorization" name="workAuthorization" required>
+        <option value="">Select…</option>
+        <option value="yes">Yes, I am authorized</option>
+        <option value="no">No, I require sponsorship</option>
+        <option value="sponsorship">I will need sponsorship in the future</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label for="hearAboutUs">How did you hear about us?</label>
+      <select id="hearAboutUs" name="hearAboutUs">
+        <option value="">Select…</option>
+        <option value="linkedin">LinkedIn</option>
+        <option value="indeed">Indeed</option>
+        <option value="referral">Employee Referral</option>
+        <option value="website">Company Website</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+    <button type="submit">Submit Application</button>
+  </form>
+</body>
+</html>

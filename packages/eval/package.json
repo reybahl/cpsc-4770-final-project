@@ -1,0 +1,22 @@
+{
+  "name": "@formagent/eval",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "eval": "tsx src/index.ts",
+    "eval:baseline-only": "tsx src/index.ts --skip-agent",
+    "eval:agent-only": "tsx src/index.ts --skip-baseline",
+    "clean": "git clean -xdf .cache node_modules"
+  },
+  "dependencies": {
+    "@ai-sdk/openai": "^3.0.41",
+    "@formagent/api": "workspace:*",
+    "ai": "^6.0.116",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@formagent/tsconfig": "workspace:*",
+    "tsx": "^4.19.3",
+    "typescript": "catalog:"
+  }
+}
