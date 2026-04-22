@@ -88,7 +88,7 @@ export function printReport(report: EvalReport): void {
 
   printAggregate("FormAgent (browser + Stagehand agent)", report.agent);
   const baselineLabel = report.baselineLlmModel
-    ? `Baseline (HTML→LLM→Playwright fill→extract; LLM ${report.baselineLlmModel})`
+    ? `Baseline (live page→LLM→Playwright fill→extract; LLM ${report.baselineLlmModel})`
     : "Baseline (skipped)";
   printAggregate(baselineLabel, report.baseline);
 

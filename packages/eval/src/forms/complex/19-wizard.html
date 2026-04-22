@@ -34,125 +34,83 @@
   </div>
 
   <form method="post" action="#">
-
-    <!-- Step 1: Personal -->
-    <div class="step visible" id="step-1">
-      <div class="step-title">Step 1 of 4 — Personal Information</div>
-      <div class="row2">
-        <div class="fg">
-          <label for="firstName">First Name</label>
-          <input type="text" id="firstName" name="firstName" required>
+    <!-- Initial DOM: step 1 only. Steps 2–4 load via fetch when the user advances (not in this document). -->
+    <div id="steps-root">
+      <div class="step visible" id="step-1">
+        <div class="step-title">Step 1 of 4 — Personal Information</div>
+        <div class="row2">
+          <div class="fg">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" name="firstName" required>
+          </div>
+          <div class="fg">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" name="lastName" required>
+          </div>
         </div>
         <div class="fg">
-          <label for="lastName">Last Name</label>
-          <input type="text" id="lastName" name="lastName" required>
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" required>
         </div>
-      </div>
-      <div class="fg">
-        <label for="email">Email Address</label>
-        <input type="email" id="email" name="email" required>
-      </div>
-      <div class="fg">
-        <label for="phone">Phone Number</label>
-        <input type="tel" id="phone" name="phone">
-      </div>
-      <div class="nav">
-        <span></span>
-        <button type="button" class="btn-next" onclick="goTo(2)">Next →</button>
+        <div class="fg">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" name="phone">
+        </div>
+        <div class="nav">
+          <span></span>
+          <button type="button" class="btn-next" onclick="goTo(2)">Next →</button>
+        </div>
       </div>
     </div>
-
-    <!-- Step 2: Education -->
-    <div class="step" id="step-2">
-      <div class="step-title">Step 2 of 4 — Education</div>
-      <div class="fg">
-        <label for="universityName">University / College</label>
-        <input type="text" id="universityName" name="universityName">
-      </div>
-      <div class="row2">
-        <div class="fg">
-          <label for="degreeType">Degree Type</label>
-          <select id="degreeType" name="degreeType">
-            <option value="">Select…</option>
-            <option value="associate">Associate</option>
-            <option value="bachelor">Bachelor's</option>
-            <option value="master">Master's</option>
-            <option value="doctoral">Doctoral</option>
-          </select>
-        </div>
-        <div class="fg">
-          <label for="fieldOfStudy">Field of Study</label>
-          <input type="text" id="fieldOfStudy" name="fieldOfStudy">
-        </div>
-      </div>
-      <div class="fg">
-        <label for="graduationYear">Graduation Year</label>
-        <input type="text" id="graduationYear" name="graduationYear" placeholder="YYYY">
-      </div>
-      <div class="nav">
-        <button type="button" class="btn-back" onclick="goTo(1)">← Back</button>
-        <button type="button" class="btn-next" onclick="goTo(3)">Next →</button>
-      </div>
-    </div>
-
-    <!-- Step 3: Experience -->
-    <div class="step" id="step-3">
-      <div class="step-title">Step 3 of 4 — Work Experience</div>
-      <div class="row2">
-        <div class="fg">
-          <label for="currentCompany">Current Company</label>
-          <input type="text" id="currentCompany" name="currentCompany">
-        </div>
-        <div class="fg">
-          <label for="currentRole">Current Role</label>
-          <input type="text" id="currentRole" name="currentRole">
-        </div>
-      </div>
-      <div class="row2">
-        <div class="fg">
-          <label for="employmentStartDate">Employment Start Date</label>
-          <input type="text" id="employmentStartDate" name="employmentStartDate" placeholder="MM/YYYY">
-        </div>
-        <div class="fg">
-          <label for="totalYearsExperience">Total Years of Experience</label>
-          <input type="number" id="totalYearsExperience" name="totalYearsExperience" min="0">
-        </div>
-      </div>
-      <div class="nav">
-        <button type="button" class="btn-back" onclick="goTo(2)">← Back</button>
-        <button type="button" class="btn-next" onclick="goTo(4)">Next →</button>
-      </div>
-    </div>
-
-    <!-- Step 4: Skills -->
-    <div class="step" id="step-4">
-      <div class="step-title">Step 4 of 4 — Skills &amp; Summary</div>
-      <div class="fg">
-        <label for="technicalSkills">Technical Skills (comma-separated)</label>
-        <input type="text" id="technicalSkills" name="technicalSkills" placeholder="e.g. JavaScript, Python, React">
-      </div>
-      <div class="fg">
-        <label for="professionalSummary">Professional Summary</label>
-        <textarea id="professionalSummary" name="professionalSummary" placeholder="Brief overview of your background…"></textarea>
-      </div>
-      <div class="nav">
-        <button type="button" class="btn-back" onclick="goTo(3)">← Back</button>
-        <button type="submit" class="btn-submit">Submit Profile</button>
-      </div>
-    </div>
-
   </form>
 
   <script>
-    function goTo(n) {
-      document.querySelectorAll('.step').forEach((s, i) => {
-        s.classList.toggle('visible', i + 1 === n);
-      });
-      document.querySelectorAll('.step-dot').forEach((d, i) => {
-        d.classList.toggle('active', i + 1 === n);
-        d.classList.toggle('done', i + 1 < n);
-      });
-    }
+    (function () {
+      var mounted = { 1: true, 2: false, 3: false, 4: false };
+      var root = document.getElementById("steps-root");
+      var stepUrls = {
+        2: "19-wizard-step-2.html",
+        3: "19-wizard-step-3.html",
+        4: "19-wizard-step-4.html",
+      };
+
+      function updateDots(n) {
+        document.querySelectorAll(".step-dot").forEach(function (d, i) {
+          d.classList.toggle("active", i + 1 === n);
+          d.classList.toggle("done", i + 1 < n);
+        });
+      }
+
+      function showStep(n) {
+        root.querySelectorAll(".step").forEach(function (s) {
+          var id = s.id || "";
+          var num = parseInt(id.replace("step-", ""), 10);
+          s.classList.toggle("visible", num === n);
+        });
+        updateDots(n);
+      }
+
+      async function ensureMounted(n) {
+        if (n === 1 || mounted[n]) return;
+        var url = stepUrls[n];
+        if (!url) return;
+        var res = await fetch(url, { cache: "no-store" });
+        if (!res.ok) throw new Error("Failed to load step " + n + ": " + res.status);
+        var html = await res.text();
+        root.insertAdjacentHTML("beforeend", html);
+        mounted[n] = true;
+      }
+
+      window.goTo = async function (n) {
+        if (n < 1 || n > 4) return;
+        try {
+          await ensureMounted(n);
+          showStep(n);
+        } catch (e) {
+          console.error(e);
+        }
+      };
+    })();
   </script>
 </body>
 </html>

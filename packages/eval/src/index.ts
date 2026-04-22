@@ -9,7 +9,7 @@
  *   --forms <ids>         Comma-separated form IDs to run, e.g. 01,02,07
  *   --difficulty <d>      Filter by difficulty: simple | medium | complex
  *   --skip-agent          Skip the FormAgent (browser) evaluation
- *   --skip-baseline       Skip the Playwright baseline (HTML→LLM→fill→extract)
+ *   --skip-baseline       Skip the Playwright baseline (live page→LLM→fill→extract)
  *   --output <file>       Path for the JSON report (default: eval-report.json)
  *   --help                Print this help
  *
@@ -21,7 +21,7 @@
  *   The eval always forces local Chromium so forms on localhost are reachable.
  *
  * Optional env vars (baseline value predictor):
- *   EVAL_BASELINE_MODEL   Model for the HTML→structured-fields step before Playwright applies values
+ *   EVAL_BASELINE_MODEL   Model for the live page snapshot→structured-fields step before Playwright applies values
  *                         (default: gpt-4.1-mini, aligned with typical Stagehand).
  *
  * First-time: install Chromium for the baseline browser — `pnpm -F @formagent/eval run eval:install-browser`
@@ -38,7 +38,7 @@ Options:
   --forms <ids>       Comma-separated form IDs (e.g. 01,02,07)
   --difficulty <d>    simple | medium | complex
   --skip-agent        Skip the FormAgent evaluation
-  --skip-baseline     Skip the HTML→LLM→Playwright baseline
+  --skip-baseline     Skip the live-page→LLM→Playwright baseline
   --output <file>     JSON report path (default: eval-report.json)
   --help              Show this help
 

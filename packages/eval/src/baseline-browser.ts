@@ -5,7 +5,7 @@ import type { FilledField } from "@formagent/api/eval";
 import { extractFormFields, verifyFilledFields } from "@formagent/api/eval";
 
 import type { BaselineField } from "./baseline.js";
-import { runBaselineOnForm } from "./baseline.js";
+import { runBaselineOnPageHtml } from "./baseline.js";
 import { USER_CONTEXT } from "./fixtures/test-profile.js";
 
 export interface BaselineBrowserRunResult {
@@ -73,24 +73,13 @@ async function applyBaselineField(page: Page, f: BaselineField): Promise<void> {
 }
 
 /**
- * Baseline that matches production scoring: static HTML → LLM field values → real browser fill →
- * same DOM extract + verify pipeline as {@link runAgentOnForm}.
+ * Baseline aligned with the agent’s inputs: load `formUrl` → snapshot `page.content()` → LLM field
+ * values → Playwright fill → same extract + verify pipeline as {@link runAgentOnForm}.
  */
 export async function runBaselineBrowserOnForm(
   formUrl: string,
-  formFilePath: string,
 ): Promise<BaselineBrowserRunResult> {
   const start = Date.now();
-
-  const predicted = await runBaselineOnForm(formFilePath);
-  if (!predicted.completed) {
-    return {
-      completed: false,
-      filledFields: [],
-      error: predicted.error,
-      durationMs: Date.now() - start,
-    };
-  }
 
   let browser: Awaited<ReturnType<typeof chromium.launch>> | undefined;
   try {
@@ -99,13 +88,24 @@ export async function runBaselineBrowserOnForm(
     await page.goto(formUrl, { waitUntil: "networkidle", timeout: 20_000 });
     await page.waitForTimeout(2_000);
 
+    const pageHtml = await page.content();
+    const predicted = await runBaselineOnPageHtml(pageHtml);
+    if (!predicted.completed) {
+      return {
+        completed: false,
+        filledFields: [],
+        error: predicted.error,
+        durationMs: Date.now() - start,
+      };
+    }
+
     for (const field of predicted.fields) {
       await applyBaselineField(page, field);
     }
 
     await page.waitForTimeout(500);
 
-    const raw = await extractFormFields(page);
+    const raw = await extractFormFields(page, { visibility: "all" });
     const filledFields = await verifyFilledFields(raw, USER_CONTEXT);
 
     return {

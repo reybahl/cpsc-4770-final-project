@@ -5,14 +5,29 @@ interface PageLike {
   evaluate<T>(pageFunction: string | (() => T)): Promise<T>;
 }
 
+export type ExtractFormFieldsVisibility = "visible" | "all";
+
+export interface ExtractFormFieldsOptions {
+  /**
+   * `"visible"` — skip controls whose ancestor chain has `display: none` / `visibility: hidden`
+   * (matches on-screen fields only).
+   * `"all"` — include those controls anyway so values from hidden wizard steps / collapsed
+   * sections are still read from the DOM (required for fair scoring after multi-step flows).
+   */
+  visibility?: ExtractFormFieldsVisibility;
+}
+
 /**
  * In-browser extraction logic as a single expression string.
  * Stagehand v3 wraps function callbacks in a template literal and JSON round-trips
  * the return value; that breaks for some larger functions (CDP reports "Uncaught").
  * Passing a string uses Runtime.evaluate directly (see Stagehand Page.evaluate).
  */
-const EXTRACT_FORM_FIELDS_EXPR = `
+function buildExtractFormFieldsExpr(includeAllInDom: boolean): string {
+  const includeAllLiteral = includeAllInDom ? "true" : "false";
+  return `
 (function () {
+  var INCLUDE_ALL_IN_DOM = ${includeAllLiteral};
   var fields = [];
   var seen = new Set();
   var idx = 0;
@@ -81,7 +96,7 @@ const EXTRACT_FORM_FIELDS_EXPR = `
   );
   for (var j = 0; j < els.length; j++) {
     var el = els[j];
-    if (!isVisible(el)) continue;
+    if (!INCLUDE_ALL_IN_DOM && !isVisible(el)) continue;
     var value = getValue(el);
     var label = getLabel(el);
     var name = el.name || "field_" + idx;
@@ -103,14 +118,21 @@ const EXTRACT_FORM_FIELDS_EXPR = `
   return fields;
 })()
 `;
+}
 
 /**
- * Extracts all visible form field values from the current page using DOM inspection.
+ * Extracts form field values from the current page using DOM inspection.
  * Returns label, name, type, value, and a stable selector for each field.
+ *
+ * Default `visibility: "all"` so post-fill verification includes fields on non-visible
+ * wizard steps; pass `"visible"` if you only want on-screen controls.
  */
 export async function extractFormFields(
   page: PageLike,
+  options: ExtractFormFieldsOptions = {},
 ): Promise<RawFormField[]> {
-  const raw = await page.evaluate(EXTRACT_FORM_FIELDS_EXPR);
+  const visibility = options.visibility ?? "all";
+  const expr = buildExtractFormFieldsExpr(visibility === "all");
+  const raw = await page.evaluate(expr);
   return raw as RawFormField[];
 }
