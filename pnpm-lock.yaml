@@ -246,6 +246,9 @@ importers:
       superjson:
         specifier: 2.2.3
         version: 2.2.3
+      ws:
+        specifier: ^8.18.3
+        version: 8.18.3(bufferutil@4.1.0)(utf-8-validate@6.0.4)
       zod:
         specifier: 'catalog:'
         version: 4.1.12
@@ -360,6 +363,9 @@ importers:
       ai:
         specifier: ^6.0.116
         version: 6.0.116(zod@4.1.12)
+      playwright:
+        specifier: ^1.58.2
+        version: 1.58.2
       zod:
         specifier: 'catalog:'
         version: 4.1.12
@@ -12917,15 +12923,13 @@ snapshots:
       exsolve: 1.0.7
       pathe: 2.0.3
 
-  playwright-core@1.58.2:
-    optional: true
+  playwright-core@1.58.2: {}
 
   playwright@1.58.2:
     dependencies:
       playwright-core: 1.58.2
     optionalDependencies:
       fsevents: 2.3.2
-    optional: true
 
   possible-typed-array-names@1.0.0: {}
 

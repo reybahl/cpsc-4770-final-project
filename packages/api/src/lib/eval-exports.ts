@@ -11,3 +11,4 @@ export type {
 } from "./form-agent-types.js";
 export { composeUserContextForAgent } from "./compose-user-context.js";
 export type { IdentityProfile } from "./identity-profile-schema.js";
+export { extractFormFields } from "./extract-form-fields.js";
