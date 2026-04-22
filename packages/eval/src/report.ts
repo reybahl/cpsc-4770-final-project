@@ -1,7 +1,7 @@
 import type {
-  FormEvalResult,
   AggregateMetrics,
   ConfidenceCalibration,
+  FormEvalResult,
 } from "./metrics.js";
 
 export interface EvalReport {
@@ -10,6 +10,8 @@ export interface EvalReport {
   agent: AggregateMetrics;
   baseline: AggregateMetrics;
   confidenceCalibration: ConfidenceCalibration;
+  /** OpenAI model id for the value-prediction step of the browser baseline (`EVAL_BASELINE_MODEL`). */
+  baselineLlmModel?: string;
 }
 
 const pct = (n: number) => `${(n * 100).toFixed(1)}%`;
@@ -37,10 +39,16 @@ export function printReport(report: EvalReport): void {
   const formIds = [...new Set(report.forms.map((r) => r.formId))].sort();
 
   for (const id of formIds) {
-    const agent    = report.forms.find((r) => r.formId === id && r.source === "agent");
-    const baseline = report.forms.find((r) => r.formId === id && r.source === "baseline");
-    const diff     = agent?.difficulty ?? baseline?.difficulty ?? "?";
-    const name     = (agent?.formName ?? baseline?.formName ?? "").slice(0, 29).padEnd(29);
+    const agent = report.forms.find(
+      (r) => r.formId === id && r.source === "agent",
+    );
+    const baseline = report.forms.find(
+      (r) => r.formId === id && r.source === "baseline",
+    );
+    const diff = agent?.difficulty ?? baseline?.difficulty ?? "?";
+    const name = (agent?.formName ?? baseline?.formName ?? "")
+      .slice(0, 29)
+      .padEnd(29);
     const agentStr = agent
       ? agent.completed
         ? pct(agent.fieldAccuracy).padStart(7)
@@ -74,14 +82,15 @@ export function printReport(report: EvalReport): void {
       `    Overall field accuracy: ${pct(m.overallFieldAccuracy)}  ${bar(m.overallFieldAccuracy)}`,
     );
     for (const [d, acc] of Object.entries(m.byDifficulty)) {
-      console.log(
-        `      ${d.padEnd(8)}: ${pct(acc)}  ${bar(acc, 16)}`,
-      );
+      console.log(`      ${d.padEnd(8)}: ${pct(acc)}  ${bar(acc, 16)}`);
     }
   };
 
-  printAggregate("FormAgent (browser + LLM loop)", report.agent);
-  printAggregate("Baseline  (static HTML → LLM)", report.baseline);
+  printAggregate("FormAgent (browser + Stagehand agent)", report.agent);
+  const baselineLabel = report.baselineLlmModel
+    ? `Baseline (HTML→LLM→Playwright fill→extract; LLM ${report.baselineLlmModel})`
+    : "Baseline (skipped)";
+  printAggregate(baselineLabel, report.baseline);
 
   // ── Confidence calibration ────────────────────────────────────────────────
   console.log("\n\nCONFIDENCE CALIBRATION  (FormAgent only)");
@@ -102,6 +111,7 @@ export function buildReport(
   agent: AggregateMetrics,
   baseline: AggregateMetrics,
   confidenceCalibration: ConfidenceCalibration,
+  extras?: { baselineLlmModel?: string },
 ): EvalReport {
   return {
     timestamp: new Date().toISOString(),
@@ -109,5 +119,6 @@ export function buildReport(
     agent,
     baseline,
     confidenceCalibration,
+    baselineLlmModel: extras?.baselineLlmModel,
   };
 }

@@ -4,6 +4,8 @@ export {
   type FormAgentMode,
   type FormAgentOptions,
 } from "./run-form-agent.js";
+export { extractFormFields } from "./extract-form-fields.js";
+export { verifyFilledFields } from "./verify-filled-fields.js";
 export type {
   FilledField,
   RawFormField,
