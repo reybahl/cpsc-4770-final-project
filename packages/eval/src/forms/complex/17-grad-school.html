@@ -7,108 +7,115 @@
     body { font-family: system-ui, sans-serif; max-width: 660px; margin: 40px auto; padding: 0 20px; color: #111; }
     h1 { font-size: 1.5rem; margin-bottom: 6px; }
     .subtitle { color: #555; font-size: 0.9rem; margin-bottom: 28px; }
+    .accordion { border: 1px solid #ddd; border-radius: 6px; margin-bottom: 12px; overflow: hidden; }
+    .accordion-header { width: 100%; background: #f9fafb; border: none; padding: 14px 18px; text-align: left; font-weight: 700; font-size: 0.95rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: #333; }
+    .accordion-header:hover { background: #f3f4f6; }
+    .accordion-header .chevron { transition: transform 0.2s; font-style: normal; }
+    .accordion-header.open .chevron { transform: rotate(180deg); }
+    .accordion-body { display: none; padding: 18px; border-top: 1px solid #e5e7eb; }
+    .accordion-body.open { display: block; }
     .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
     .fg { margin-bottom: 16px; }
-    fieldset { border: 1px solid #ddd; border-radius: 6px; padding: 18px; margin-bottom: 24px; }
-    legend { font-weight: 700; font-size: 0.95rem; padding: 0 8px; color: #333; }
     label { display: block; font-weight: 500; font-size: 0.9rem; margin-bottom: 4px; }
     .hint { font-size: 0.78rem; color: #666; margin-top: 2px; }
     input, select, textarea { width: 100%; padding: 8px 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 0.95rem; }
     textarea { min-height: 130px; resize: vertical; }
-    button { background: #4f46e5; color: #fff; padding: 10px 28px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.95rem; }
+    button[type="submit"] { background: #4f46e5; color: #fff; padding: 10px 28px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.95rem; margin-top: 8px; }
   </style>
 </head>
 <body>
   <h1>Graduate School Application</h1>
   <p class="subtitle">Westlake University Graduate School of Engineering</p>
+  <p style="font-size:0.88rem;color:#555;margin-bottom:20px;">Click each section to expand and complete it.</p>
+
   <form method="post" action="#">
 
-    <fieldset>
-      <legend>Personal Information</legend>
-      <div class="row2">
-        <div class="fg">
-          <label for="firstName">First Name</label>
-          <input type="text" id="firstName" name="firstName" required>
+    <!-- Section 1: Personal -->
+    <div class="accordion">
+      <button type="button" class="accordion-header" onclick="toggleSection(this)">
+        Personal Information <span class="chevron">▼</span>
+      </button>
+      <div class="accordion-body">
+        <div class="row2">
+          <div class="fg"><label for="firstName">First Name</label><input type="text" id="firstName" name="firstName" required></div>
+          <div class="fg"><label for="lastName">Last Name</label><input type="text" id="lastName" name="lastName" required></div>
         </div>
-        <div class="fg">
-          <label for="lastName">Last Name</label>
-          <input type="text" id="lastName" name="lastName" required>
-        </div>
-      </div>
-      <div class="row2">
-        <div class="fg">
-          <label for="email">Email Address</label>
-          <input type="email" id="email" name="email" required>
-        </div>
-        <div class="fg">
-          <label for="phone">Phone Number</label>
-          <input type="tel" id="phone" name="phone">
+        <div class="row2">
+          <div class="fg"><label for="email">Email Address</label><input type="email" id="email" name="email" required></div>
+          <div class="fg"><label for="phone">Phone Number</label><input type="tel" id="phone" name="phone"></div>
         </div>
       </div>
-    </fieldset>
+    </div>
 
-    <fieldset>
-      <legend>Undergraduate Background</legend>
-      <div class="fg">
-        <label for="undergradInstitution">Undergraduate Institution</label>
-        <input type="text" id="undergradInstitution" name="undergradInstitution" required>
-      </div>
-      <div class="row2">
-        <div class="fg">
-          <label for="undergradMajor">Undergraduate Major</label>
-          <input type="text" id="undergradMajor" name="undergradMajor" required>
-        </div>
-        <div class="fg">
-          <label for="undergradGPA">Undergraduate GPA</label>
-          <input type="text" id="undergradGPA" name="undergradGPA" placeholder="e.g. 3.7" required>
+    <!-- Section 2: Academic Background -->
+    <div class="accordion">
+      <button type="button" class="accordion-header" onclick="toggleSection(this)">
+        Undergraduate Background <span class="chevron">▼</span>
+      </button>
+      <div class="accordion-body">
+        <div class="fg"><label for="undergradInstitution">Undergraduate Institution</label><input type="text" id="undergradInstitution" name="undergradInstitution" required></div>
+        <div class="row2">
+          <div class="fg"><label for="undergradMajor">Undergraduate Major</label><input type="text" id="undergradMajor" name="undergradMajor" required></div>
+          <div class="fg"><label for="undergradGPA">Undergraduate GPA</label><input type="text" id="undergradGPA" name="undergradGPA" placeholder="e.g. 3.7" required></div>
         </div>
       </div>
-    </fieldset>
+    </div>
 
-    <fieldset>
-      <legend>Standardized Test Scores (optional)</legend>
-      <div class="row3">
-        <div class="fg">
-          <label for="greVerbalScore">GRE Verbal</label>
-          <input type="text" id="greVerbalScore" name="greVerbalScore" placeholder="e.g. 162">
-        </div>
-        <div class="fg">
-          <label for="greQuantScore">GRE Quantitative</label>
-          <input type="text" id="greQuantScore" name="greQuantScore" placeholder="e.g. 168">
-        </div>
-        <div class="fg">
-          <label for="greWritingScore">GRE Analytical Writing</label>
-          <input type="text" id="greWritingScore" name="greWritingScore" placeholder="e.g. 4.5">
+    <!-- Section 3: Test Scores -->
+    <div class="accordion">
+      <button type="button" class="accordion-header" onclick="toggleSection(this)">
+        Standardized Test Scores <span class="chevron">▼</span>
+      </button>
+      <div class="accordion-body">
+        <p style="font-size:0.85rem;color:#555;margin-bottom:12px;">Optional — leave blank if not taken.</p>
+        <div class="row3">
+          <div class="fg"><label for="greVerbalScore">GRE Verbal</label><input type="text" id="greVerbalScore" name="greVerbalScore" placeholder="e.g. 162"></div>
+          <div class="fg"><label for="greQuantScore">GRE Quantitative</label><input type="text" id="greQuantScore" name="greQuantScore" placeholder="e.g. 168"></div>
+          <div class="fg"><label for="greWritingScore">GRE Analytical Writing</label><input type="text" id="greWritingScore" name="greWritingScore" placeholder="e.g. 4.5"></div>
         </div>
       </div>
-    </fieldset>
+    </div>
 
-    <fieldset>
-      <legend>Program &amp; Statement</legend>
-      <div class="fg">
-        <label for="desiredProgram">Program of Interest</label>
-        <select id="desiredProgram" name="desiredProgram" required>
-          <option value="">Select…</option>
-          <option value="ms-cs">MS – Computer Science</option>
-          <option value="ms-ds">MS – Data Science</option>
-          <option value="phd-cs">PhD – Computer Science</option>
-          <option value="phd-ai">PhD – Artificial Intelligence / ML</option>
-        </select>
+    <!-- Section 4: Program & Statement -->
+    <div class="accordion">
+      <button type="button" class="accordion-header" onclick="toggleSection(this)">
+        Program &amp; Statement <span class="chevron">▼</span>
+      </button>
+      <div class="accordion-body">
+        <div class="fg">
+          <label for="desiredProgram">Program of Interest</label>
+          <select id="desiredProgram" name="desiredProgram" required>
+            <option value="">Select…</option>
+            <option value="ms-cs">MS – Computer Science</option>
+            <option value="ms-ds">MS – Data Science</option>
+            <option value="phd-cs">PhD – Computer Science</option>
+            <option value="phd-ai">PhD – Artificial Intelligence / ML</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label for="statementOfPurpose">Statement of Purpose</label>
+          <p class="hint">~500 words. Describe your research interests, goals, and why you chose this program.</p>
+          <textarea id="statementOfPurpose" name="statementOfPurpose" required></textarea>
+        </div>
+        <div class="fg">
+          <label for="researchInterests">Research Interests</label>
+          <p class="hint">List specific topics or areas you'd like to explore.</p>
+          <textarea id="researchInterests" name="researchInterests"></textarea>
+        </div>
       </div>
-      <div class="fg">
-        <label for="statementOfPurpose">Statement of Purpose</label>
-        <p class="hint">~500 words. Describe your research interests, goals, and why you chose this program.</p>
-        <textarea id="statementOfPurpose" name="statementOfPurpose" required></textarea>
-      </div>
-      <div class="fg">
-        <label for="researchInterests">Research Interests</label>
-        <p class="hint">List specific topics or areas you'd like to explore.</p>
-        <textarea id="researchInterests" name="researchInterests"></textarea>
-      </div>
-    </fieldset>
+    </div>
 
     <button type="submit">Submit Application</button>
   </form>
+
+  <script>
+    function toggleSection(header) {
+      var body = header.nextElementSibling;
+      var isOpen = body.classList.contains('open');
+      body.classList.toggle('open', !isOpen);
+      header.classList.toggle('open', !isOpen);
+    }
+  </script>
 </body>
 </html>

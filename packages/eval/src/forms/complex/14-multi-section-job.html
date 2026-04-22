@@ -5,72 +5,60 @@
   <title>Full Job Application</title>
   <style>
     body { font-family: system-ui, sans-serif; max-width: 700px; margin: 40px auto; padding: 0 20px; color: #111; }
-    h1 { font-size: 1.5rem; margin-bottom: 24px; }
-    fieldset { border: 1px solid #ddd; border-radius: 6px; padding: 20px; margin-bottom: 28px; }
-    legend { font-weight: 700; font-size: 1rem; padding: 0 8px; color: #333; }
+    h1 { font-size: 1.5rem; margin-bottom: 4px; }
+    .progress { display: flex; gap: 6px; margin-bottom: 28px; }
+    .step-dot { flex: 1; height: 4px; border-radius: 2px; background: #e5e7eb; }
+    .step-dot.active { background: #0070f3; }
+    .step-dot.done { background: #10b981; }
+    .step { display: none; }
+    .step.visible { display: block; }
+    .step-title { font-size: 1.05rem; font-weight: 700; color: #333; margin-bottom: 20px; }
     .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
     .fg { margin-bottom: 14px; }
     label { display: block; font-weight: 500; font-size: 0.88rem; margin-bottom: 3px; }
     input, select, textarea { width: 100%; padding: 7px 9px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 0.93rem; }
     textarea { min-height: 100px; resize: vertical; }
-    button { background: #0070f3; color: #fff; padding: 10px 32px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.95rem; }
+    .nav { display: flex; justify-content: space-between; margin-top: 24px; }
+    .btn-back { background: #f3f4f6; color: #333; padding: 9px 22px; border: 1px solid #d1d5db; border-radius: 4px; cursor: pointer; font-size: 0.93rem; }
+    .btn-next { background: #0070f3; color: #fff; padding: 9px 22px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.93rem; }
+    .btn-submit { background: #10b981; color: #fff; padding: 9px 22px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.93rem; }
   </style>
 </head>
 <body>
   <h1>Full Job Application</h1>
+  <div class="progress">
+    <div class="step-dot active" id="dot-1"></div>
+    <div class="step-dot" id="dot-2"></div>
+    <div class="step-dot" id="dot-3"></div>
+  </div>
+
   <form method="post" action="#">
 
-    <!-- PERSONAL INFORMATION -->
-    <fieldset>
-      <legend>Personal Information</legend>
+    <!-- Step 1: Personal -->
+    <div class="step visible" id="step-1">
+      <div class="step-title">Step 1 of 3 — Personal Information</div>
       <div class="row2">
-        <div class="fg">
-          <label for="firstName">First Name</label>
-          <input type="text" id="firstName" name="firstName" required>
-        </div>
-        <div class="fg">
-          <label for="lastName">Last Name</label>
-          <input type="text" id="lastName" name="lastName" required>
-        </div>
+        <div class="fg"><label for="firstName">First Name</label><input type="text" id="firstName" name="firstName" required></div>
+        <div class="fg"><label for="lastName">Last Name</label><input type="text" id="lastName" name="lastName" required></div>
       </div>
       <div class="row2">
-        <div class="fg">
-          <label for="email">Email Address</label>
-          <input type="email" id="email" name="email" required>
-        </div>
-        <div class="fg">
-          <label for="phone">Phone Number</label>
-          <input type="tel" id="phone" name="phone" required>
-        </div>
+        <div class="fg"><label for="email">Email Address</label><input type="email" id="email" name="email" required></div>
+        <div class="fg"><label for="phone">Phone Number</label><input type="tel" id="phone" name="phone"></div>
       </div>
-      <div class="fg">
-        <label for="streetAddress">Street Address</label>
-        <input type="text" id="streetAddress" name="streetAddress">
-      </div>
+      <div class="fg"><label for="streetAddress">Street Address</label><input type="text" id="streetAddress" name="streetAddress"></div>
       <div class="row3">
-        <div class="fg">
-          <label for="city">City</label>
-          <input type="text" id="city" name="city">
-        </div>
-        <div class="fg">
-          <label for="state">State</label>
-          <input type="text" id="state" name="state">
-        </div>
-        <div class="fg">
-          <label for="zipCode">ZIP Code</label>
-          <input type="text" id="zipCode" name="zipCode">
-        </div>
+        <div class="fg"><label for="city">City</label><input type="text" id="city" name="city"></div>
+        <div class="fg"><label for="state">State</label><input type="text" id="state" name="state"></div>
+        <div class="fg"><label for="zipCode">ZIP Code</label><input type="text" id="zipCode" name="zipCode"></div>
       </div>
-    </fieldset>
+      <div class="nav"><span></span><button type="button" class="btn-next" onclick="goTo(2)">Next →</button></div>
+    </div>
 
-    <!-- EDUCATION -->
-    <fieldset>
-      <legend>Education</legend>
-      <div class="fg">
-        <label for="institutionName">School / University</label>
-        <input type="text" id="institutionName" name="institutionName" required>
-      </div>
+    <!-- Step 2: Education -->
+    <div class="step" id="step-2">
+      <div class="step-title">Step 2 of 3 — Education</div>
+      <div class="fg"><label for="institutionName">School / University</label><input type="text" id="institutionName" name="institutionName"></div>
       <div class="row2">
         <div class="fg">
           <label for="degreeType">Degree Type</label>
@@ -83,76 +71,54 @@
             <option value="other">Other / None</option>
           </select>
         </div>
-        <div class="fg">
-          <label for="majorField">Major / Field of Study</label>
-          <input type="text" id="majorField" name="majorField">
-        </div>
+        <div class="fg"><label for="majorField">Major / Field of Study</label><input type="text" id="majorField" name="majorField"></div>
       </div>
       <div class="row2">
-        <div class="fg">
-          <label for="graduationYear">Graduation Year</label>
-          <input type="text" id="graduationYear" name="graduationYear" placeholder="YYYY">
-        </div>
-        <div class="fg">
-          <label for="educationGPA">GPA</label>
-          <input type="text" id="educationGPA" name="educationGPA" placeholder="e.g. 3.7">
-        </div>
+        <div class="fg"><label for="graduationYear">Graduation Year</label><input type="text" id="graduationYear" name="graduationYear" placeholder="YYYY"></div>
+        <div class="fg"><label for="educationGPA">GPA</label><input type="text" id="educationGPA" name="educationGPA" placeholder="e.g. 3.7"></div>
       </div>
-    </fieldset>
+      <div class="nav">
+        <button type="button" class="btn-back" onclick="goTo(1)">← Back</button>
+        <button type="button" class="btn-next" onclick="goTo(3)">Next →</button>
+      </div>
+    </div>
 
-    <!-- WORK EXPERIENCE -->
-    <fieldset>
-      <legend>Work Experience</legend>
+    <!-- Step 3: Work Experience + Skills -->
+    <div class="step" id="step-3">
+      <div class="step-title">Step 3 of 3 — Work Experience &amp; Skills</div>
       <div class="row2">
-        <div class="fg">
-          <label for="mostRecentEmployer">Most Recent Employer</label>
-          <input type="text" id="mostRecentEmployer" name="mostRecentEmployer">
-        </div>
-        <div class="fg">
-          <label for="mostRecentTitle">Your Title</label>
-          <input type="text" id="mostRecentTitle" name="mostRecentTitle">
-        </div>
+        <div class="fg"><label for="mostRecentEmployer">Most Recent Employer</label><input type="text" id="mostRecentEmployer" name="mostRecentEmployer"></div>
+        <div class="fg"><label for="mostRecentTitle">Your Title</label><input type="text" id="mostRecentTitle" name="mostRecentTitle"></div>
       </div>
       <div class="row2">
-        <div class="fg">
-          <label for="mostRecentStartDate">Start Date</label>
-          <input type="text" id="mostRecentStartDate" name="mostRecentStartDate" placeholder="MM/YYYY">
-        </div>
-        <div class="fg">
-          <label for="mostRecentEndDate">End Date (or "Present")</label>
-          <input type="text" id="mostRecentEndDate" name="mostRecentEndDate" placeholder="MM/YYYY or Present">
-        </div>
+        <div class="fg"><label for="mostRecentStartDate">Start Date</label><input type="text" id="mostRecentStartDate" name="mostRecentStartDate" placeholder="MM/YYYY"></div>
+        <div class="fg"><label for="mostRecentEndDate">End Date (or "Present")</label><input type="text" id="mostRecentEndDate" name="mostRecentEndDate" placeholder="MM/YYYY or Present"></div>
       </div>
       <div class="row2">
-        <div class="fg">
-          <label for="previousEmployer">Previous Employer</label>
-          <input type="text" id="previousEmployer" name="previousEmployer">
-        </div>
-        <div class="fg">
-          <label for="previousTitle">Your Title</label>
-          <input type="text" id="previousTitle" name="previousTitle">
-        </div>
+        <div class="fg"><label for="previousEmployer">Previous Employer</label><input type="text" id="previousEmployer" name="previousEmployer"></div>
+        <div class="fg"><label for="previousTitle">Your Title</label><input type="text" id="previousTitle" name="previousTitle"></div>
       </div>
-    </fieldset>
+      <div class="fg"><label for="technicalSkillsList">Technical Skills</label><textarea id="technicalSkillsList" name="technicalSkillsList" placeholder="List languages, frameworks, tools…"></textarea></div>
+      <div class="fg"><label for="githubProfileUrl">GitHub Profile URL</label><input type="url" id="githubProfileUrl" name="githubProfileUrl" placeholder="https://github.com/username"></div>
+      <div class="fg"><label for="coverLetterText">Cover Letter</label><textarea id="coverLetterText" name="coverLetterText" placeholder="Introduce yourself and explain why you're a great fit…" style="min-height:140px"></textarea></div>
+      <div class="nav">
+        <button type="button" class="btn-back" onclick="goTo(2)">← Back</button>
+        <button type="submit" class="btn-submit">Submit Application</button>
+      </div>
+    </div>
 
-    <!-- SKILLS & CLOSING -->
-    <fieldset>
-      <legend>Skills &amp; Closing Statement</legend>
-      <div class="fg">
-        <label for="technicalSkillsList">Technical Skills</label>
-        <textarea id="technicalSkillsList" name="technicalSkillsList" placeholder="List languages, frameworks, tools…"></textarea>
-      </div>
-      <div class="fg">
-        <label for="githubProfileUrl">GitHub Profile URL</label>
-        <input type="url" id="githubProfileUrl" name="githubProfileUrl" placeholder="https://github.com/username">
-      </div>
-      <div class="fg">
-        <label for="coverLetterText">Cover Letter</label>
-        <textarea id="coverLetterText" name="coverLetterText" placeholder="Introduce yourself and explain why you're a great fit…" style="min-height:140px"></textarea>
-      </div>
-    </fieldset>
-
-    <button type="submit">Submit Application</button>
   </form>
+
+  <script>
+    function goTo(n) {
+      document.querySelectorAll('.step').forEach(function(s, i) {
+        s.classList.toggle('visible', i + 1 === n);
+      });
+      document.querySelectorAll('.step-dot').forEach(function(d, i) {
+        d.classList.toggle('active', i + 1 === n);
+        d.classList.toggle('done', i + 1 < n);
+      });
+    }
+  </script>
 </body>
 </html>

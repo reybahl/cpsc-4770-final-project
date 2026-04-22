@@ -66,13 +66,22 @@ const EXTRACT_FORM_FIELDS_EXPR = `
     return "text";
   }
 
+  function isVisible(el) {
+    var node = el;
+    while (node && node !== document.documentElement) {
+      var s = window.getComputedStyle(node);
+      if (s.display === "none" || s.visibility === "hidden") return false;
+      node = node.parentElement;
+    }
+    return true;
+  }
+
   var els = document.querySelectorAll(
     "input:not([type='hidden']):not([type='submit']):not([type='button']), select, textarea"
   );
   for (var j = 0; j < els.length; j++) {
     var el = els[j];
-    if (el.offsetParent === null && window.getComputedStyle(el).visibility === "hidden")
-      continue;
+    if (!isVisible(el)) continue;
     var value = getValue(el);
     var label = getLabel(el);
     var name = el.name || "field_" + idx;

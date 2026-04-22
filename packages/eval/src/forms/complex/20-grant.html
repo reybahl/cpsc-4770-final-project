@@ -5,58 +5,61 @@
   <title>Research Grant Application</title>
   <style>
     body { font-family: system-ui, sans-serif; max-width: 700px; margin: 40px auto; padding: 0 20px; color: #111; }
-    h1 { font-size: 1.5rem; margin-bottom: 6px; }
-    .subtitle { color: #555; font-size: 0.9rem; margin-bottom: 28px; }
+    h1 { font-size: 1.5rem; margin-bottom: 4px; }
+    .subtitle { color: #555; font-size: 0.9rem; margin-bottom: 24px; }
+    .progress { display: flex; gap: 6px; margin-bottom: 28px; }
+    .step-dot { flex: 1; height: 4px; border-radius: 2px; background: #e5e7eb; }
+    .step-dot.active { background: #1d4ed8; }
+    .step-dot.done { background: #10b981; }
+    .step { display: none; }
+    .step.visible { display: block; }
+    .step-title { font-size: 1.05rem; font-weight: 700; color: #333; margin-bottom: 20px; }
     .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .fg { margin-bottom: 16px; }
-    fieldset { border: 1px solid #ddd; border-radius: 6px; padding: 18px; margin-bottom: 24px; }
-    legend { font-weight: 700; font-size: 0.95rem; padding: 0 8px; color: #333; }
     label { display: block; font-weight: 500; font-size: 0.9rem; margin-bottom: 4px; }
     .hint { font-size: 0.78rem; color: #666; margin-top: 2px; }
     input, select, textarea { width: 100%; padding: 8px 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 0.95rem; }
     textarea { min-height: 110px; resize: vertical; }
-    button { background: #1d4ed8; color: #fff; padding: 10px 32px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.95rem; }
+    .radio-group { display: flex; gap: 24px; margin-top: 4px; }
+    .radio-group label { font-weight: normal; display: flex; align-items: center; gap: 6px; }
+    #irbSection { display: none; background: #fff7ed; border: 1px solid #fed7aa; border-radius: 6px; padding: 16px; margin-top: 12px; }
+    #irbSection.visible { display: block; }
+    .nav { display: flex; justify-content: space-between; margin-top: 24px; }
+    .btn-back { background: #f3f4f6; color: #333; padding: 9px 22px; border: 1px solid #d1d5db; border-radius: 4px; cursor: pointer; font-size: 0.93rem; }
+    .btn-next { background: #1d4ed8; color: #fff; padding: 9px 22px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.93rem; }
+    .btn-submit { background: #1d4ed8; color: #fff; padding: 9px 22px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.93rem; }
   </style>
 </head>
 <body>
   <h1>Research Grant Application</h1>
   <p class="subtitle">Innovation Research Fund — Cycle 2025 · Deadline: June 30, 2025</p>
+  <div class="progress">
+    <div class="step-dot active" id="dot-1"></div>
+    <div class="step-dot" id="dot-2"></div>
+    <div class="step-dot" id="dot-3"></div>
+  </div>
+
   <form method="post" action="#">
 
-    <fieldset>
-      <legend>Principal Investigator</legend>
+    <!-- Step 1: Principal Investigator -->
+    <div class="step visible" id="step-1">
+      <div class="step-title">Step 1 of 3 — Principal Investigator</div>
       <div class="row2">
-        <div class="fg">
-          <label for="piFirstName">First Name</label>
-          <input type="text" id="piFirstName" name="piFirstName" required>
-        </div>
-        <div class="fg">
-          <label for="piLastName">Last Name</label>
-          <input type="text" id="piLastName" name="piLastName" required>
-        </div>
+        <div class="fg"><label for="piFirstName">First Name</label><input type="text" id="piFirstName" name="piFirstName" required></div>
+        <div class="fg"><label for="piLastName">Last Name</label><input type="text" id="piLastName" name="piLastName" required></div>
       </div>
       <div class="row2">
-        <div class="fg">
-          <label for="piEmail">Email Address</label>
-          <input type="email" id="piEmail" name="piEmail" required>
-        </div>
-        <div class="fg">
-          <label for="piTitle">Title / Position</label>
-          <input type="text" id="piTitle" name="piTitle" placeholder="e.g. Associate Professor, Research Scientist">
-        </div>
+        <div class="fg"><label for="piEmail">Email Address</label><input type="email" id="piEmail" name="piEmail" required></div>
+        <div class="fg"><label for="piTitle">Title / Position</label><input type="text" id="piTitle" name="piTitle" placeholder="e.g. Associate Professor, Research Scientist"></div>
       </div>
-      <div class="fg">
-        <label for="piInstitution">Institution / Organization</label>
-        <input type="text" id="piInstitution" name="piInstitution" required>
-      </div>
-    </fieldset>
+      <div class="fg"><label for="piInstitution">Institution / Organization</label><input type="text" id="piInstitution" name="piInstitution" required></div>
+      <div class="nav"><span></span><button type="button" class="btn-next" onclick="goTo(2)">Next →</button></div>
+    </div>
 
-    <fieldset>
-      <legend>Project Overview</legend>
-      <div class="fg">
-        <label for="projectTitle">Project Title</label>
-        <input type="text" id="projectTitle" name="projectTitle" required>
-      </div>
+    <!-- Step 2: Project Overview -->
+    <div class="step" id="step-2">
+      <div class="step-title">Step 2 of 3 — Project Overview</div>
+      <div class="fg"><label for="projectTitle">Project Title</label><input type="text" id="projectTitle" name="projectTitle" required></div>
       <div class="fg">
         <label for="projectAbstract">Project Abstract</label>
         <p class="hint">200–300 words summarizing the project.</p>
@@ -66,10 +69,15 @@
         <label for="specificAims">Specific Aims / Objectives</label>
         <textarea id="specificAims" name="specificAims" placeholder="List 2–4 specific aims…"></textarea>
       </div>
-    </fieldset>
+      <div class="nav">
+        <button type="button" class="btn-back" onclick="goTo(1)">← Back</button>
+        <button type="button" class="btn-next" onclick="goTo(3)">Next →</button>
+      </div>
+    </div>
 
-    <fieldset>
-      <legend>Budget &amp; Timeline</legend>
+    <!-- Step 3: Budget, Outcomes, Human Subjects -->
+    <div class="step" id="step-3">
+      <div class="step-title">Step 3 of 3 — Budget &amp; Outcomes</div>
       <div class="row2">
         <div class="fg">
           <label for="projectDuration">Project Duration</label>
@@ -81,28 +89,53 @@
             <option value="3-years">3 years</option>
           </select>
         </div>
-        <div class="fg">
-          <label for="requestedFunding">Requested Funding Amount (USD)</label>
-          <input type="text" id="requestedFunding" name="requestedFunding" placeholder="e.g. 75000">
-        </div>
+        <div class="fg"><label for="requestedFunding">Requested Funding Amount (USD)</label><input type="text" id="requestedFunding" name="requestedFunding" placeholder="e.g. 75000"></div>
       </div>
       <div class="fg">
         <label for="budgetJustification">Budget Justification</label>
         <p class="hint">Explain how funds will be allocated (personnel, equipment, travel, etc.).</p>
         <textarea id="budgetJustification" name="budgetJustification" required></textarea>
       </div>
-    </fieldset>
-
-    <fieldset>
-      <legend>Expected Outcomes</legend>
       <div class="fg">
         <label for="expectedImpact">Expected Impact &amp; Deliverables</label>
         <p class="hint">Describe anticipated publications, tools, datasets, or other outcomes.</p>
         <textarea id="expectedImpact" name="expectedImpact" required></textarea>
       </div>
-    </fieldset>
+      <div class="fg">
+        <label>Does this project involve human subjects research?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="humanSubjectsResearch" value="yes" onchange="onHumanSubjectsChange(this.value)"> Yes</label>
+          <label><input type="radio" name="humanSubjectsResearch" value="no" onchange="onHumanSubjectsChange(this.value)"> No</label>
+        </div>
+      </div>
+      <div id="irbSection">
+        <p style="font-weight:600;font-size:0.9rem;margin-bottom:12px;color:#c2410c;">IRB Approval Required</p>
+        <div class="row2">
+          <div class="fg"><label for="irbApprovalNumber">IRB Approval Number</label><input type="text" id="irbApprovalNumber" name="irbApprovalNumber" placeholder="e.g. IRB-2025-0042"></div>
+          <div class="fg"><label for="irbExpirationDate">IRB Approval Expiration Date</label><input type="date" id="irbExpirationDate" name="irbExpirationDate"></div>
+        </div>
+      </div>
+      <div class="nav">
+        <button type="button" class="btn-back" onclick="goTo(2)">← Back</button>
+        <button type="submit" class="btn-submit">Submit Grant Application</button>
+      </div>
+    </div>
 
-    <button type="submit">Submit Grant Application</button>
   </form>
+
+  <script>
+    function goTo(n) {
+      document.querySelectorAll('.step').forEach(function(s, i) {
+        s.classList.toggle('visible', i + 1 === n);
+      });
+      document.querySelectorAll('.step-dot').forEach(function(d, i) {
+        d.classList.toggle('active', i + 1 === n);
+        d.classList.toggle('done', i + 1 < n);
+      });
+    }
+    function onHumanSubjectsChange(value) {
+      document.getElementById('irbSection').classList.toggle('visible', value === 'yes');
+    }
+  </script>
 </body>
 </html>
