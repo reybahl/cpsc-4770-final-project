@@ -1,7 +1,8 @@
+import { readFile } from "node:fs/promises";
 import { openai } from "@ai-sdk/openai";
 import { generateObject } from "ai";
-import { readFile } from "node:fs/promises";
 import { z } from "zod/v4";
+
 import { USER_CONTEXT } from "./fixtures/test-profile.js";
 
 export interface BaselineField {
@@ -21,13 +22,18 @@ export interface BaselineRunResult {
 const BaselineResultSchema = z.object({
   fields: z.array(
     z.object({
-      name:  z.string(),
+      name: z.string(),
       label: z.string(),
-      type:  z.string(),
+      type: z.string(),
       value: z.string(),
     }),
   ),
 });
+
+/** Model for the HTML→structured-fields baseline. Defaults to `gpt-4.1-mini` so the eval compares against a peer to the typical Stagehand agent model, not a stronger oracle (`gpt-4o`). Override with `EVAL_BASELINE_MODEL`. */
+export function getBaselineLlmModel(): string {
+  return process.env.EVAL_BASELINE_MODEL?.trim() || "gpt-4.1-mini";
+}
 
 export async function runBaselineOnForm(
   formFilePath: string,
@@ -38,7 +44,7 @@ export async function runBaselineOnForm(
     const html = await readFile(formFilePath, "utf-8");
 
     const { object } = await generateObject({
-      model: openai("gpt-4o"),
+      model: openai(getBaselineLlmModel()),
       schema: BaselineResultSchema,
       prompt: `You are filling out a web form. You are given the raw HTML of the form and the user's profile.
 

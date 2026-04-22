@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "eval": "tsx src/index.ts",
+    "eval:install-browser": "playwright install chromium",
     "eval:baseline-only": "tsx src/index.ts --skip-agent",
     "eval:agent-only": "tsx src/index.ts --skip-baseline",
     "clean": "git clean -xdf .cache node_modules"
@@ -12,6 +13,7 @@
     "@ai-sdk/openai": "^3.0.41",
     "@formagent/api": "workspace:*",
     "ai": "^6.0.116",
+    "playwright": "^1.58.2",
     "zod": "catalog:"
   },
   "devDependencies": {

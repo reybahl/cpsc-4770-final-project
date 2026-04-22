@@ -1,0 +1,4198 @@
+{
+  "timestamp": "2026-04-22T01:44:01.486Z",
+  "forms": [
+    {
+      "formId": "01",
+      "formName": "Contact Form",
+      "difficulty": "simple",
+      "source": "agent",
+      "completed": true,
+      "fields": [
+        {
+          "fieldName": "firstName",
+          "label": "First Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Alex"
+          },
+          "filledValue": "Alex",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "lastName",
+          "label": "Last Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Johnson"
+          },
+          "filledValue": "Johnson",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "email",
+          "label": "Email Address",
+          "matcher": {
+            "type": "exact",
+            "value": "alex.johnson@example.com"
+          },
+          "filledValue": "alex.johnson@example.com",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "phone",
+          "label": "Phone Number",
+          "matcher": {
+            "type": "phone",
+            "value": "4155550192"
+          },
+          "filledValue": "(415) 555-0192",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "message",
+          "label": "Message",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "Hello, this is Alex Johnson, Senior Software Engineer at StartupXYZ in San Francisco. I am reaching out regarding...",
+          "correct": true,
+          "confidence": "medium"
+        }
+      ],
+      "fieldAccuracy": 1,
+      "durationMs": 42735
+    },
+    {
+      "formId": "01",
+      "formName": "Contact Form",
+      "difficulty": "simple",
+      "source": "baseline",
+      "completed": true,
+      "fields": [
+        {
+          "fieldName": "firstName",
+          "label": "First Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Alex"
+          },
+          "filledValue": "Alex",
+          "correct": true
+        },
+        {
+          "fieldName": "lastName",
+          "label": "Last Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Johnson"
+          },
+          "filledValue": "Johnson",
+          "correct": true
+        },
+        {
+          "fieldName": "email",
+          "label": "Email Address",
+          "matcher": {
+            "type": "exact",
+            "value": "alex.johnson@example.com"
+          },
+          "filledValue": "alex.johnson@example.com",
+          "correct": true
+        },
+        {
+          "fieldName": "phone",
+          "label": "Phone Number",
+          "matcher": {
+            "type": "phone",
+            "value": "4155550192"
+          },
+          "filledValue": "(415) 555-0192",
+          "correct": true
+        },
+        {
+          "fieldName": "message",
+          "label": "Message",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "Hello, I am Alex Johnson, a Senior Software Engineer at StartupXYZ. I would love to connect regarding potential opportunities or collaborations. Thank you!",
+          "correct": true
+        }
+      ],
+      "fieldAccuracy": 1,
+      "durationMs": 1818
+    },
+    {
+      "formId": "02",
+      "formName": "Newsletter Signup",
+      "difficulty": "simple",
+      "source": "agent",
+      "completed": true,
+      "fields": [
+        {
+          "fieldName": "fullName",
+          "label": "Full Name",
+          "matcher": {
+            "type": "contains",
+            "values": ["alex", "johnson"]
+          },
+          "filledValue": "Alex Johnson",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "email",
+          "label": "Email Address",
+          "matcher": {
+            "type": "exact",
+            "value": "alex.johnson@example.com"
+          },
+          "filledValue": "alex.johnson@example.com",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "frequency",
+          "label": "Email Frequency",
+          "matcher": {
+            "type": "skip"
+          },
+          "filledValue": "weekly",
+          "correct": null,
+          "confidence": "medium"
+        }
+      ],
+      "fieldAccuracy": 1,
+      "durationMs": 16755
+    },
+    {
+      "formId": "02",
+      "formName": "Newsletter Signup",
+      "difficulty": "simple",
+      "source": "baseline",
+      "completed": true,
+      "fields": [
+        {
+          "fieldName": "fullName",
+          "label": "Full Name",
+          "matcher": {
+            "type": "contains",
+            "values": ["alex", "johnson"]
+          },
+          "filledValue": "Alex Johnson",
+          "correct": true
+        },
+        {
+          "fieldName": "email",
+          "label": "Email Address",
+          "matcher": {
+            "type": "exact",
+            "value": "alex.johnson@example.com"
+          },
+          "filledValue": "alex.johnson@example.com",
+          "correct": true
+        },
+        {
+          "fieldName": "frequency",
+          "label": "Email Frequency",
+          "matcher": {
+            "type": "skip"
+          },
+          "filledValue": "weekly",
+          "correct": null
+        }
+      ],
+      "fieldAccuracy": 1,
+      "durationMs": 1552
+    },
+    {
+      "formId": "03",
+      "formName": "Account Registration",
+      "difficulty": "simple",
+      "source": "agent",
+      "completed": true,
+      "fields": [
+        {
+          "fieldName": "firstName",
+          "label": "First Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Alex"
+          },
+          "filledValue": "Alex",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "lastName",
+          "label": "Last Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Johnson"
+          },
+          "filledValue": "Johnson",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "email",
+          "label": "Email Address",
+          "matcher": {
+            "type": "exact",
+            "value": "alex.johnson@example.com"
+          },
+          "filledValue": "alex.johnson@example.com",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "username",
+          "label": "Username",
+          "matcher": {
+            "type": "skip"
+          },
+          "filledValue": "alex.johnson@example.com",
+          "correct": null,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "password",
+          "label": "Password",
+          "matcher": {
+            "type": "skip"
+          },
+          "filledValue": "",
+          "correct": null,
+          "confidence": "low"
+        },
+        {
+          "fieldName": "confirmPassword",
+          "label": "Confirm Password",
+          "matcher": {
+            "type": "skip"
+          },
+          "filledValue": "",
+          "correct": null,
+          "confidence": "low"
+        }
+      ],
+      "fieldAccuracy": 1,
+      "durationMs": 27601
+    },
+    {
+      "formId": "03",
+      "formName": "Account Registration",
+      "difficulty": "simple",
+      "source": "baseline",
+      "completed": true,
+      "fields": [
+        {
+          "fieldName": "firstName",
+          "label": "First Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Alex"
+          },
+          "filledValue": "Alex",
+          "correct": true
+        },
+        {
+          "fieldName": "lastName",
+          "label": "Last Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Johnson"
+          },
+          "filledValue": "Johnson",
+          "correct": true
+        },
+        {
+          "fieldName": "email",
+          "label": "Email Address",
+          "matcher": {
+            "type": "exact",
+            "value": "alex.johnson@example.com"
+          },
+          "filledValue": "alex.johnson@example.com",
+          "correct": true
+        },
+        {
+          "fieldName": "username",
+          "label": "Username",
+          "matcher": {
+            "type": "skip"
+          },
+          "filledValue": "alexjohnson",
+          "correct": null
+        },
+        {
+          "fieldName": "password",
+          "label": "Password",
+          "matcher": {
+            "type": "skip"
+          },
+          "filledValue": "",
+          "correct": null
+        },
+        {
+          "fieldName": "confirmPassword",
+          "label": "Confirm Password",
+          "matcher": {
+            "type": "skip"
+          },
+          "filledValue": "",
+          "correct": null
+        }
+      ],
+      "fieldAccuracy": 1,
+      "durationMs": 1900
+    },
+    {
+      "formId": "04",
+      "formName": "Shipping Address",
+      "difficulty": "simple",
+      "source": "agent",
+      "completed": true,
+      "fields": [
+        {
+          "fieldName": "recipientName",
+          "label": "Recipient Full Name",
+          "matcher": {
+            "type": "contains",
+            "values": ["alex", "johnson"]
+          },
+          "filledValue": "Alex Johnson",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "streetAddress",
+          "label": "Street Address",
+          "matcher": {
+            "type": "contains",
+            "values": ["742"]
+          },
+          "filledValue": "742 Evergreen Terrace, Apt 4B",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "city",
+          "label": "City",
+          "matcher": {
+            "type": "exact",
+            "value": "san francisco"
+          },
+          "filledValue": "San Francisco",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "state",
+          "label": "State / Province",
+          "matcher": {
+            "type": "any-of",
+            "values": ["ca", "california"]
+          },
+          "filledValue": "CA",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "zipCode",
+          "label": "ZIP / Postal Code",
+          "matcher": {
+            "type": "exact",
+            "value": "94102"
+          },
+          "filledValue": "94102",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "country",
+          "label": "Country",
+          "matcher": {
+            "type": "contains",
+            "values": ["united states"]
+          },
+          "filledValue": "United States",
+          "correct": true,
+          "confidence": "high"
+        }
+      ],
+      "fieldAccuracy": 1,
+      "durationMs": 16504
+    },
+    {
+      "formId": "04",
+      "formName": "Shipping Address",
+      "difficulty": "simple",
+      "source": "baseline",
+      "completed": true,
+      "fields": [
+        {
+          "fieldName": "recipientName",
+          "label": "Recipient Full Name",
+          "matcher": {
+            "type": "contains",
+            "values": ["alex", "johnson"]
+          },
+          "filledValue": "Alex Johnson",
+          "correct": true
+        },
+        {
+          "fieldName": "streetAddress",
+          "label": "Street Address",
+          "matcher": {
+            "type": "contains",
+            "values": ["742"]
+          },
+          "filledValue": "742 Evergreen Terrace, Apt 4B",
+          "correct": true
+        },
+        {
+          "fieldName": "city",
+          "label": "City",
+          "matcher": {
+            "type": "exact",
+            "value": "san francisco"
+          },
+          "filledValue": "San Francisco",
+          "correct": true
+        },
+        {
+          "fieldName": "state",
+          "label": "State / Province",
+          "matcher": {
+            "type": "any-of",
+            "values": ["ca", "california"]
+          },
+          "filledValue": "CA",
+          "correct": true
+        },
+        {
+          "fieldName": "zipCode",
+          "label": "ZIP / Postal Code",
+          "matcher": {
+            "type": "exact",
+            "value": "94102"
+          },
+          "filledValue": "94102",
+          "correct": true
+        },
+        {
+          "fieldName": "country",
+          "label": "Country",
+          "matcher": {
+            "type": "contains",
+            "values": ["united states"]
+          },
+          "filledValue": "United States",
+          "correct": true
+        }
+      ],
+      "fieldAccuracy": 1,
+      "durationMs": 1293
+    },
+    {
+      "formId": "05",
+      "formName": "Event RSVP",
+      "difficulty": "simple",
+      "source": "agent",
+      "completed": true,
+      "fields": [
+        {
+          "fieldName": "fullName",
+          "label": "Your Name",
+          "matcher": {
+            "type": "contains",
+            "values": ["alex", "johnson"]
+          },
+          "filledValue": "Alex Johnson",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "email",
+          "label": "Email Address",
+          "matcher": {
+            "type": "exact",
+            "value": "alex.johnson@example.com"
+          },
+          "filledValue": "alex.johnson@example.com",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "attending",
+          "label": "No, I can't make it",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "",
+          "correct": false,
+          "confidence": "medium"
+        },
+        {
+          "fieldName": "guestCount",
+          "label": "Number of Guests (including yourself)",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "1",
+          "correct": true,
+          "confidence": "medium"
+        },
+        {
+          "fieldName": "dietaryRestrictions",
+          "label": "Dietary Restrictions",
+          "matcher": {
+            "type": "contains",
+            "values": ["vegetarian"]
+          },
+          "filledValue": "Vegetarian",
+          "correct": true,
+          "confidence": "high"
+        }
+      ],
+      "fieldAccuracy": 0.8,
+      "durationMs": 16205
+    },
+    {
+      "formId": "05",
+      "formName": "Event RSVP",
+      "difficulty": "simple",
+      "source": "baseline",
+      "completed": true,
+      "fields": [
+        {
+          "fieldName": "fullName",
+          "label": "Your Name",
+          "matcher": {
+            "type": "contains",
+            "values": ["alex", "johnson"]
+          },
+          "filledValue": "Alex Johnson",
+          "correct": true
+        },
+        {
+          "fieldName": "email",
+          "label": "Email Address",
+          "matcher": {
+            "type": "exact",
+            "value": "alex.johnson@example.com"
+          },
+          "filledValue": "alex.johnson@example.com",
+          "correct": true
+        },
+        {
+          "fieldName": "attending",
+          "label": "Will you attend?",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "yes",
+          "correct": true
+        },
+        {
+          "fieldName": "guestCount",
+          "label": "Number of Guests (including yourself)",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "1",
+          "correct": true
+        },
+        {
+          "fieldName": "dietaryRestrictions",
+          "label": "Dietary Restrictions",
+          "matcher": {
+            "type": "contains",
+            "values": ["vegetarian"]
+          },
+          "filledValue": "Vegetarian",
+          "correct": true
+        }
+      ],
+      "fieldAccuracy": 1,
+      "durationMs": 2309
+    },
+    {
+      "formId": "06",
+      "formName": "Feedback Form",
+      "difficulty": "simple",
+      "source": "agent",
+      "completed": true,
+      "fields": [
+        {
+          "fieldName": "name",
+          "label": "Your Name",
+          "matcher": {
+            "type": "contains",
+            "values": ["alex", "johnson"]
+          },
+          "filledValue": "Alex Johnson",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "email",
+          "label": "Email Address",
+          "matcher": {
+            "type": "exact",
+            "value": "alex.johnson@example.com"
+          },
+          "filledValue": "alex.johnson@example.com",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "rating",
+          "label": "Overall Rating (1–5)",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "5",
+          "correct": true,
+          "confidence": "medium"
+        },
+        {
+          "fieldName": "category",
+          "label": "Feedback Category",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "Select category…",
+          "correct": true,
+          "confidence": "low"
+        },
+        {
+          "fieldName": "comments",
+          "label": "Your Comments",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "",
+          "correct": false,
+          "confidence": "low"
+        }
+      ],
+      "fieldAccuracy": 0.8,
+      "durationMs": 26319
+    },
+    {
+      "formId": "06",
+      "formName": "Feedback Form",
+      "difficulty": "simple",
+      "source": "baseline",
+      "completed": true,
+      "fields": [
+        {
+          "fieldName": "name",
+          "label": "Your Name",
+          "matcher": {
+            "type": "contains",
+            "values": ["alex", "johnson"]
+          },
+          "filledValue": "Alex Johnson",
+          "correct": true
+        },
+        {
+          "fieldName": "email",
+          "label": "Email Address",
+          "matcher": {
+            "type": "exact",
+            "value": "alex.johnson@example.com"
+          },
+          "filledValue": "alex.johnson@example.com",
+          "correct": true
+        },
+        {
+          "fieldName": "rating",
+          "label": "Overall Rating (1–5)",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "5",
+          "correct": true
+        },
+        {
+          "fieldName": "category",
+          "label": "Feedback Category",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "website",
+          "correct": true
+        },
+        {
+          "fieldName": "comments",
+          "label": "Your Comments",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "I appreciate the user-friendly interface and responsive design of the website. It greatly enhances the overall experience.",
+          "correct": true
+        }
+      ],
+      "fieldAccuracy": 1,
+      "durationMs": 1559
+    },
+    {
+      "formId": "07",
+      "formName": "Job Application – Basic",
+      "difficulty": "medium",
+      "source": "agent",
+      "completed": true,
+      "fields": [
+        {
+          "fieldName": "firstName",
+          "label": "First Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Alex"
+          },
+          "filledValue": "Alex",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "lastName",
+          "label": "Last Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Johnson"
+          },
+          "filledValue": "Johnson",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "email",
+          "label": "Email Address",
+          "matcher": {
+            "type": "exact",
+            "value": "alex.johnson@example.com"
+          },
+          "filledValue": "alex.johnson@example.com",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "phone",
+          "label": "Phone Number",
+          "matcher": {
+            "type": "phone",
+            "value": "4155550192"
+          },
+          "filledValue": "(415) 555-0192",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "positionApplied",
+          "label": "Position Applied For",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "Senior Software Engineer",
+          "correct": true,
+          "confidence": "medium"
+        },
+        {
+          "fieldName": "earliestStartDate",
+          "label": "Earliest Available Start Date",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "",
+          "correct": false,
+          "confidence": "low"
+        },
+        {
+          "fieldName": "expectedSalary",
+          "label": "Expected Annual Salary (USD)",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "130000",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "workAuthorization",
+          "label": "Are you legally authorized to work in the US?",
+          "matcher": {
+            "type": "contains",
+            "values": ["yes"]
+          },
+          "filledValue": "yes",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "hearAboutUs",
+          "label": "How did you hear about us?",
+          "matcher": {
+            "type": "skip"
+          },
+          "filledValue": "linkedin",
+          "correct": null,
+          "confidence": "medium"
+        }
+      ],
+      "fieldAccuracy": 0.875,
+      "durationMs": 39689
+    },
+    {
+      "formId": "07",
+      "formName": "Job Application – Basic",
+      "difficulty": "medium",
+      "source": "baseline",
+      "completed": true,
+      "fields": [
+        {
+          "fieldName": "firstName",
+          "label": "First Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Alex"
+          },
+          "filledValue": "Alex",
+          "correct": true
+        },
+        {
+          "fieldName": "lastName",
+          "label": "Last Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Johnson"
+          },
+          "filledValue": "Johnson",
+          "correct": true
+        },
+        {
+          "fieldName": "email",
+          "label": "Email Address",
+          "matcher": {
+            "type": "exact",
+            "value": "alex.johnson@example.com"
+          },
+          "filledValue": "alex.johnson@example.com",
+          "correct": true
+        },
+        {
+          "fieldName": "phone",
+          "label": "Phone Number",
+          "matcher": {
+            "type": "phone",
+            "value": "4155550192"
+          },
+          "filledValue": "(415) 555-0192",
+          "correct": true
+        },
+        {
+          "fieldName": "positionApplied",
+          "label": "Position Applied For",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "Senior Software Engineer",
+          "correct": true
+        },
+        {
+          "fieldName": "earliestStartDate",
+          "label": "Earliest Available Start Date",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "",
+          "correct": false
+        },
+        {
+          "fieldName": "expectedSalary",
+          "label": "Expected Annual Salary (USD)",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "130000",
+          "correct": true
+        },
+        {
+          "fieldName": "workAuthorization",
+          "label": "Are you legally authorized to work in the US?",
+          "matcher": {
+            "type": "contains",
+            "values": ["yes"]
+          },
+          "filledValue": "yes",
+          "correct": true
+        },
+        {
+          "fieldName": "hearAboutUs",
+          "label": "How did you hear about us?",
+          "matcher": {
+            "type": "skip"
+          },
+          "filledValue": "",
+          "correct": null
+        }
+      ],
+      "fieldAccuracy": 0.875,
+      "durationMs": 2623
+    },
+    {
+      "formId": "08",
+      "formName": "Conference Registration",
+      "difficulty": "medium",
+      "source": "agent",
+      "completed": true,
+      "fields": [
+        {
+          "fieldName": "fullName",
+          "label": "Full Name",
+          "matcher": {
+            "type": "contains",
+            "values": ["alex", "johnson"]
+          },
+          "filledValue": "Alex Johnson",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "email",
+          "label": "Email Address",
+          "matcher": {
+            "type": "exact",
+            "value": "alex.johnson@example.com"
+          },
+          "filledValue": "alex.johnson@example.com",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "organization",
+          "label": "Organization / Employer",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "StartupXYZ",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "jobTitle",
+          "label": "Job Title",
+          "matcher": {
+            "type": "contains",
+            "values": ["engineer"]
+          },
+          "filledValue": "Senior Software Engineer",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "dietaryPreference",
+          "label": "Dietary Preference",
+          "matcher": {
+            "type": "any-of",
+            "values": ["vegetarian"]
+          },
+          "filledValue": "vegetarian",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "tshirtSize",
+          "label": "T-Shirt Size",
+          "matcher": {
+            "type": "any-of",
+            "values": ["l", "large"]
+          },
+          "filledValue": "l",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "workshopChoice",
+          "label": "Workshop Selection (optional)",
+          "matcher": {
+            "type": "skip"
+          },
+          "filledValue": "none",
+          "correct": null,
+          "confidence": "medium"
+        },
+        {
+          "fieldName": "badgeName",
+          "label": "Name for Conference Badge",
+          "matcher": {
+            "type": "contains",
+            "values": ["alex"]
+          },
+          "filledValue": "Alex Johnson",
+          "correct": true,
+          "confidence": "high"
+        }
+      ],
+      "fieldAccuracy": 1,
+      "durationMs": 24448
+    },
+    {
+      "formId": "08",
+      "formName": "Conference Registration",
+      "difficulty": "medium",
+      "source": "baseline",
+      "completed": true,
+      "fields": [
+        {
+          "fieldName": "fullName",
+          "label": "Full Name",
+          "matcher": {
+            "type": "contains",
+            "values": ["alex", "johnson"]
+          },
+          "filledValue": "Alex Johnson",
+          "correct": true
+        },
+        {
+          "fieldName": "email",
+          "label": "Email Address",
+          "matcher": {
+            "type": "exact",
+            "value": "alex.johnson@example.com"
+          },
+          "filledValue": "alex.johnson@example.com",
+          "correct": true
+        },
+        {
+          "fieldName": "organization",
+          "label": "Organization / Employer",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "StartupXYZ",
+          "correct": true
+        },
+        {
+          "fieldName": "jobTitle",
+          "label": "Job Title",
+          "matcher": {
+            "type": "contains",
+            "values": ["engineer"]
+          },
+          "filledValue": "Senior Software Engineer",
+          "correct": true
+        },
+        {
+          "fieldName": "dietaryPreference",
+          "label": "Dietary Preference",
+          "matcher": {
+            "type": "any-of",
+            "values": ["vegetarian"]
+          },
+          "filledValue": "vegetarian",
+          "correct": true
+        },
+        {
+          "fieldName": "tshirtSize",
+          "label": "T-Shirt Size",
+          "matcher": {
+            "type": "any-of",
+            "values": ["l", "large"]
+          },
+          "filledValue": "l",
+          "correct": true
+        },
+        {
+          "fieldName": "workshopChoice",
+          "label": "Workshop Selection (optional)",
+          "matcher": {
+            "type": "skip"
+          },
+          "filledValue": "workshop-b",
+          "correct": null
+        },
+        {
+          "fieldName": "badgeName",
+          "label": "Name for Conference Badge",
+          "matcher": {
+            "type": "contains",
+            "values": ["alex"]
+          },
+          "filledValue": "Alex",
+          "correct": true
+        }
+      ],
+      "fieldAccuracy": 1,
+      "durationMs": 3477
+    },
+    {
+      "formId": "09",
+      "formName": "Medical Intake",
+      "difficulty": "medium",
+      "source": "agent",
+      "completed": true,
+      "fields": [
+        {
+          "fieldName": "firstName",
+          "label": "First Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Alex"
+          },
+          "filledValue": "Alex",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "lastName",
+          "label": "Last Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Johnson"
+          },
+          "filledValue": "Johnson",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "dateOfBirth",
+          "label": "Date of Birth",
+          "matcher": {
+            "type": "any-of",
+            "values": ["1995-03-15", "03/15/1995", "03-15-1995", "march 15"]
+          },
+          "filledValue": "",
+          "correct": false,
+          "confidence": "low"
+        },
+        {
+          "fieldName": "insuranceProvider",
+          "label": "Insurance Provider",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "",
+          "correct": false,
+          "confidence": "low"
+        },
+        {
+          "fieldName": "insuranceMemberId",
+          "label": "Member ID / Policy Number",
+          "matcher": {
+            "type": "skip"
+          },
+          "filledValue": "",
+          "correct": null,
+          "confidence": "low"
+        },
+        {
+          "fieldName": "primaryPhysician",
+          "label": "Primary Care Physician",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "",
+          "correct": false,
+          "confidence": "low"
+        },
+        {
+          "fieldName": "currentMedications",
+          "label": "Current Medications",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "",
+          "correct": false,
+          "confidence": "low"
+        },
+        {
+          "fieldName": "knownAllergies",
+          "label": "Known Allergies",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "",
+          "correct": false,
+          "confidence": "low"
+        },
+        {
+          "fieldName": "emergencyContactName",
+          "label": "Emergency Contact Name",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "Jordan Johnson",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "emergencyContactPhone",
+          "label": "Emergency Contact Phone",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "(415) 555-0199",
+          "correct": true,
+          "confidence": "high"
+        }
+      ],
+      "fieldAccuracy": 0.4444444444444444,
+      "durationMs": 35860
+    },
+    {
+      "formId": "09",
+      "formName": "Medical Intake",
+      "difficulty": "medium",
+      "source": "baseline",
+      "completed": true,
+      "fields": [
+        {
+          "fieldName": "firstName",
+          "label": "First Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Alex"
+          },
+          "filledValue": "Alex",
+          "correct": true
+        },
+        {
+          "fieldName": "lastName",
+          "label": "Last Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Johnson"
+          },
+          "filledValue": "Johnson",
+          "correct": true
+        },
+        {
+          "fieldName": "dateOfBirth",
+          "label": "Date of Birth",
+          "matcher": {
+            "type": "any-of",
+            "values": ["1995-03-15", "03/15/1995", "03-15-1995", "march 15"]
+          },
+          "filledValue": "1995-03-15",
+          "correct": true
+        },
+        {
+          "fieldName": "insuranceProvider",
+          "label": "Insurance Provider",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "",
+          "correct": false
+        },
+        {
+          "fieldName": "insuranceMemberId",
+          "label": "Member ID / Policy Number",
+          "matcher": {
+            "type": "skip"
+          },
+          "filledValue": "",
+          "correct": null
+        },
+        {
+          "fieldName": "primaryPhysician",
+          "label": "Primary Care Physician",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "",
+          "correct": false
+        },
+        {
+          "fieldName": "currentMedications",
+          "label": "Current Medications",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "None",
+          "correct": true
+        },
+        {
+          "fieldName": "knownAllergies",
+          "label": "Known Allergies",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "Vegetarian",
+          "correct": true
+        },
+        {
+          "fieldName": "emergencyContactName",
+          "label": "Emergency Contact Name",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "Jordan Johnson",
+          "correct": true
+        },
+        {
+          "fieldName": "emergencyContactPhone",
+          "label": "Emergency Contact Phone",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "(415) 555-0199",
+          "correct": true
+        }
+      ],
+      "fieldAccuracy": 0.7777777777777778,
+      "durationMs": 2635
+    },
+    {
+      "formId": "10",
+      "formName": "Student Enrollment",
+      "difficulty": "medium",
+      "source": "agent",
+      "completed": true,
+      "fields": [
+        {
+          "fieldName": "firstName",
+          "label": "First Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Alex"
+          },
+          "filledValue": "Alex",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "lastName",
+          "label": "Last Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Johnson"
+          },
+          "filledValue": "Johnson",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "email",
+          "label": "Email Address",
+          "matcher": {
+            "type": "exact",
+            "value": "alex.johnson@example.com"
+          },
+          "filledValue": "alex.johnson@example.com",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "phone",
+          "label": "Phone Number",
+          "matcher": {
+            "type": "phone",
+            "value": "4155550192"
+          },
+          "filledValue": "(415) 555-0192",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "intendedMajor",
+          "label": "Intended Major / Program of Study",
+          "matcher": {
+            "type": "contains",
+            "values": ["computer"]
+          },
+          "filledValue": "Computer Science",
+          "correct": true,
+          "confidence": "medium"
+        },
+        {
+          "fieldName": "degreeLevel",
+          "label": "Degree Level",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "bachelor",
+          "correct": true,
+          "confidence": "medium"
+        },
+        {
+          "fieldName": "startTerm",
+          "label": "Desired Start Term",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "Fall 2025",
+          "correct": true,
+          "confidence": "low"
+        },
+        {
+          "fieldName": "currentGPA",
+          "label": "Current / Most Recent GPA (if applicable)",
+          "matcher": {
+            "type": "contains",
+            "values": ["3.7"]
+          },
+          "filledValue": "3.7",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "transferStudent",
+          "label": "No",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "no",
+          "correct": true,
+          "confidence": "low"
+        }
+      ],
+      "fieldAccuracy": 1,
+      "durationMs": 34840
+    },
+    {
+      "formId": "10",
+      "formName": "Student Enrollment",
+      "difficulty": "medium",
+      "source": "baseline",
+      "completed": true,
+      "fields": [
+        {
+          "fieldName": "firstName",
+          "label": "First Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Alex"
+          },
+          "filledValue": "Alex",
+          "correct": true
+        },
+        {
+          "fieldName": "lastName",
+          "label": "Last Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Johnson"
+          },
+          "filledValue": "Johnson",
+          "correct": true
+        },
+        {
+          "fieldName": "email",
+          "label": "Email Address",
+          "matcher": {
+            "type": "exact",
+            "value": "alex.johnson@example.com"
+          },
+          "filledValue": "alex.johnson@example.com",
+          "correct": true
+        },
+        {
+          "fieldName": "phone",
+          "label": "Phone Number",
+          "matcher": {
+            "type": "phone",
+            "value": "4155550192"
+          },
+          "filledValue": "(415) 555-0192",
+          "correct": true
+        },
+        {
+          "fieldName": "intendedMajor",
+          "label": "Intended Major / Program of Study",
+          "matcher": {
+            "type": "contains",
+            "values": ["computer"]
+          },
+          "filledValue": "Computer Science",
+          "correct": true
+        },
+        {
+          "fieldName": "degreeLevel",
+          "label": "Degree Level",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "master",
+          "correct": true
+        },
+        {
+          "fieldName": "startTerm",
+          "label": "Desired Start Term",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "Fall 2025",
+          "correct": true
+        },
+        {
+          "fieldName": "currentGPA",
+          "label": "Current / Most Recent GPA (if applicable)",
+          "matcher": {
+            "type": "contains",
+            "values": ["3.7"]
+          },
+          "filledValue": "3.7",
+          "correct": true
+        },
+        {
+          "fieldName": "transferStudent",
+          "label": "Are you a transfer student?",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "no",
+          "correct": true
+        }
+      ],
+      "fieldAccuracy": 1,
+      "durationMs": 3899
+    },
+    {
+      "formId": "11",
+      "formName": "Rental Application",
+      "difficulty": "medium",
+      "source": "agent",
+      "completed": true,
+      "fields": [
+        {
+          "fieldName": "firstName",
+          "label": "First Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Alex"
+          },
+          "filledValue": "Alex",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "lastName",
+          "label": "Last Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Johnson"
+          },
+          "filledValue": "Johnson",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "email",
+          "label": "Email Address",
+          "matcher": {
+            "type": "exact",
+            "value": "alex.johnson@example.com"
+          },
+          "filledValue": "alex.johnson@example.com",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "phone",
+          "label": "Phone Number",
+          "matcher": {
+            "type": "phone",
+            "value": "4155550192"
+          },
+          "filledValue": "(415) 555-0192",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "currentAddress",
+          "label": "Current Street Address",
+          "matcher": {
+            "type": "contains",
+            "values": ["742"]
+          },
+          "filledValue": "742 Evergreen Terrace, Apt 4B",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "currentCity",
+          "label": "City",
+          "matcher": {
+            "type": "contains",
+            "values": ["francisco"]
+          },
+          "filledValue": "San Francisco",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "currentState",
+          "label": "State",
+          "matcher": {
+            "type": "any-of",
+            "values": ["ca", "california"]
+          },
+          "filledValue": "CA",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "currentEmployer",
+          "label": "Current Employer",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "StartupXYZ",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "monthlyGrossIncome",
+          "label": "Monthly Gross Income ($)",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "10833042026",
+          "correct": true,
+          "confidence": "low"
+        },
+        {
+          "fieldName": "desiredMoveIn",
+          "label": "Desired Move-in Date",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "",
+          "correct": false,
+          "confidence": "low"
+        }
+      ],
+      "fieldAccuracy": 0.9,
+      "durationMs": 61922
+    },
+    {
+      "formId": "11",
+      "formName": "Rental Application",
+      "difficulty": "medium",
+      "source": "baseline",
+      "completed": true,
+      "fields": [
+        {
+          "fieldName": "firstName",
+          "label": "First Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Alex"
+          },
+          "filledValue": "Alex",
+          "correct": true
+        },
+        {
+          "fieldName": "lastName",
+          "label": "Last Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Johnson"
+          },
+          "filledValue": "Johnson",
+          "correct": true
+        },
+        {
+          "fieldName": "email",
+          "label": "Email Address",
+          "matcher": {
+            "type": "exact",
+            "value": "alex.johnson@example.com"
+          },
+          "filledValue": "alex.johnson@example.com",
+          "correct": true
+        },
+        {
+          "fieldName": "phone",
+          "label": "Phone Number",
+          "matcher": {
+            "type": "phone",
+            "value": "4155550192"
+          },
+          "filledValue": "(415) 555-0192",
+          "correct": true
+        },
+        {
+          "fieldName": "currentAddress",
+          "label": "Current Street Address",
+          "matcher": {
+            "type": "contains",
+            "values": ["742"]
+          },
+          "filledValue": "742 Evergreen Terrace, Apt 4B",
+          "correct": true
+        },
+        {
+          "fieldName": "currentCity",
+          "label": "City",
+          "matcher": {
+            "type": "contains",
+            "values": ["francisco"]
+          },
+          "filledValue": "San Francisco",
+          "correct": true
+        },
+        {
+          "fieldName": "currentState",
+          "label": "State",
+          "matcher": {
+            "type": "any-of",
+            "values": ["ca", "california"]
+          },
+          "filledValue": "CA",
+          "correct": true
+        },
+        {
+          "fieldName": "currentEmployer",
+          "label": "Current Employer",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "StartupXYZ",
+          "correct": true
+        },
+        {
+          "fieldName": "monthlyGrossIncome",
+          "label": "Monthly Gross Income ($)",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "10833",
+          "correct": true
+        },
+        {
+          "fieldName": "desiredMoveIn",
+          "label": "Desired Move-in Date",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "",
+          "correct": false
+        }
+      ],
+      "fieldAccuracy": 0.9,
+      "durationMs": 2903
+    },
+    {
+      "formId": "12",
+      "formName": "Scholarship Application",
+      "difficulty": "medium",
+      "source": "agent",
+      "completed": true,
+      "fields": [
+        {
+          "fieldName": "fullName",
+          "label": "Full Name",
+          "matcher": {
+            "type": "contains",
+            "values": ["alex", "johnson"]
+          },
+          "filledValue": "Alex Johnson",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "email",
+          "label": "Email Address",
+          "matcher": {
+            "type": "exact",
+            "value": "alex.johnson@example.com"
+          },
+          "filledValue": "alex.johnson@example.com",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "institution",
+          "label": "Current Institution",
+          "matcher": {
+            "type": "contains",
+            "values": ["berkeley"]
+          },
+          "filledValue": "StartupXYZ",
+          "correct": false,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "major",
+          "label": "Field of Study / Major",
+          "matcher": {
+            "type": "contains",
+            "values": ["computer"]
+          },
+          "filledValue": "Computer Science",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "cumulativeGPA",
+          "label": "Cumulative GPA",
+          "matcher": {
+            "type": "contains",
+            "values": ["3.7"]
+          },
+          "filledValue": "3.7",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "financialNeed",
+          "label": "Level of Financial Need",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "medium",
+          "correct": true,
+          "confidence": "medium"
+        },
+        {
+          "fieldName": "essayResponse",
+          "label": "Essay: Describe your academic and career goals",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "Summary of goals reflecting academic background in Computer Science, career aspiration as a Senior Software Engineer, and how the scholarship will help in achieving them.",
+          "correct": true,
+          "confidence": "medium"
+        }
+      ],
+      "fieldAccuracy": 0.8571428571428571,
+      "durationMs": 26290
+    },
+    {
+      "formId": "12",
+      "formName": "Scholarship Application",
+      "difficulty": "medium",
+      "source": "baseline",
+      "completed": true,
+      "fields": [
+        {
+          "fieldName": "fullName",
+          "label": "Full Name",
+          "matcher": {
+            "type": "contains",
+            "values": ["alex", "johnson"]
+          },
+          "filledValue": "Alex Johnson",
+          "correct": true
+        },
+        {
+          "fieldName": "email",
+          "label": "Email Address",
+          "matcher": {
+            "type": "exact",
+            "value": "alex.johnson@example.com"
+          },
+          "filledValue": "alex.johnson@example.com",
+          "correct": true
+        },
+        {
+          "fieldName": "institution",
+          "label": "Current Institution",
+          "matcher": {
+            "type": "contains",
+            "values": ["berkeley"]
+          },
+          "filledValue": "StartupXYZ",
+          "correct": false
+        },
+        {
+          "fieldName": "major",
+          "label": "Field of Study / Major",
+          "matcher": {
+            "type": "contains",
+            "values": ["computer"]
+          },
+          "filledValue": "Computer Science",
+          "correct": true
+        },
+        {
+          "fieldName": "cumulativeGPA",
+          "label": "Cumulative GPA",
+          "matcher": {
+            "type": "contains",
+            "values": ["3.7"]
+          },
+          "filledValue": "3.7",
+          "correct": true
+        },
+        {
+          "fieldName": "financialNeed",
+          "label": "Level of Financial Need",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "low",
+          "correct": true
+        },
+        {
+          "fieldName": "essayResponse",
+          "label": "Essay: Describe your academic and career goals",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "I am a Senior Software Engineer with a Bachelor's degree in Computer Science from UC Berkeley. My goal is to leverage technology to solve real-world problems, focusing on sustainable developments and innovations in the tech industry. This scholarship would enable me to further invest in advanced courses and certifications that will enhance my ability to drive impactful projects at my current job as well as in future roles.",
+          "correct": true
+        }
+      ],
+      "fieldAccuracy": 0.8571428571428571,
+      "durationMs": 3610
+    },
+    {
+      "formId": "13",
+      "formName": "Professional Profile",
+      "difficulty": "medium",
+      "source": "agent",
+      "completed": true,
+      "fields": [
+        {
+          "fieldName": "fullName",
+          "label": "Full Name",
+          "matcher": {
+            "type": "contains",
+            "values": ["alex", "johnson"]
+          },
+          "filledValue": "Alex Johnson",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "professionalTitle",
+          "label": "Professional Title",
+          "matcher": {
+            "type": "contains",
+            "values": ["engineer"]
+          },
+          "filledValue": "Senior Software Engineer",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "currentEmployer",
+          "label": "Current Employer / Organization",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "StartupXYZ",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "bio",
+          "label": "Professional Bio (150 words max)",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "Senior Software Engineer at StartupXYZ with 7 years of experience in JavaScript, TypeScript, React, Node.js, Python, and AWS. Passionate about building scalable web applications and contributing to open source projects. Graduate of UC Berkeley with a B.S. in Computer Science.",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "personalWebsite",
+          "label": "Personal Website URL",
+          "matcher": {
+            "type": "contains",
+            "values": ["alexjohnson"]
+          },
+          "filledValue": "https://alexjohnson.dev",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "linkedinUrl",
+          "label": "LinkedIn Profile URL",
+          "matcher": {
+            "type": "contains",
+            "values": ["linkedin"]
+          },
+          "filledValue": "https://linkedin.com/in/alexjohnson",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "technicalSkills",
+          "label": "Technical Skills (comma-separated)",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "JavaScript, TypeScript, React, Node.js, Python, PostgreSQL, GraphQL, AWS",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "yearsOfExperience",
+          "label": "Years of Professional Experience",
+          "matcher": {
+            "type": "contains",
+            "values": ["7"]
+          },
+          "filledValue": "7",
+          "correct": true,
+          "confidence": "high"
+        }
+      ],
+      "fieldAccuracy": 1,
+      "durationMs": 34980
+    },
+    {
+      "formId": "13",
+      "formName": "Professional Profile",
+      "difficulty": "medium",
+      "source": "baseline",
+      "completed": true,
+      "fields": [
+        {
+          "fieldName": "fullName",
+          "label": "Full Name",
+          "matcher": {
+            "type": "contains",
+            "values": ["alex", "johnson"]
+          },
+          "filledValue": "Alex Johnson",
+          "correct": true
+        },
+        {
+          "fieldName": "professionalTitle",
+          "label": "Professional Title",
+          "matcher": {
+            "type": "contains",
+            "values": ["engineer"]
+          },
+          "filledValue": "Senior Software Engineer",
+          "correct": true
+        },
+        {
+          "fieldName": "currentEmployer",
+          "label": "Current Employer / Organization",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "StartupXYZ",
+          "correct": true
+        },
+        {
+          "fieldName": "bio",
+          "label": "Professional Bio (150 words max)",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "Senior Software Engineer with 7 years of experience specializing in JavaScript, TypeScript, and Node.js. Passionate about building scalable applications and improving user experiences. Currently enhancing products at StartupXYZ in San Francisco.",
+          "correct": true
+        },
+        {
+          "fieldName": "personalWebsite",
+          "label": "Personal Website URL",
+          "matcher": {
+            "type": "contains",
+            "values": ["alexjohnson"]
+          },
+          "filledValue": "https://alexjohnson.dev",
+          "correct": true
+        },
+        {
+          "fieldName": "linkedinUrl",
+          "label": "LinkedIn Profile URL",
+          "matcher": {
+            "type": "contains",
+            "values": ["linkedin"]
+          },
+          "filledValue": "https://linkedin.com/in/alexjohnson",
+          "correct": true
+        },
+        {
+          "fieldName": "technicalSkills",
+          "label": "Technical Skills (comma-separated)",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "JavaScript, TypeScript, React, Node.js, Python, PostgreSQL, GraphQL, AWS",
+          "correct": true
+        },
+        {
+          "fieldName": "yearsOfExperience",
+          "label": "Years of Professional Experience",
+          "matcher": {
+            "type": "contains",
+            "values": ["7"]
+          },
+          "filledValue": "7",
+          "correct": true
+        }
+      ],
+      "fieldAccuracy": 1,
+      "durationMs": 2901
+    },
+    {
+      "formId": "14",
+      "formName": "Multi-Section Job App",
+      "difficulty": "complex",
+      "source": "agent",
+      "completed": true,
+      "fields": [
+        {
+          "fieldName": "firstName",
+          "label": "First Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Alex"
+          },
+          "filledValue": "Alex",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "lastName",
+          "label": "Last Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Johnson"
+          },
+          "filledValue": "Johnson",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "email",
+          "label": "Email Address",
+          "matcher": {
+            "type": "exact",
+            "value": "alex.johnson@example.com"
+          },
+          "filledValue": "alex.johnson@example.com",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "phone",
+          "label": "Phone Number",
+          "matcher": {
+            "type": "phone",
+            "value": "4155550192"
+          },
+          "filledValue": "(415) 555-0192",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "streetAddress",
+          "label": "Street Address",
+          "matcher": {
+            "type": "contains",
+            "values": ["742"]
+          },
+          "filledValue": "742 Evergreen Terrace, Apt 4B",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "city",
+          "label": "City",
+          "matcher": {
+            "type": "exact",
+            "value": "san francisco"
+          },
+          "filledValue": "San Francisco",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "state",
+          "label": "State",
+          "matcher": {
+            "type": "any-of",
+            "values": ["ca", "california"]
+          },
+          "filledValue": "CA",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "zipCode",
+          "label": "ZIP Code",
+          "matcher": {
+            "type": "exact",
+            "value": "94102"
+          },
+          "filledValue": "94102",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "institutionName",
+          "label": "School / University",
+          "matcher": {
+            "type": "contains",
+            "values": ["berkeley"]
+          },
+          "filledValue": "University of California, Berkeley",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "degreeType",
+          "label": "Degree Type",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "bachelor",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "majorField",
+          "label": "Major / Field of Study",
+          "matcher": {
+            "type": "contains",
+            "values": ["computer"]
+          },
+          "filledValue": "Computer Science",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "graduationYear",
+          "label": "Graduation Year",
+          "matcher": {
+            "type": "exact",
+            "value": "2017"
+          },
+          "filledValue": "2017",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "educationGPA",
+          "label": "GPA",
+          "matcher": {
+            "type": "contains",
+            "values": ["3.7"]
+          },
+          "filledValue": "3.7",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "mostRecentEmployer",
+          "label": "Most Recent Employer",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "StartupXYZ",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "mostRecentTitle",
+          "label": "Your Title",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "Senior Software Engineer",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "mostRecentStartDate",
+          "label": "Start Date",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "Sep 2020",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "mostRecentEndDate",
+          "label": "End Date (or \"Present\")",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "Present",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "previousEmployer",
+          "label": "Previous Employer",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "TechCorp Inc.",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "previousTitle",
+          "label": "Your Title",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "Software Engineer",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "technicalSkillsList",
+          "label": "Technical Skills",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "JavaScript, TypeScript, React, Node.js, Python, PostgreSQL, GraphQL, AWS",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "githubProfileUrl",
+          "label": "GitHub Profile URL",
+          "matcher": {
+            "type": "contains",
+            "values": ["github"]
+          },
+          "filledValue": "https://github.com/alexjohnson",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "coverLetterText",
+          "label": "Cover Letter",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "A cover letter expressing interest and qualifications",
+          "correct": true,
+          "confidence": "medium"
+        }
+      ],
+      "fieldAccuracy": 1,
+      "durationMs": 67832
+    },
+    {
+      "formId": "14",
+      "formName": "Multi-Section Job App",
+      "difficulty": "complex",
+      "source": "baseline",
+      "completed": true,
+      "fields": [
+        {
+          "fieldName": "firstName",
+          "label": "First Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Alex"
+          },
+          "filledValue": "Alex",
+          "correct": true
+        },
+        {
+          "fieldName": "lastName",
+          "label": "Last Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Johnson"
+          },
+          "filledValue": "Johnson",
+          "correct": true
+        },
+        {
+          "fieldName": "email",
+          "label": "Email Address",
+          "matcher": {
+            "type": "exact",
+            "value": "alex.johnson@example.com"
+          },
+          "filledValue": "alex.johnson@example.com",
+          "correct": true
+        },
+        {
+          "fieldName": "phone",
+          "label": "Phone Number",
+          "matcher": {
+            "type": "phone",
+            "value": "4155550192"
+          },
+          "filledValue": "(415) 555-0192",
+          "correct": true
+        },
+        {
+          "fieldName": "streetAddress",
+          "label": "Street Address",
+          "matcher": {
+            "type": "contains",
+            "values": ["742"]
+          },
+          "filledValue": "742 Evergreen Terrace, Apt 4B",
+          "correct": true
+        },
+        {
+          "fieldName": "city",
+          "label": "City",
+          "matcher": {
+            "type": "exact",
+            "value": "san francisco"
+          },
+          "filledValue": "San Francisco",
+          "correct": true
+        },
+        {
+          "fieldName": "state",
+          "label": "State",
+          "matcher": {
+            "type": "any-of",
+            "values": ["ca", "california"]
+          },
+          "filledValue": "CA",
+          "correct": true
+        },
+        {
+          "fieldName": "zipCode",
+          "label": "ZIP Code",
+          "matcher": {
+            "type": "exact",
+            "value": "94102"
+          },
+          "filledValue": "94102",
+          "correct": true
+        },
+        {
+          "fieldName": "institutionName",
+          "label": "School / University",
+          "matcher": {
+            "type": "contains",
+            "values": ["berkeley"]
+          },
+          "filledValue": "University of California, Berkeley",
+          "correct": true
+        },
+        {
+          "fieldName": "degreeType",
+          "label": "Degree Type",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "bachelor",
+          "correct": true
+        },
+        {
+          "fieldName": "majorField",
+          "label": "Major / Field of Study",
+          "matcher": {
+            "type": "contains",
+            "values": ["computer"]
+          },
+          "filledValue": "Computer Science",
+          "correct": true
+        },
+        {
+          "fieldName": "graduationYear",
+          "label": "Graduation Year",
+          "matcher": {
+            "type": "exact",
+            "value": "2017"
+          },
+          "filledValue": "2017",
+          "correct": true
+        },
+        {
+          "fieldName": "educationGPA",
+          "label": "GPA",
+          "matcher": {
+            "type": "contains",
+            "values": ["3.7"]
+          },
+          "filledValue": "3.7",
+          "correct": true
+        },
+        {
+          "fieldName": "mostRecentEmployer",
+          "label": "Most Recent Employer",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "StartupXYZ",
+          "correct": true
+        },
+        {
+          "fieldName": "mostRecentTitle",
+          "label": "Your Title",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "Senior Software Engineer",
+          "correct": true
+        },
+        {
+          "fieldName": "mostRecentStartDate",
+          "label": "Start Date",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "09/2020",
+          "correct": true
+        },
+        {
+          "fieldName": "mostRecentEndDate",
+          "label": "End Date (or \"Present\")",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "Present",
+          "correct": true
+        },
+        {
+          "fieldName": "previousEmployer",
+          "label": "Previous Employer",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "TechCorp Inc.",
+          "correct": true
+        },
+        {
+          "fieldName": "previousTitle",
+          "label": "Your Title",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "Software Engineer",
+          "correct": true
+        },
+        {
+          "fieldName": "technicalSkillsList",
+          "label": "Technical Skills",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "JavaScript, TypeScript, React, Node.js, Python, PostgreSQL, GraphQL, AWS",
+          "correct": true
+        },
+        {
+          "fieldName": "githubProfileUrl",
+          "label": "GitHub Profile URL",
+          "matcher": {
+            "type": "contains",
+            "values": ["github"]
+          },
+          "filledValue": "https://github.com/alexjohnson",
+          "correct": true
+        },
+        {
+          "fieldName": "coverLetterText",
+          "label": "Cover Letter",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "I am a Senior Software Engineer with 7 years of experience, skilled in JavaScript and AWS. I am eager to bring my expertise to your team at [Company Name]. My passion for technology drives me to innovate and solve complex problems. I look forward to contributing to your success.",
+          "correct": true
+        }
+      ],
+      "fieldAccuracy": 1,
+      "durationMs": 6773
+    },
+    {
+      "formId": "15",
+      "formName": "Conditional Form",
+      "difficulty": "complex",
+      "source": "agent",
+      "completed": true,
+      "fields": [
+        {
+          "fieldName": "firstName",
+          "label": "First Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Alex"
+          },
+          "filledValue": "Alex",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "lastName",
+          "label": "Last Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Johnson"
+          },
+          "filledValue": "Johnson",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "email",
+          "label": "Email Address",
+          "matcher": {
+            "type": "exact",
+            "value": "alex.johnson@example.com"
+          },
+          "filledValue": "alex.johnson@example.com",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "phone",
+          "label": "Phone Number",
+          "matcher": {
+            "type": "phone",
+            "value": "4155550192"
+          },
+          "filledValue": "(415) 555-0192",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "employmentStatus",
+          "label": "Student",
+          "matcher": {
+            "type": "any-of",
+            "values": ["employed", "self-employed"]
+          },
+          "filledValue": "",
+          "correct": false,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "employerName",
+          "label": "Employer Name",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "StartupXYZ",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "yourPosition",
+          "label": "Your Position / Title",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "Senior Software Engineer",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "employerCity",
+          "label": "Employer City",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "",
+          "correct": false,
+          "confidence": "low"
+        },
+        {
+          "fieldName": "annualIncome",
+          "label": "Annual Income (USD)",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "",
+          "correct": false,
+          "confidence": "low"
+        }
+      ],
+      "fieldAccuracy": 0.6666666666666666,
+      "durationMs": 32155
+    },
+    {
+      "formId": "15",
+      "formName": "Conditional Form",
+      "difficulty": "complex",
+      "source": "baseline",
+      "completed": true,
+      "fields": [
+        {
+          "fieldName": "firstName",
+          "label": "First Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Alex"
+          },
+          "filledValue": "Alex",
+          "correct": true
+        },
+        {
+          "fieldName": "lastName",
+          "label": "Last Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Johnson"
+          },
+          "filledValue": "Johnson",
+          "correct": true
+        },
+        {
+          "fieldName": "email",
+          "label": "Email Address",
+          "matcher": {
+            "type": "exact",
+            "value": "alex.johnson@example.com"
+          },
+          "filledValue": "alex.johnson@example.com",
+          "correct": true
+        },
+        {
+          "fieldName": "phone",
+          "label": "Phone Number",
+          "matcher": {
+            "type": "phone",
+            "value": "4155550192"
+          },
+          "filledValue": "(415) 555-0192",
+          "correct": true
+        },
+        {
+          "fieldName": "employmentStatus",
+          "label": "Current Employment Status",
+          "matcher": {
+            "type": "any-of",
+            "values": ["employed", "self-employed"]
+          },
+          "filledValue": "employed",
+          "correct": true
+        },
+        {
+          "fieldName": "employerName",
+          "label": "Employer Name",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "StartupXYZ",
+          "correct": true
+        },
+        {
+          "fieldName": "yourPosition",
+          "label": "Your Position / Title",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "Senior Software Engineer",
+          "correct": true
+        },
+        {
+          "fieldName": "employerCity",
+          "label": "Employer City",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "San Francisco",
+          "correct": true
+        },
+        {
+          "fieldName": "annualIncome",
+          "label": "Annual Income (USD)",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "130000",
+          "correct": true
+        }
+      ],
+      "fieldAccuracy": 1,
+      "durationMs": 2800
+    },
+    {
+      "formId": "16",
+      "formName": "Software Eng Application",
+      "difficulty": "complex",
+      "source": "agent",
+      "completed": true,
+      "fields": [
+        {
+          "fieldName": "fullName",
+          "label": "Full Name",
+          "matcher": {
+            "type": "contains",
+            "values": ["alex", "johnson"]
+          },
+          "filledValue": "Alex Johnson",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "email",
+          "label": "Email Address",
+          "matcher": {
+            "type": "exact",
+            "value": "alex.johnson@example.com"
+          },
+          "filledValue": "alex.johnson@example.com",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "phone",
+          "label": "Phone Number",
+          "matcher": {
+            "type": "phone",
+            "value": "4155550192"
+          },
+          "filledValue": "(415) 555-0192",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "githubUrl",
+          "label": "GitHub Profile URL",
+          "matcher": {
+            "type": "contains",
+            "values": ["github"]
+          },
+          "filledValue": "https://github.com/alexjohnson",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "portfolioUrl",
+          "label": "Portfolio / Website URL",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "https://alexjohnson.dev",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "currentEmployer",
+          "label": "Current Company",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "StartupXYZ",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "currentRole",
+          "label": "Current Role / Title",
+          "matcher": {
+            "type": "contains",
+            "values": ["engineer"]
+          },
+          "filledValue": "Senior Software Engineer",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "primaryLanguages",
+          "label": "Primary Programming Languages",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "JavaScript, TypeScript, React, Node.js, Python",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "yearsExperience",
+          "label": "Years of Professional Experience",
+          "matcher": {
+            "type": "contains",
+            "values": ["7"]
+          },
+          "filledValue": "7",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "openSourceContributions",
+          "label": "Open Source Contributions",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "",
+          "correct": false,
+          "confidence": "medium"
+        },
+        {
+          "fieldName": "whyThisRole",
+          "label": "Why are you interested in this role?",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "7",
+          "correct": true,
+          "confidence": "low"
+        },
+        {
+          "fieldName": "salaryExpectation",
+          "label": "Expected Annual Compensation (USD)",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "$130,000",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "availableStartDate",
+          "label": "Earliest Available Start Date",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "",
+          "correct": false,
+          "confidence": "medium"
+        }
+      ],
+      "fieldAccuracy": 0.8461538461538461,
+      "durationMs": 38360
+    },
+    {
+      "formId": "16",
+      "formName": "Software Eng Application",
+      "difficulty": "complex",
+      "source": "baseline",
+      "completed": true,
+      "fields": [
+        {
+          "fieldName": "fullName",
+          "label": "Full Name",
+          "matcher": {
+            "type": "contains",
+            "values": ["alex", "johnson"]
+          },
+          "filledValue": "Alex Johnson",
+          "correct": true
+        },
+        {
+          "fieldName": "email",
+          "label": "Email Address",
+          "matcher": {
+            "type": "exact",
+            "value": "alex.johnson@example.com"
+          },
+          "filledValue": "alex.johnson@example.com",
+          "correct": true
+        },
+        {
+          "fieldName": "phone",
+          "label": "Phone Number",
+          "matcher": {
+            "type": "phone",
+            "value": "4155550192"
+          },
+          "filledValue": "(415) 555-0192",
+          "correct": true
+        },
+        {
+          "fieldName": "githubUrl",
+          "label": "GitHub Profile URL",
+          "matcher": {
+            "type": "contains",
+            "values": ["github"]
+          },
+          "filledValue": "https://github.com/alexjohnson",
+          "correct": true
+        },
+        {
+          "fieldName": "portfolioUrl",
+          "label": "Portfolio / Website URL",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "https://alexjohnson.dev",
+          "correct": true
+        },
+        {
+          "fieldName": "currentEmployer",
+          "label": "Current Company",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "StartupXYZ",
+          "correct": true
+        },
+        {
+          "fieldName": "currentRole",
+          "label": "Current Role / Title",
+          "matcher": {
+            "type": "contains",
+            "values": ["engineer"]
+          },
+          "filledValue": "Senior Software Engineer",
+          "correct": true
+        },
+        {
+          "fieldName": "primaryLanguages",
+          "label": "Primary Programming Languages",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "JavaScript, TypeScript, Python",
+          "correct": true
+        },
+        {
+          "fieldName": "yearsExperience",
+          "label": "Years of Professional Experience",
+          "matcher": {
+            "type": "contains",
+            "values": ["7"]
+          },
+          "filledValue": "7",
+          "correct": true
+        },
+        {
+          "fieldName": "openSourceContributions",
+          "label": "Open Source Contributions",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "I have contributed to several open-source projects, focusing on JavaScript libraries and frameworks.",
+          "correct": true
+        },
+        {
+          "fieldName": "whyThisRole",
+          "label": "Why are you interested in this role?",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "I'm excited about the opportunity at Nexus Technology Group because of their innovative approach and the potential to work on impactful projects.",
+          "correct": true
+        },
+        {
+          "fieldName": "salaryExpectation",
+          "label": "Expected Annual Compensation (USD)",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "130000",
+          "correct": true
+        },
+        {
+          "fieldName": "availableStartDate",
+          "label": "Earliest Available Start Date",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "",
+          "correct": false
+        }
+      ],
+      "fieldAccuracy": 0.9230769230769231,
+      "durationMs": 5735
+    },
+    {
+      "formId": "17",
+      "formName": "Grad School Application",
+      "difficulty": "complex",
+      "source": "agent",
+      "completed": true,
+      "fields": [
+        {
+          "fieldName": "firstName",
+          "label": "First Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Alex"
+          },
+          "filledValue": "Alex",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "lastName",
+          "label": "Last Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Johnson"
+          },
+          "filledValue": "Johnson",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "email",
+          "label": "Email Address",
+          "matcher": {
+            "type": "exact",
+            "value": "alex.johnson@example.com"
+          },
+          "filledValue": "alex.johnson@example.com",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "phone",
+          "label": "Phone Number",
+          "matcher": {
+            "type": "phone",
+            "value": "4155550192"
+          },
+          "filledValue": "(415) 555-0192",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "undergradInstitution",
+          "label": "Undergraduate Institution",
+          "matcher": {
+            "type": "contains",
+            "values": ["berkeley"]
+          },
+          "filledValue": "University of California, Berkeley",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "undergradMajor",
+          "label": "Undergraduate Major",
+          "matcher": {
+            "type": "contains",
+            "values": ["computer"]
+          },
+          "filledValue": "Computer Science",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "undergradGPA",
+          "label": "Undergraduate GPA",
+          "matcher": {
+            "type": "contains",
+            "values": ["3.7"]
+          },
+          "filledValue": "3.7",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "greVerbalScore",
+          "label": "GRE Verbal",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "",
+          "correct": false,
+          "confidence": "low"
+        },
+        {
+          "fieldName": "greQuantScore",
+          "label": "GRE Quantitative",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "",
+          "correct": false,
+          "confidence": "low"
+        },
+        {
+          "fieldName": "greWritingScore",
+          "label": "GRE Analytical Writing",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "",
+          "correct": false,
+          "confidence": "low"
+        },
+        {
+          "fieldName": "desiredProgram",
+          "label": "Program of Interest",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "Select…",
+          "correct": true,
+          "confidence": "low"
+        },
+        {
+          "fieldName": "statementOfPurpose",
+          "label": "Statement of Purpose",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "",
+          "correct": false,
+          "confidence": "low"
+        },
+        {
+          "fieldName": "researchInterests",
+          "label": "Research Interests",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "",
+          "correct": false,
+          "confidence": "low"
+        }
+      ],
+      "fieldAccuracy": 0.6153846153846154,
+      "durationMs": 31687
+    },
+    {
+      "formId": "17",
+      "formName": "Grad School Application",
+      "difficulty": "complex",
+      "source": "baseline",
+      "completed": true,
+      "fields": [
+        {
+          "fieldName": "firstName",
+          "label": "First Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Alex"
+          },
+          "filledValue": "Alex",
+          "correct": true
+        },
+        {
+          "fieldName": "lastName",
+          "label": "Last Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Johnson"
+          },
+          "filledValue": "Johnson",
+          "correct": true
+        },
+        {
+          "fieldName": "email",
+          "label": "Email Address",
+          "matcher": {
+            "type": "exact",
+            "value": "alex.johnson@example.com"
+          },
+          "filledValue": "alex.johnson@example.com",
+          "correct": true
+        },
+        {
+          "fieldName": "phone",
+          "label": "Phone Number",
+          "matcher": {
+            "type": "phone",
+            "value": "4155550192"
+          },
+          "filledValue": "(415) 555-0192",
+          "correct": true
+        },
+        {
+          "fieldName": "undergradInstitution",
+          "label": "Undergraduate Institution",
+          "matcher": {
+            "type": "contains",
+            "values": ["berkeley"]
+          },
+          "filledValue": "University of California, Berkeley",
+          "correct": true
+        },
+        {
+          "fieldName": "undergradMajor",
+          "label": "Undergraduate Major",
+          "matcher": {
+            "type": "contains",
+            "values": ["computer"]
+          },
+          "filledValue": "Computer Science",
+          "correct": true
+        },
+        {
+          "fieldName": "undergradGPA",
+          "label": "Undergraduate GPA",
+          "matcher": {
+            "type": "contains",
+            "values": ["3.7"]
+          },
+          "filledValue": "3.7",
+          "correct": true
+        },
+        {
+          "fieldName": "greVerbalScore",
+          "label": "GRE Verbal",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "",
+          "correct": false
+        },
+        {
+          "fieldName": "greQuantScore",
+          "label": "GRE Quantitative",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "",
+          "correct": false
+        },
+        {
+          "fieldName": "greWritingScore",
+          "label": "GRE Analytical Writing",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "",
+          "correct": false
+        },
+        {
+          "fieldName": "desiredProgram",
+          "label": "Program of Interest",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "ms-cs",
+          "correct": true
+        },
+        {
+          "fieldName": "statementOfPurpose",
+          "label": "Statement of Purpose",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "I am excited to apply for the MS in Computer Science program. With a strong background in software engineering and a passion for cutting-edge research, I am eager to expand my knowledge in artificial intelligence and machine learning, and contribute to innovative projects.",
+          "correct": true
+        },
+        {
+          "fieldName": "researchInterests",
+          "label": "Research Interests",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "Artificial Intelligence, Machine Learning, Cloud Computing, Software Engineering",
+          "correct": true
+        }
+      ],
+      "fieldAccuracy": 0.7692307692307693,
+      "durationMs": 2457
+    },
+    {
+      "formId": "18",
+      "formName": "Health Insurance Enroll",
+      "difficulty": "complex",
+      "source": "agent",
+      "completed": true,
+      "fields": [
+        {
+          "fieldName": "firstName",
+          "label": "First Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Alex"
+          },
+          "filledValue": "Alex",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "lastName",
+          "label": "Last Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Johnson"
+          },
+          "filledValue": "Johnson",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "dateOfBirth",
+          "label": "Date of Birth",
+          "matcher": {
+            "type": "any-of",
+            "values": ["1995-03-15", "03/15/1995", "03-15-1995"]
+          },
+          "filledValue": "",
+          "correct": false,
+          "confidence": "low"
+        },
+        {
+          "fieldName": "ssnLast4",
+          "label": "SSN – Last 4 Digits",
+          "matcher": {
+            "type": "skip"
+          },
+          "filledValue": "0192",
+          "correct": null,
+          "confidence": "low"
+        },
+        {
+          "fieldName": "planType",
+          "label": "Plan Type",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "Select…",
+          "correct": true,
+          "confidence": "low"
+        },
+        {
+          "fieldName": "deductiblePreference",
+          "label": "Deductible Preference",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "Select…",
+          "correct": true,
+          "confidence": "low"
+        },
+        {
+          "fieldName": "primaryCarePhysician",
+          "label": "Preferred Primary Care Physician (optional)",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "",
+          "correct": false,
+          "confidence": "medium"
+        },
+        {
+          "fieldName": "numberOfDependents",
+          "label": "Number of Dependents to Cover",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "0",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "coverageStartDate",
+          "label": "Coverage Effective Date",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "",
+          "correct": false,
+          "confidence": "low"
+        },
+        {
+          "fieldName": "emergencyContactName",
+          "label": "Emergency Contact Name",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "Jordan Johnson",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "emergencyContactPhone",
+          "label": "Emergency Contact Phone",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "(415) 555-0199",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "emergencyContactRelationship",
+          "label": "Relationship to Enrollee",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "sibling",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "tobaccoUser",
+          "label": "No",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "no",
+          "correct": true,
+          "confidence": "medium"
+        }
+      ],
+      "fieldAccuracy": 0.75,
+      "durationMs": 71505
+    },
+    {
+      "formId": "18",
+      "formName": "Health Insurance Enroll",
+      "difficulty": "complex",
+      "source": "baseline",
+      "completed": true,
+      "fields": [
+        {
+          "fieldName": "firstName",
+          "label": "First Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Alex"
+          },
+          "filledValue": "Alex",
+          "correct": true
+        },
+        {
+          "fieldName": "lastName",
+          "label": "Last Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Johnson"
+          },
+          "filledValue": "Johnson",
+          "correct": true
+        },
+        {
+          "fieldName": "dateOfBirth",
+          "label": "Date of Birth",
+          "matcher": {
+            "type": "any-of",
+            "values": ["1995-03-15", "03/15/1995", "03-15-1995"]
+          },
+          "filledValue": "1995-03-15",
+          "correct": true
+        },
+        {
+          "fieldName": "ssnLast4",
+          "label": "SSN – Last 4 Digits",
+          "matcher": {
+            "type": "skip"
+          },
+          "filledValue": "",
+          "correct": null
+        },
+        {
+          "fieldName": "planType",
+          "label": "Plan Type",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "ppo",
+          "correct": true
+        },
+        {
+          "fieldName": "deductiblePreference",
+          "label": "Deductible Preference",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "low-deductible",
+          "correct": true
+        },
+        {
+          "fieldName": "primaryCarePhysician",
+          "label": "Preferred Primary Care Physician (optional)",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "",
+          "correct": false
+        },
+        {
+          "fieldName": "numberOfDependents",
+          "label": "Number of Dependents to Cover",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "0",
+          "correct": true
+        },
+        {
+          "fieldName": "coverageStartDate",
+          "label": "Coverage Effective Date",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "",
+          "correct": false
+        },
+        {
+          "fieldName": "emergencyContactName",
+          "label": "Emergency Contact Name",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "Jordan Johnson",
+          "correct": true
+        },
+        {
+          "fieldName": "emergencyContactPhone",
+          "label": "Emergency Contact Phone",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "(415) 555-0199",
+          "correct": true
+        },
+        {
+          "fieldName": "emergencyContactRelationship",
+          "label": "Relationship to Enrollee",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "Sibling",
+          "correct": true
+        },
+        {
+          "fieldName": "tobaccoUser",
+          "label": "Tobacco User?",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "no",
+          "correct": true
+        }
+      ],
+      "fieldAccuracy": 0.8333333333333334,
+      "durationMs": 3057
+    },
+    {
+      "formId": "19",
+      "formName": "Multi-Step Wizard",
+      "difficulty": "complex",
+      "source": "agent",
+      "completed": false,
+      "error": "No object generated: response did not match schema.",
+      "fields": [
+        {
+          "fieldName": "firstName",
+          "matcher": {
+            "type": "exact",
+            "value": "Alex"
+          },
+          "correct": false
+        },
+        {
+          "fieldName": "lastName",
+          "matcher": {
+            "type": "exact",
+            "value": "Johnson"
+          },
+          "correct": false
+        },
+        {
+          "fieldName": "email",
+          "matcher": {
+            "type": "exact",
+            "value": "alex.johnson@example.com"
+          },
+          "correct": false
+        },
+        {
+          "fieldName": "phone",
+          "matcher": {
+            "type": "phone",
+            "value": "4155550192"
+          },
+          "correct": false
+        },
+        {
+          "fieldName": "universityName",
+          "matcher": {
+            "type": "contains",
+            "values": ["berkeley"]
+          },
+          "correct": false
+        },
+        {
+          "fieldName": "degreeType",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "correct": false
+        },
+        {
+          "fieldName": "fieldOfStudy",
+          "matcher": {
+            "type": "contains",
+            "values": ["computer"]
+          },
+          "correct": false
+        },
+        {
+          "fieldName": "graduationYear",
+          "matcher": {
+            "type": "exact",
+            "value": "2017"
+          },
+          "correct": false
+        },
+        {
+          "fieldName": "currentCompany",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "correct": false
+        },
+        {
+          "fieldName": "currentRole",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "correct": false
+        },
+        {
+          "fieldName": "employmentStartDate",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "correct": false
+        },
+        {
+          "fieldName": "totalYearsExperience",
+          "matcher": {
+            "type": "contains",
+            "values": ["7"]
+          },
+          "correct": false
+        },
+        {
+          "fieldName": "technicalSkills",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "correct": false
+        },
+        {
+          "fieldName": "professionalSummary",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "correct": false
+        }
+      ],
+      "fieldAccuracy": 0,
+      "durationMs": 52754
+    },
+    {
+      "formId": "19",
+      "formName": "Multi-Step Wizard",
+      "difficulty": "complex",
+      "source": "baseline",
+      "completed": true,
+      "fields": [
+        {
+          "fieldName": "firstName",
+          "label": "First Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Alex"
+          },
+          "filledValue": "Alex",
+          "correct": true
+        },
+        {
+          "fieldName": "lastName",
+          "label": "Last Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Johnson"
+          },
+          "filledValue": "Johnson",
+          "correct": true
+        },
+        {
+          "fieldName": "email",
+          "label": "Email Address",
+          "matcher": {
+            "type": "exact",
+            "value": "alex.johnson@example.com"
+          },
+          "filledValue": "alex.johnson@example.com",
+          "correct": true
+        },
+        {
+          "fieldName": "phone",
+          "label": "Phone Number",
+          "matcher": {
+            "type": "phone",
+            "value": "4155550192"
+          },
+          "filledValue": "(415) 555-0192",
+          "correct": true
+        },
+        {
+          "fieldName": "universityName",
+          "label": "University / College",
+          "matcher": {
+            "type": "contains",
+            "values": ["berkeley"]
+          },
+          "filledValue": "University of California, Berkeley",
+          "correct": true
+        },
+        {
+          "fieldName": "degreeType",
+          "label": "Degree Type",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "bachelor",
+          "correct": true
+        },
+        {
+          "fieldName": "fieldOfStudy",
+          "label": "Field of Study",
+          "matcher": {
+            "type": "contains",
+            "values": ["computer"]
+          },
+          "filledValue": "Computer Science",
+          "correct": true
+        },
+        {
+          "fieldName": "graduationYear",
+          "label": "Graduation Year",
+          "matcher": {
+            "type": "exact",
+            "value": "2017"
+          },
+          "filledValue": "2017",
+          "correct": true
+        },
+        {
+          "fieldName": "currentCompany",
+          "label": "Current Company",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "StartupXYZ",
+          "correct": true
+        },
+        {
+          "fieldName": "currentRole",
+          "label": "Current Role",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "Senior Software Engineer",
+          "correct": true
+        },
+        {
+          "fieldName": "employmentStartDate",
+          "label": "Employment Start Date",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "09/2020",
+          "correct": true
+        },
+        {
+          "fieldName": "totalYearsExperience",
+          "label": "Total Years of Experience",
+          "matcher": {
+            "type": "contains",
+            "values": ["7"]
+          },
+          "filledValue": "7",
+          "correct": true
+        },
+        {
+          "fieldName": "technicalSkills",
+          "label": "Technical Skills (comma-separated)",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "JavaScript, TypeScript, React, Node.js, Python, PostgreSQL, GraphQL, AWS",
+          "correct": true
+        },
+        {
+          "fieldName": "professionalSummary",
+          "label": "Professional Summary",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "Experienced Software Engineer with a strong foundation in developing scalable applications. Adept at utilizing a range of technologies including JavaScript and AWS to create innovative solutions.",
+          "correct": true
+        }
+      ],
+      "fieldAccuracy": 1,
+      "durationMs": 4350
+    },
+    {
+      "formId": "20",
+      "formName": "Research Grant App",
+      "difficulty": "complex",
+      "source": "agent",
+      "completed": true,
+      "fields": [
+        {
+          "fieldName": "piFirstName",
+          "label": "First Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Alex"
+          },
+          "filledValue": "Alex",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "piLastName",
+          "label": "Last Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Johnson"
+          },
+          "filledValue": "Johnson",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "piEmail",
+          "label": "Email Address",
+          "matcher": {
+            "type": "exact",
+            "value": "alex.johnson@example.com"
+          },
+          "filledValue": "alex.johnson@example.com",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "piInstitution",
+          "label": "Institution / Organization",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "StartupXYZ",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "piTitle",
+          "label": "Title / Position",
+          "matcher": {
+            "type": "contains",
+            "values": ["engineer"]
+          },
+          "filledValue": "Senior Software Engineer",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "projectTitle",
+          "label": "Project Title",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "Research on advanced software engineering methodologies to improve startup product development cycles.",
+          "correct": true,
+          "confidence": "medium"
+        },
+        {
+          "fieldName": "projectAbstract",
+          "label": "Project Abstract",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "This project investigates cutting-edge software engineering techniques focusing on agility, scalability, and innovation to boost startup success.",
+          "correct": true,
+          "confidence": "medium"
+        },
+        {
+          "fieldName": "specificAims",
+          "label": "Specific Aims / Objectives",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "Develop and implement scalable software tools to improve development cycle efficiency and product quality.",
+          "correct": true,
+          "confidence": "medium"
+        },
+        {
+          "fieldName": "projectDuration",
+          "label": "Project Duration",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "1-year",
+          "correct": true,
+          "confidence": "medium"
+        },
+        {
+          "fieldName": "requestedFunding",
+          "label": "Requested Funding Amount (USD)",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "130000",
+          "correct": true,
+          "confidence": "high"
+        },
+        {
+          "fieldName": "budgetJustification",
+          "label": "Budget Justification",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "The funding will be allocated to personnel costs, software tools, hardware, and travel for conferences.",
+          "correct": true,
+          "confidence": "medium"
+        },
+        {
+          "fieldName": "expectedImpact",
+          "label": "Expected Impact & Deliverables",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "The project will produce publications detailing methodologies, software tools for public use, and datasets related to startup product development.",
+          "correct": true,
+          "confidence": "medium"
+        }
+      ],
+      "fieldAccuracy": 1,
+      "durationMs": 42394
+    },
+    {
+      "formId": "20",
+      "formName": "Research Grant App",
+      "difficulty": "complex",
+      "source": "baseline",
+      "completed": true,
+      "fields": [
+        {
+          "fieldName": "piFirstName",
+          "label": "First Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Alex"
+          },
+          "filledValue": "Alex",
+          "correct": true
+        },
+        {
+          "fieldName": "piLastName",
+          "label": "Last Name",
+          "matcher": {
+            "type": "exact",
+            "value": "Johnson"
+          },
+          "filledValue": "Johnson",
+          "correct": true
+        },
+        {
+          "fieldName": "piEmail",
+          "label": "Email Address",
+          "matcher": {
+            "type": "exact",
+            "value": "alex.johnson@example.com"
+          },
+          "filledValue": "alex.johnson@example.com",
+          "correct": true
+        },
+        {
+          "fieldName": "piInstitution",
+          "label": "Institution / Organization",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "StartupXYZ",
+          "correct": true
+        },
+        {
+          "fieldName": "piTitle",
+          "label": "Title / Position",
+          "matcher": {
+            "type": "contains",
+            "values": ["engineer"]
+          },
+          "filledValue": "Senior Software Engineer",
+          "correct": true
+        },
+        {
+          "fieldName": "projectTitle",
+          "label": "Project Title",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "Enhancing Software Development Efficiency",
+          "correct": true
+        },
+        {
+          "fieldName": "projectAbstract",
+          "label": "Project Abstract",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "This project aims to develop innovative tools and methodologies to increase efficiency in software development processes. We will focus on creating reusable components and improving automated testing frameworks to reduce development time and improve code reliability.",
+          "correct": true
+        },
+        {
+          "fieldName": "specificAims",
+          "label": "Specific Aims / Objectives",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "1. Develop a reusable component library. 2. Create a robust automated testing framework. 3. Enhance continuous integration processes.",
+          "correct": true
+        },
+        {
+          "fieldName": "projectDuration",
+          "label": "Project Duration",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "1-year",
+          "correct": true
+        },
+        {
+          "fieldName": "requestedFunding",
+          "label": "Requested Funding Amount (USD)",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "130000",
+          "correct": true
+        },
+        {
+          "fieldName": "budgetJustification",
+          "label": "Budget Justification",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "The funding will be allocated as follows: 50% for personnel salaries, 30% for equipment purchases including servers and testing devices, and 20% for travel to industry conferences to present findings.",
+          "correct": true
+        },
+        {
+          "fieldName": "expectedImpact",
+          "label": "Expected Impact & Deliverables",
+          "matcher": {
+            "type": "nonempty"
+          },
+          "filledValue": "The outcomes will include a publicly accessible component library and detailed documentation on improving software development practices, contributing to the open-source community and academic publications.",
+          "correct": true
+        }
+      ],
+      "fieldAccuracy": 1,
+      "durationMs": 3753
+    }
+  ],
+  "agent": {
+    "taskCompletionRate": 0.95,
+    "overallFieldAccuracy": 0.7932960893854749,
+    "byDifficulty": {
+      "simple": 0.9230769230769231,
+      "medium": 0.8620689655172413,
+      "complex": 0.7157894736842105
+    }
+  },
+  "baseline": {
+    "taskCompletionRate": 1,
+    "overallFieldAccuracy": 0.9385474860335196,
+    "byDifficulty": {
+      "simple": 1,
+      "medium": 0.9137931034482759,
+      "complex": 0.9368421052631579
+    }
+  },
+  "confidenceCalibration": {
+    "high": {
+      "total": 120,
+      "correct": 118,
+      "accuracy": 0.9833333333333333
+    },
+    "medium": {
+      "total": 20,
+      "correct": 16,
+      "accuracy": 0.8
+    },
+    "low": {
+      "total": 25,
+      "correct": 8,
+      "accuracy": 0.32
+    }
+  }
+}

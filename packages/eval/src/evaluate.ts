@@ -1,19 +1,21 @@
-import { join } from "node:path";
 import { writeFile } from "node:fs/promises";
+import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { startFormServer } from "./server.js";
-import { runAgentOnForm } from "./run-agent.js";
-import { runBaselineOnForm } from "./baseline.js";
+import type { FormEntry } from "./fixtures/forms-registry.js";
+import type { FormEvalResult } from "./metrics.js";
+import { runBaselineBrowserOnForm } from "./baseline-browser.js";
+import { getBaselineLlmModel } from "./baseline.js";
+import { FORMS_REGISTRY } from "./fixtures/forms-registry.js";
+import { GROUND_TRUTH } from "./fixtures/ground-truth.js";
 import {
-  evaluateForm,
   computeAggregateMetrics,
   computeConfidenceCalibration,
-  type FormEvalResult,
+  evaluateForm,
 } from "./metrics.js";
 import { buildReport, printReport } from "./report.js";
-import { FORMS_REGISTRY, type FormEntry } from "./fixtures/forms-registry.js";
-import { GROUND_TRUTH } from "./fixtures/ground-truth.js";
+import { runAgentOnForm } from "./run-agent.js";
+import { startFormServer } from "./server.js";
 
 const FORMS_DIR = join(fileURLToPath(import.meta.url), "../forms");
 
@@ -54,7 +56,7 @@ export async function runEvaluation(opts: EvalOptions = {}): Promise<void> {
       }
 
       console.log(`[${form.id}] ${form.name} (${form.difficulty})`);
-      const formUrl  = `${server.baseUrl}/${form.file}`;
+      const formUrl = `${server.baseUrl}/${form.file}`;
       const formPath = join(FORMS_DIR, form.file);
 
       // ── Agent ──────────────────────────────────────────────────────────────
@@ -63,9 +65,9 @@ export async function runEvaluation(opts: EvalOptions = {}): Promise<void> {
         const agentRun = await runAgentOnForm(formUrl);
         const agentResult = evaluateForm(
           agentRun.filledFields.map((f) => ({
-            name:       f.name,
-            label:      f.label,
-            value:      f.value,
+            name: f.name,
+            label: f.label,
+            value: f.value,
             confidence: f.confidence,
           })),
           gt,
@@ -84,12 +86,17 @@ export async function runEvaluation(opts: EvalOptions = {}): Promise<void> {
         console.log(status);
       }
 
-      // ── Baseline ───────────────────────────────────────────────────────────
+      // ── Baseline: HTML → LLM values → Playwright fill → extract+verify (same as agent)
       if (!opts.skipBaseline) {
         process.stdout.write("  baseline … ");
-        const baselineRun = await runBaselineOnForm(formPath);
+        const baselineRun = await runBaselineBrowserOnForm(formUrl, formPath);
         const baselineResult = evaluateForm(
-          baselineRun.fields,
+          baselineRun.filledFields.map((f) => ({
+            name: f.name,
+            label: f.label,
+            value: f.value,
+            confidence: f.confidence,
+          })),
           gt,
           form.id,
           form.name,
@@ -110,14 +117,15 @@ export async function runEvaluation(opts: EvalOptions = {}): Promise<void> {
     await server.close();
   }
 
-  const agentResults   = allResults.filter((r) => r.source === "agent");
-  const baselineResults= allResults.filter((r) => r.source === "baseline");
+  const agentResults = allResults.filter((r) => r.source === "agent");
+  const baselineResults = allResults.filter((r) => r.source === "baseline");
 
   const report = buildReport(
     allResults,
     computeAggregateMetrics(agentResults),
     computeAggregateMetrics(baselineResults),
     computeConfidenceCalibration(allResults),
+    { baselineLlmModel: opts.skipBaseline ? undefined : getBaselineLlmModel() },
   );
 
   printReport(report);
