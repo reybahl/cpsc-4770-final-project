@@ -1,6 +1,4 @@
 import { writeFile } from "node:fs/promises";
-import { join } from "node:path";
-import { fileURLToPath } from "node:url";
 
 import type { FormEntry } from "./fixtures/forms-registry.js";
 import type { FormEvalResult } from "./metrics.js";
@@ -16,8 +14,6 @@ import {
 import { buildReport, printReport } from "./report.js";
 import { runAgentOnForm } from "./run-agent.js";
 import { startFormServer } from "./server.js";
-
-const FORMS_DIR = join(fileURLToPath(import.meta.url), "../forms");
 
 export interface EvalOptions {
   formIds?: string[];
@@ -57,7 +53,6 @@ export async function runEvaluation(opts: EvalOptions = {}): Promise<void> {
 
       console.log(`[${form.id}] ${form.name} (${form.difficulty})`);
       const formUrl = `${server.baseUrl}/${form.file}`;
-      const formPath = join(FORMS_DIR, form.file);
 
       // ── Agent ──────────────────────────────────────────────────────────────
       if (!opts.skipAgent) {
@@ -86,10 +81,10 @@ export async function runEvaluation(opts: EvalOptions = {}): Promise<void> {
         console.log(status);
       }
 
-      // ── Baseline: HTML → LLM values → Playwright fill → extract+verify (same as agent)
+      // ── Baseline: live page HTML (same URL as agent) → LLM values → Playwright fill → extract+verify
       if (!opts.skipBaseline) {
         process.stdout.write("  baseline … ");
-        const baselineRun = await runBaselineBrowserOnForm(formUrl, formPath);
+        const baselineRun = await runBaselineBrowserOnForm(formUrl);
         const baselineResult = evaluateForm(
           baselineRun.filledFields.map((f) => ({
             name: f.name,

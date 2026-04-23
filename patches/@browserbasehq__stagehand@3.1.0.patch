@@ -1,0 +1,26 @@
+diff --git a/dist/cjs/lib/inference.js b/dist/cjs/lib/inference.js
+index d12bc5790bee7e8f4427d913af8341235ad6c3a5..7ab861acb1d79f89694cec8ca842d149cb66c9db 100644
+--- a/dist/cjs/lib/inference.js
++++ b/dist/cjs/lib/inference.js
+@@ -262,7 +262,7 @@ async function act({ instruction, domElements, llmClient, userProvidedInstructio
+         arguments: zod_1.z.array(zod_1.z
+             .string()
+             .describe("the arguments to pass to the method. For example, for a click, the arguments are empty, but for a fill, the arguments are the value to fill in.")),
+-        twoStep: zod_1.z.boolean(),
++        twoStep: zod_1.z.boolean().optional().default(false),
+     });
+     const messages = [
+         (0, prompt_js_1.buildActSystemPrompt)(userProvidedInstructions),
+diff --git a/dist/esm/lib/inference.js b/dist/esm/lib/inference.js
+index 19308c747d87740d7d03b0be0d4b52a2cef79d3e..3e3dc6f450800471157a2b0087527919d838db14 100644
+--- a/dist/esm/lib/inference.js
++++ b/dist/esm/lib/inference.js
+@@ -257,7 +257,7 @@ export async function act({ instruction, domElements, llmClient, userProvidedIns
+         arguments: z.array(z
+             .string()
+             .describe("the arguments to pass to the method. For example, for a click, the arguments are empty, but for a fill, the arguments are the value to fill in.")),
+-        twoStep: z.boolean(),
++        twoStep: z.boolean().optional().default(false),
+     });
+     const messages = [
+         buildActSystemPrompt(userProvidedInstructions),

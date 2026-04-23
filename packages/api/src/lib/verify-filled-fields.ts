@@ -40,25 +40,39 @@ For each field, assess:
 1. confidence: "high" if the value correctly matches the user's profile, "medium" if plausible but uncertain, "low" if likely wrong or missing
 2. reason: brief explanation for medium/low confidence (e.g. "Could not find matching email in profile"); use empty string "" for high confidence
 
-Return the assessment for each field by id.`;
+You MUST return exactly one assessment object per field line above, with the same id= value. Do not omit any id.`;
 
-  const { object } = await generateObject({
-    model: openai("gpt-4o"),
-    schema: VerificationResultSchema,
-    prompt,
-  });
+  try {
+    const { object } = await generateObject({
+      model: openai("gpt-4o"),
+      schema: VerificationResultSchema,
+      prompt,
+    });
 
-  const byId = new Map(object.fields.map((f) => [f.id, f]));
+    const byId = new Map(object.fields.map((f) => [f.id, f]));
 
-  return rawFields.map((raw): FilledField => {
-    const v = byId.get(raw.id);
-    const reason = v ? v.reason.trim() || undefined : undefined;
-    return {
-      ...raw,
-      confidence: v?.confidence ?? "medium",
-      reason,
-    };
-  });
+    return rawFields.map((raw): FilledField => {
+      const v = byId.get(raw.id);
+      const reason = v ? v.reason.trim() || undefined : undefined;
+      return {
+        ...raw,
+        confidence: v?.confidence ?? "medium",
+        reason,
+      };
+    });
+  } catch (err) {
+    console.warn(
+      "[verifyFilledFields] LLM verification failed; using medium confidence for all fields:",
+      err instanceof Error ? err.message : err,
+    );
+    return rawFields.map(
+      (raw): FilledField => ({
+        ...raw,
+        confidence: "medium",
+        reason: undefined,
+      }),
+    );
+  }
 }
 
 export function computeConfidenceSummary(fields: FilledField[]): {

@@ -8,6 +8,13 @@ import {
 /** After initial fill, re-verify and run targeted `act()` fixes for low-confidence fields (multi-step agent loop). */
 const MAX_CORRECTION_ROUNDS = 2;
 
+/**
+ * `stagehand.act` uses a separate structured LLM call per correction batch. With many "low"
+ * fields (common on long forms / wizards), the verifier is noisy and a single `act` is brittle
+ * (empty or invalid schema from the model). Only run correction for a small shortlist.
+ */
+const MAX_LOW_FIELDS_FOR_CORRECTION = 6;
+
 function buildCorrectionInstruction(
   lowFields: FilledField[],
   userContext: string,
@@ -252,12 +259,19 @@ export async function* runFormAgent(
     ) {
       yield { phase: "verifying", round: correctionIndex };
 
-      const rawFields = await extractFormFields(page);
+      const rawFields = await extractFormFields(page, { visibility: "all" });
       filledFields = await verifyFilledFields(rawFields, userContext);
 
       const lowFields = filledFields.filter((f) => f.confidence === "low");
       if (lowFields.length === 0) break;
       if (correctionIndex === MAX_CORRECTION_ROUNDS) break;
+
+      if (lowFields.length > MAX_LOW_FIELDS_FOR_CORRECTION) {
+        console.warn(
+          `[runFormAgent] Skipping correction: ${lowFields.length} low-confidence fields exceed max ${MAX_LOW_FIELDS_FOR_CORRECTION} (brittle batch act / verifier noise on large forms).`,
+        );
+        break;
+      }
 
       yield {
         phase: "correcting",
@@ -265,7 +279,14 @@ export async function* runFormAgent(
         fieldsTargeted: lowFields.length,
       };
 
-      await stagehand.act(buildCorrectionInstruction(lowFields, userContext));
+      try {
+        await stagehand.act(buildCorrectionInstruction(lowFields, userContext));
+      } catch (err) {
+        console.warn(
+          "[runFormAgent] Correction act failed (continuing with last extraction):",
+          err instanceof Error ? err.message : err,
+        );
+      }
       await page.waitForTimeout(1000);
     }
 
