@@ -19,16 +19,18 @@ Built as a final project for CPSC 4770 by Perryn Chang, Reyansh Bahl, and Michae
 
 ## Tech Stack
 
+
 | Layer         | Technology                                                                      |
 | ------------- | ------------------------------------------------------------------------------- |
 | Frontend      | Next.js 15 (App Router), React 19, Tailwind CSS v4                              |
 | API           | tRPC v11                                                                        |
 | Browser agent | [Stagehand](https://github.com/browserbasehq/stagehand) (Playwright-based)      |
-| LLM           | OpenAI **GPT-4o** (identity profile + field verification) and **GPT-4.1** (**gpt-4.1-mini** eval baseline; Stagehand browser agent uses its default model) |
+| LLM           | **[Groq](https://groq.com)**, OpenAI, & other OpenAI-compatible APIs via env    |
 | Database      | PostgreSQL via Drizzle ORM                                                      |
 | Auth          | [Better Auth](https://www.better-auth.com)                                      |
 | File storage  | Supabase Storage (résumé PDFs; optional if you use free-text context only)      |
 | Cloud browser | [Browserbase](https://browserbase.com) (optional; falls back to local Chromium) |
+
 
 ---
 
@@ -85,22 +87,55 @@ cp .env.example .env
 
 Fill in your `.env`:
 
-| Variable                    | Required | Description                                                     |
-| --------------------------- | -------- | --------------------------------------------------------------- |
-| `POSTGRES_URL`              | Yes      | PostgreSQL connection string                                    |
-| `AUTH_SECRET`               | Yes      | Random secret for Better Auth (`openssl rand -base64 32`)       |
-| `OPENAI_API_KEY`            | Yes      | Used by the agent and baseline eval                             |
-| `NEXT_PUBLIC_SUPABASE_URL`  | No       | Supabase project URL — required only for résumé PDF upload      |
-| `SUPABASE_SERVICE_ROLE_KEY` | No       | Supabase service role key — required only for résumé PDF upload |
-| `BROWSERBASE_API_KEY`       | No       | Cloud browser (falls back to local Chromium if unset)           |
-| `BROWSERBASE_PROJECT_ID`    | No       | Required if using Browserbase                                   |
+
+| Variable                    | Required | Description                                                                                                                                                                                                                                                                                          |
+| --------------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `POSTGRES_URL`              | Yes      | PostgreSQL connection string                                                                                                                                                                                                                                                                         |
+| `AUTH_SECRET`               | Yes      | Random secret for Better Auth (`openssl rand -base64 32`)                                                                                                                                                                                                                                            |
+| `OPENAI_API_KEY`            | Yes      | API key for the LLM HTTP API: OpenAI, or **Groq** when `OPENAI_BASE_URL` is Groq (same `gsk_…` key works for both `@ai-sdk` calls and Stagehand if you use `openai/…` Stagehand models—see below)                                                                                                    |
+| `OPENAI_BASE_URL`           | No       | OpenAI-compatible base URL. **Groq:** `https://api.groq.com/openai/v1`. **OpenRouter:** `https://openrouter.ai/api/v1`. Omit for OpenAI.                                                                                                                                                             |
+| `LLM_MODEL`                 | No       | Model id for profile rebuild + field verification (default `gpt-4o`). With Groq, use a **Groq model id** (e.g. `llama-3.3-70b-versatile`), not `gpt-4o`.                                                                                                                                             |
+| `STAGEHAND_MODEL`           | No       | Stagehand `provider/model`. **Groq native:** `groq/llama-3.3-70b-versatile` (set `**GROQ_API_KEY`**). **Same Groq key via OpenAI-compatible API:** `openai/llama-3.3-70b-versatile` with `OPENAI_BASE_URL` + `OPENAI_API_KEY` (no `GROQ_API_KEY` needed for Stagehand). Default: Stagehand built-in. |
+| `GROQ_API_KEY`              | No       | Only if `STAGEHAND_MODEL` starts with `**groq/`** (can match your Groq console key). Not required if Stagehand uses the `openai/…` + Groq URL pattern.                                                                                                                                               |
+| `NEXT_PUBLIC_SUPABASE_URL`  | No       | Supabase project URL — required only for résumé PDF upload                                                                                                                                                                                                                                           |
+| `SUPABASE_SERVICE_ROLE_KEY` | No       | Supabase service role key — required only for résumé PDF upload                                                                                                                                                                                                                                      |
+| `BROWSERBASE_API_KEY`       | No       | Cloud browser (falls back to local Chromium if unset)                                                                                                                                                                                                                                                |
+| `BROWSERBASE_PROJECT_ID`    | No       | Required if using Browserbase                                                                                                                                                                                                                                                                        |
+
 
 For the bundled Docker database, `POSTGRES_URL` can match `.env.example` (e.g. `postgresql://postgres:supersecret@localhost:5432/local`).
 
-### 4. Apply database migrations
+**Example: [OpenAI](https://platform.openai.com)** — default stack; leave `**OPENAI_BASE_URL`** unset so requests go to OpenAI:
 
 ```bash
-pnpm db:push
+OPENAI_API_KEY=sk-...
+LLM_MODEL=gpt-4o
+# Optional: pin Stagehand to the same OpenAI model (else Stagehand’s built-in default applies)
+STAGEHAND_MODEL=openai/gpt-4o
+```
+
+Do not set `**GROQ_API_KEY**` when using OpenAI only.
+
+**Example: [Groq](https://console.groq.com)** — OpenAI-compatible HTTP API; use **Groq model ids**, not `gpt-4o`:
+
+```bash
+OPENAI_API_KEY=gsk_...
+OPENAI_BASE_URL=https://api.groq.com/openai/v1
+LLM_MODEL=llama-3.3-70b-versatile
+# Stagehand — pick one:
+STAGEHAND_MODEL=groq/llama-3.3-70b-versatile
+GROQ_API_KEY=gsk_...
+# Or OpenAI-sdk path to Groq (same key; omit GROQ_API_KEY for Stagehand): STAGEHAND_MODEL=openai/llama-3.3-70b-versatile
+```
+
+You **cannot** use **OpenAI-only** model names (`gpt-4o`, …) against Groq—they are not hosted there. The `**openai/`** prefix in Stagehand means “OpenAI SDK + `OPENAI_BASE_URL`”, not “use ChatGPT models on Groq”. Use ids Groq documents (e.g. `llama-3.3-70b-versatile`) for both `LLM_MODEL` and the name after `groq/` or `openai/` when pointing at Groq.
+
+### 4. Apply database migrations
+
+Right after Postgres is running and `.env` has `POSTGRES_URL`:
+
+```bash
+pnpm db:migrate
 ```
 
 ### 5. Run the app
@@ -115,17 +150,19 @@ pnpm dev
 
 The `packages/eval` package contains a custom suite of 20 forms with ground-truth answers for a fixed test persona (Alex Johnson), spanning three difficulty tiers:
 
+
 | Tier    | Forms | Description                                          |
 | ------- | ----- | ---------------------------------------------------- |
 | Simple  | 01–06 | Static HTML, standard field labels                   |
 | Medium  | 07–13 | Multi-field, dropdowns, date inputs, optional fields |
 | Complex | 14–20 | Multi-section, conditional logic, multi-step wizard  |
 
+
 **Metrics:**
 
-- _Field accuracy_ — % of fields filled with the correct value vs. ground truth
-- _Task completion rate_ — did the agent successfully complete the form?
-- _Confidence calibration_ — do low-confidence scores predict incorrect fields?
+- *Field accuracy* — % of fields filled with the correct value vs. ground truth
+- *Task completion rate* — did the agent successfully complete the form?
+- *Confidence calibration* — do low-confidence scores predict incorrect fields?
 
 **Baseline:** the form's raw HTML is passed directly to the LLM in a single prompt with no browser interaction. This isolates the contribution of the agent loop — the static baseline cannot handle conditional logic or multi-page forms.
 
@@ -148,7 +185,7 @@ pnpm -F @formagent/eval eval --forms 01,07,15,19
 pnpm -F @formagent/eval eval --difficulty complex
 ```
 
-Results are printed to stdout and saved to `eval-report.json`.
+Results are printed to stdout and saved to `eval-report.json`. Baseline model: `EVAL_BASELINE_MODEL`, or falls back to `LLM_MODEL`, then `gpt-4.1-mini`.
 
 ---
 
@@ -165,3 +202,4 @@ Results are printed to stdout and saved to `eval-report.json`.
 - **Mind2Web** (Deng et al., 2023) — LLM web agent benchmark across 137 real websites; focuses on general navigation, not profile-driven form completion
 - **WebArena** (Zhou et al., 2023) — sandboxed web environments for autonomous agent evaluation; forms are within simulated sites, not profile-driven
 - **Stagehand** (Browserbase) — the TypeScript browser automation framework powering the agent loop
+

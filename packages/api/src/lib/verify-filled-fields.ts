@@ -3,6 +3,7 @@ import { generateObject } from "ai";
 import { z } from "zod/v4";
 
 import type { FilledField, RawFormField } from "./form-agent-types";
+import { getLlmModel } from "./llm-env";
 
 const VerificationResultSchema = z.object({
   fields: z.array(
@@ -44,7 +45,7 @@ You MUST return exactly one assessment object per field line above, with the sam
 
   try {
     const { object } = await generateObject({
-      model: openai("gpt-4o"),
+      model: openai(getLlmModel()),
       schema: VerificationResultSchema,
       prompt,
     });

@@ -1,5 +1,6 @@
 import type { FilledField } from "./form-agent-types";
 import { extractFormFields } from "./extract-form-fields";
+import { getStagehandModel } from "./llm-env";
 import {
   computeConfidenceSummary,
   verifyFilledFields,
@@ -121,18 +122,23 @@ export async function* runFormAgent(
 
   const { Stagehand } = await import("@browserbasehq/stagehand");
 
+  const stagehandModel = getStagehandModel();
+  const stagehandModelOpt = stagehandModel ? { model: stagehandModel } : {};
+
   const stagehand =
     useBrowserbase && !forceLocalBrowser
       ? new Stagehand({
           env: "BROWSERBASE",
           apiKey: process.env.BROWSERBASE_API_KEY,
           projectId: process.env.BROWSERBASE_PROJECT_ID,
+          ...stagehandModelOpt,
         })
       : new Stagehand({
           env: "LOCAL",
           localBrowserLaunchOptions: {
             headless: true,
           },
+          ...stagehandModelOpt,
         });
 
   try {

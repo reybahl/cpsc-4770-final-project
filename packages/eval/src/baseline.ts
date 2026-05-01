@@ -29,9 +29,16 @@ const BaselineResultSchema = z.object({
   ),
 });
 
-/** Model for the page-HTML→structured-fields baseline. Defaults to `gpt-4.1-mini` (peer to the typical Stagehand agent). Override with `EVAL_BASELINE_MODEL`. */
+/**
+ * Model for the page-HTML→structured-fields baseline.
+ * `EVAL_BASELINE_MODEL` overrides; then `LLM_MODEL`; else `gpt-4.1-mini`.
+ */
 export function getBaselineLlmModel(): string {
-  return process.env.EVAL_BASELINE_MODEL?.trim() || "gpt-4.1-mini";
+  const explicit = process.env.EVAL_BASELINE_MODEL?.trim();
+  if (explicit) return explicit;
+  const shared = process.env.LLM_MODEL?.trim();
+  if (shared) return shared;
+  return "gpt-4.1-mini";
 }
 
 /**

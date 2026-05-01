@@ -2,6 +2,7 @@ import { openai } from "@ai-sdk/openai";
 import { generateText } from "ai";
 
 import type { IdentityProfile } from "./identity-profile-schema";
+import { getLlmModel } from "./llm-env";
 
 const SYSTEM = `You extract everything useful about this person for filling web forms.
 
@@ -66,7 +67,7 @@ Build the JSON object from these materials.`;
   }
 
   const { text } = await generateText({
-    model: openai("gpt-4o"),
+    model: openai(getLlmModel()),
     system: SYSTEM,
     messages: [
       {

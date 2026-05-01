@@ -21,8 +21,9 @@
  *   The eval always forces local Chromium so forms on localhost are reachable.
  *
  * Optional env vars (baseline value predictor):
- *   EVAL_BASELINE_MODEL   Model for the live page snapshot→structured-fields step before Playwright applies values
- *                         (default: gpt-4.1-mini, aligned with typical Stagehand).
+ *   EVAL_BASELINE_MODEL   Explicit override for baseline model
+ *   LLM_MODEL             Used for baseline when EVAL_BASELINE_MODEL is unset
+ *                         Default baseline model if both unset: gpt-4.1-mini
  *
  * First-time: install Chromium for the baseline browser — `pnpm -F @formagent/eval run eval:install-browser`
  */
