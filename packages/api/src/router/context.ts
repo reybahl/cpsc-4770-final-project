@@ -1,4 +1,5 @@
 import type { TRPCRouterRecord } from "@trpc/server";
+import { TRPCError } from "@trpc/server";
 import { z } from "zod/v4";
 
 import { eq } from "@formagent/db";
@@ -6,7 +7,7 @@ import { context, CreateContextSchema } from "@formagent/db/schema";
 
 import { parseIdentityProfileFromDb } from "../lib/identity-profile-schema";
 import { rebuildIdentityProfileFromSources } from "../lib/rebuild-identity-profile";
-import { supabaseAdmin } from "../lib/supabase";
+import { getSupabaseAdmin, isSupabaseConfigured } from "../lib/supabase";
 import { protectedProcedure } from "../trpc";
 
 const BUCKET = "resumes";
@@ -58,8 +59,15 @@ export const contextRouter = {
       const pathMatch = /\/resumes\/(.+)$/.exec(row.resumeUrl);
       const path = pathMatch?.[1];
       if (path) {
-        const { data, error } = await supabaseAdmin.storage
-          .from(BUCKET)
+        if (!isSupabaseConfigured()) {
+          throw new TRPCError({
+            code: "PRECONDITION_FAILED",
+            message:
+              "A résumé is saved but Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY, or clear the résumé.",
+          });
+        }
+        const { data, error } = await getSupabaseAdmin()
+          .storage.from(BUCKET)
           .download(path);
         if (!error) {
           resumePdfBuffer = Buffer.from(await data.arrayBuffer());
@@ -112,8 +120,15 @@ export const contextRouter = {
       if (!path) {
         throw new Error("Invalid PDF URL: could not extract storage path");
       }
-      const { data, error } = await supabaseAdmin.storage
-        .from(BUCKET)
+      if (!isSupabaseConfigured()) {
+        throw new TRPCError({
+          code: "PRECONDITION_FAILED",
+          message:
+            "Viewing a stored résumé requires Supabase. Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.",
+        });
+      }
+      const { data, error } = await getSupabaseAdmin()
+        .storage.from(BUCKET)
         .createSignedUrl(path, 3600); // 1 hour
       if (error) {
         throw new Error(`Failed to create view URL: ${error.message}`);

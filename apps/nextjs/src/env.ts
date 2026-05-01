@@ -17,7 +17,10 @@ export const env = createEnv({
    */
   server: {
     POSTGRES_URL: z.url(),
-    SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
+    SUPABASE_SERVICE_ROLE_KEY: z.preprocess(
+      (v) => (v === "" || v == null ? undefined : v),
+      z.string().min(1).optional(),
+    ),
     OPENAI_API_KEY: z.string().min(1),
     BROWSERBASE_API_KEY: z.string().optional(),
     BROWSERBASE_PROJECT_ID: z.string().optional(),
@@ -28,7 +31,10 @@ export const env = createEnv({
    * For them to be exposed to the client, prefix them with `NEXT_PUBLIC_`.
    */
   client: {
-    NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
+    NEXT_PUBLIC_SUPABASE_URL: z.preprocess(
+      (v) => (v === "" || v == null ? undefined : v),
+      z.string().url().optional(),
+    ),
   },
   /**
    * Destructure all variables from `process.env` to make sure they aren't tree-shaken away.

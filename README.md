@@ -19,15 +19,15 @@ Built as a final project for CPSC 4770 by Perryn Chang, Reyansh Bahl, and Michae
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Frontend | Next.js 15 (App Router), React 19, Tailwind CSS v4 |
-| API | tRPC v11 |
-| Browser agent | [Stagehand](https://github.com/browserbasehq/stagehand) (Playwright-based) |
-| LLM | OpenAI GPT-4o |
-| Database | PostgreSQL via Drizzle ORM |
-| Auth | [Better Auth](https://www.better-auth.com) |
-| File storage | Supabase Storage (résumé PDFs) |
+| Layer         | Technology                                                                      |
+| ------------- | ------------------------------------------------------------------------------- |
+| Frontend      | Next.js 15 (App Router), React 19, Tailwind CSS v4                              |
+| API           | tRPC v11                                                                        |
+| Browser agent | [Stagehand](https://github.com/browserbasehq/stagehand) (Playwright-based)      |
+| LLM           | OpenAI **GPT-4o** (identity profile + field verification) and **GPT-4.1** (**gpt-4.1-mini** eval baseline; Stagehand browser agent uses its default model) |
+| Database      | PostgreSQL via Drizzle ORM                                                      |
+| Auth          | [Better Auth](https://www.better-auth.com)                                      |
+| File storage  | Supabase Storage (résumé PDFs; optional if you use free-text context only)      |
 | Cloud browser | [Browserbase](https://browserbase.com) (optional; falls back to local Chromium) |
 
 ---
@@ -57,16 +57,27 @@ tooling/
 
 ### Prerequisites
 
-- Node.js 22+
-- pnpm (`corepack enable pnpm`)
+- **Node.js** 22+ (see `engines` in the root `package.json`)
+- **Docker** — for local PostgreSQL (`compose.yaml`)
+- **pnpm** — `corepack enable` (once; ships with Node)
 
-### 1. Install dependencies
+### 1. Start PostgreSQL
+
+From the repo root:
+
+```bash
+docker compose up -d
+```
+
+This starts Postgres in the background. Omit `-d` if you want logs attached to the terminal. Stop it with `docker compose down` when you are done.
+
+### 2. Install dependencies
 
 ```bash
 pnpm install
 ```
 
-### 2. Configure environment variables
+### 3. Configure environment variables
 
 ```bash
 cp .env.example .env
@@ -74,23 +85,25 @@ cp .env.example .env
 
 Fill in your `.env`:
 
-| Variable | Required | Description |
-|---|---|---|
-| `POSTGRES_URL` | Yes | PostgreSQL connection string |
-| `AUTH_SECRET` | Yes | Random secret for Better Auth (`openssl rand -base64 32`) |
-| `OPENAI_API_KEY` | Yes | Used by the agent and baseline eval |
-| `NEXT_PUBLIC_SUPABASE_URL` | Yes | Supabase project URL |
-| `SUPABASE_SERVICE_ROLE_KEY` | Yes | Supabase service role key |
-| `BROWSERBASE_API_KEY` | No | Cloud browser (falls back to local Chromium if unset) |
-| `BROWSERBASE_PROJECT_ID` | No | Required if using Browserbase |
+| Variable                    | Required | Description                                                     |
+| --------------------------- | -------- | --------------------------------------------------------------- |
+| `POSTGRES_URL`              | Yes      | PostgreSQL connection string                                    |
+| `AUTH_SECRET`               | Yes      | Random secret for Better Auth (`openssl rand -base64 32`)       |
+| `OPENAI_API_KEY`            | Yes      | Used by the agent and baseline eval                             |
+| `NEXT_PUBLIC_SUPABASE_URL`  | No       | Supabase project URL — required only for résumé PDF upload      |
+| `SUPABASE_SERVICE_ROLE_KEY` | No       | Supabase service role key — required only for résumé PDF upload |
+| `BROWSERBASE_API_KEY`       | No       | Cloud browser (falls back to local Chromium if unset)           |
+| `BROWSERBASE_PROJECT_ID`    | No       | Required if using Browserbase                                   |
 
-### 3. Apply database migrations
+For the bundled Docker database, `POSTGRES_URL` can match `.env.example` (e.g. `postgresql://postgres:supersecret@localhost:5432/local`).
+
+### 4. Apply database migrations
 
 ```bash
 pnpm db:push
 ```
 
-### 4. Run the app
+### 5. Run the app
 
 ```bash
 pnpm dev
@@ -102,16 +115,17 @@ pnpm dev
 
 The `packages/eval` package contains a custom suite of 20 forms with ground-truth answers for a fixed test persona (Alex Johnson), spanning three difficulty tiers:
 
-| Tier | Forms | Description |
-|---|---|---|
-| Simple | 01–06 | Static HTML, standard field labels |
-| Medium | 07–13 | Multi-field, dropdowns, date inputs, optional fields |
-| Complex | 14–20 | Multi-section, conditional logic, multi-step wizard |
+| Tier    | Forms | Description                                          |
+| ------- | ----- | ---------------------------------------------------- |
+| Simple  | 01–06 | Static HTML, standard field labels                   |
+| Medium  | 07–13 | Multi-field, dropdowns, date inputs, optional fields |
+| Complex | 14–20 | Multi-section, conditional logic, multi-step wizard  |
 
 **Metrics:**
-- *Field accuracy* — % of fields filled with the correct value vs. ground truth
-- *Task completion rate* — did the agent successfully complete the form?
-- *Confidence calibration* — do low-confidence scores predict incorrect fields?
+
+- _Field accuracy_ — % of fields filled with the correct value vs. ground truth
+- _Task completion rate_ — did the agent successfully complete the form?
+- _Confidence calibration_ — do low-confidence scores predict incorrect fields?
 
 **Baseline:** the form's raw HTML is passed directly to the LLM in a single prompt with no browser interaction. This isolates the contribution of the agent loop — the static baseline cannot handle conditional logic or multi-page forms.
 
