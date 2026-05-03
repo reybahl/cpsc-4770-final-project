@@ -197,6 +197,13 @@ Results are printed to stdout and saved to `eval-report.json`. Baseline model: `
 
 ---
 
+## Future Work
+
+- Automatically builds a profile with personal information for the user
+- Ability to grab information for arbitrary knowledge documents like company documents
+
+---
+
 ## Related Work
 
 - **Mind2Web** (Deng et al., 2023) — LLM web agent benchmark across 137 real websites; focuses on general navigation, not profile-driven form completion
