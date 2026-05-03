@@ -155,7 +155,7 @@ The `packages/eval` package contains a custom suite of 20 forms with ground-trut
 | ------- | ----- | ---------------------------------------------------- |
 | Simple  | 01–06 | Static HTML, standard field labels                   |
 | Medium  | 07–13 | Multi-field, dropdowns, date inputs, optional fields |
-| Complex | 14–20 | Multi-section, conditional logic, multi-step wizard  |
+| Complex | 14–20 | Multi-section, conditional logic, multi-step, multi-page  |
 
 
 **Metrics:**
